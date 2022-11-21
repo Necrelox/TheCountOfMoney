@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS `EchBoard`.`ROOM_USER`;
