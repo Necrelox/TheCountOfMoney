@@ -8,8 +8,8 @@ module.exports = {
         client: 'mysql2',
         connection: {
             host: '127.0.0.1',
-            user: 'ruby',
-            password: 'gw86!e7h',
+            user: 'root',
+            password: '**',
             database: 'EchBoard',
         },
         pool: {
