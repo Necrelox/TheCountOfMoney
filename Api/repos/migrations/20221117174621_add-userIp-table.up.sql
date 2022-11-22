@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `EchBoard`.`USER_IP`
+CREATE TABLE IF NOT EXISTS `TheCountOfMoney`.`USER_IP`
 (
     `ip`        VARCHAR(16) NOT NULL,
     `createdAt` DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `EchBoard`.`USER_IP`
     UNIQUE INDEX `ip_UNIQUE` (`ip` ASC) VISIBLE,
     CONSTRAINT `fk_USER_IP_1`
         FOREIGN KEY (`userUuid`)
-            REFERENCES `EchBoard`.`USER` (`uuid`)
+            REFERENCES `TheCountOfMoney`.`USER` (`uuid`)
             ON DELETE CASCADE
             ON UPDATE NO ACTION
 )

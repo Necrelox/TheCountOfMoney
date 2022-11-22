@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `EchBoard`.`USER_DOCUMENTS`
+CREATE TABLE IF NOT EXISTS `TheCountOfMoney`.`USER_DOCUMENTS`
 (
     `path`      VARCHAR(255) NOT NULL,
     `seed`      INT          NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `EchBoard`.`USER_DOCUMENTS`
     INDEX `fk_USER_DOCUMENTS_1_idx` (`userUuid` ASC) VISIBLE,
     CONSTRAINT `fk_USER_DOCUMENTS_1`
         FOREIGN KEY (`userUuid`)
-            REFERENCES `EchBoard`.`USER` (`uuid`)
+            REFERENCES `TheCountOfMoney`.`USER` (`uuid`)
             ON DELETE CASCADE
             ON UPDATE NO ACTION
 )

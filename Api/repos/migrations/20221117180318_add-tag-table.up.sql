@@ -1,9 +1,0 @@
-CREATE TABLE IF NOT EXISTS `EchBoard`.`TAG`
-(
-    `name`      VARCHAR(64) NOT NULL,
-    `createdAt` DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `uuid`      BINARY(16)  NOT NULL DEFAULT (UUID_TO_BIN(UUID(), TRUE)),
-    PRIMARY KEY (`uuid`),
-    UNIQUE INDEX `uuid_UNIQUE` (`uuid` ASC) VISIBLE
-)
-    ENGINE = InnoDB;

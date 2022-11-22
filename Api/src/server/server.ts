@@ -15,9 +15,7 @@ import fileUpload from 'express-fileupload';
  */
 // import Swagger from './swagger.json';
 import { DatabaseKnex } from './services/database/DatabaseKnex';
-import {
-    AccountController, DocumentManager,
-} from './controllers';
+import { AccountController } from './controllers';
 
 /**
  * Server class : is the main class of the application
@@ -148,9 +146,6 @@ export class Server {
      */
     private initializeRoutes() {
         this.app.use('/account', new AccountController().getRouter());
-        this.app.use('/doc-manager', new DocumentManager().getRouter());
-        // this.app.use('/user', new UserController().getRouter());
-        // this.app.use('/biometric', new BiometricController().getRouter());
     }
 
     /**

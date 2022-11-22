@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `EchBoard`.`USER_ROLE`
+CREATE TABLE IF NOT EXISTS `TheCountOfMoney`.`USER_ROLE`
 (
     `roleId`   INT        NOT NULL,
     `userUuid` BINARY(16) NOT NULL,
@@ -8,12 +8,12 @@ CREATE TABLE IF NOT EXISTS `EchBoard`.`USER_ROLE`
     INDEX `fk_USER_ROLE_2_idx` (`roleId` ASC) VISIBLE,
     CONSTRAINT `fk_USER_ROLE_1`
         FOREIGN KEY (`userUuid`)
-            REFERENCES `EchBoard`.`USER` (`uuid`)
+            REFERENCES `TheCountOfMoney`.`USER` (`uuid`)
             ON DELETE CASCADE
             ON UPDATE NO ACTION,
     CONSTRAINT `fk_USER_ROLE_2`
         FOREIGN KEY (`roleId`)
-            REFERENCES `EchBoard`.`ROLE` (`id`)
+            REFERENCES `TheCountOfMoney`.`ROLE` (`id`)
             ON DELETE CASCADE
             ON UPDATE NO ACTION
 )

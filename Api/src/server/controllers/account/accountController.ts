@@ -11,6 +11,7 @@ import { Mailer, PasswordEncrypt } from '../../tools';
 import { AccountControllerQueries } from '../../services';
 import { IToken, IUser } from '../../models';
 import { bearerToken } from '../../middleware';
+
 /**
  * AccountController class : is the controller of the account module
  */

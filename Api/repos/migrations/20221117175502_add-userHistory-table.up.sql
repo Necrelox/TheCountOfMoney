@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `EchBoard`.`USER_HISTORY`
+CREATE TABLE IF NOT EXISTS `TheCountOfMoney`.`USER_HISTORY`
 (
     `log`       TEXT       NULL,
     `createdAt` DATETIME   NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS `EchBoard`.`USER_HISTORY`
     INDEX `fk_USER_HISTORY_1_idx` (`userUuid` ASC) VISIBLE,
     CONSTRAINT `fk_USER_HISTORY_1`
         FOREIGN KEY (`userUuid`)
-            REFERENCES `EchBoard`.`USER` (`uuid`)
+            REFERENCES `TheCountOfMoney`.`USER` (`uuid`)
             ON DELETE CASCADE
             ON UPDATE NO ACTION
 )

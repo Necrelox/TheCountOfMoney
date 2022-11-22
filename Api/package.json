@@ -4,12 +4,8 @@
   "description": "Api",
   "main": "src/app.ts",
   "scripts": {
-    "exec-builder": "ts-node bin/builder.ts && echo \"\\033[0;34m➤ Builder executed \\033[0m\"",
-    "compile-addon": "cmake-js compile -d ./src/addons/ && echo \"\\033[0;34m➤ Addon compiled \\033[0m\"",
-    "watch-compile-api-": "tsc --build --watch && echo \"\\033[0;34m➤ API watch compile \\033[0m \"",
     "compile-api-": "tsc --build && echo \"\\033[0;34m➤ API compiled \\033[0m \"",
-    "build": "npm run compile-addon && npm run exec-builder && npm run compile-api",
-    "watch-build": "npm run compile-addon && npm run exec-builder && npm run watch-compile-api",
+    "watch-compile-api-": "tsc --build --watch && echo \"\\033[0;34m➤ API watch compile \\033[0m \"",
     "watch-start": "node --watch prod/app.js",
     "start": "node prod/app.js",
     "test": "jest -c jest.config.json",

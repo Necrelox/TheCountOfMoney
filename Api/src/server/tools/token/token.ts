@@ -1,5 +1,5 @@
 import { createHmac, randomBytes } from 'crypto';
-import { IToken, IUser } from '../../models';
+import { IToken, IURoleFKRoleFKRoleModuleFKModule, IUser } from '../../models';
 import { URole } from '../../services';
 
 export class Token {
@@ -9,11 +9,26 @@ export class Token {
             exp: expireAt,
         })).toString('base64');
 
+        let rawRolePermission: Pick<IURoleFKRoleFKRoleModuleFKModule, 'name' | 'moduleName'>[] = await URole.getFKRoleFKRoleModuleFKModule({
+            userUuid: user.uuid
+        }, {
+            name: true,
+            moduleName: true
+        });
+        const sanitizeRolePermission: { [key: string]: string[] } = {};
+
+        while (rawRolePermission.length > 0) {
+            const element: Pick<IURoleFKRoleFKRoleModuleFKModule, 'name' | 'moduleName'> = rawRolePermission[0] ? rawRolePermission[0] : { name: '', moduleName: '' };
+            const tmp: Pick<IURoleFKRoleFKRoleModuleFKModule, 'name' | 'moduleName'>[] =
+                rawRolePermission.filter((e: Pick<IURoleFKRoleFKRoleModuleFKModule, 'name' | 'moduleName'>) => e.name === element.name);
+            sanitizeRolePermission[element.name] = tmp.map((e: Pick<IURoleFKRoleFKRoleModuleFKModule, 'name' | 'moduleName'>) => e.moduleName);
+            rawRolePermission = rawRolePermission.filter((e: Pick<IURoleFKRoleFKRoleModuleFKModule, 'name' | 'moduleName'>) => e.name !== element.name);
+        }
+
         const payload: string = Buffer.from(JSON.stringify({
             username: user.username,
-            permissions: await URole.getFKRoleFKRoleModuleFKModule({ userUuid: user.uuid }, { name: true, url: true }),
+            permissions: sanitizeRolePermission,
         })).toString(   'base64');
-
         const saltSignature: Buffer = randomBytes(128);
         const signature: string = createHmac('sha512', saltSignature)
             .update(header + payload)

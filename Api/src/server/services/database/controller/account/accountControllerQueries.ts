@@ -1,7 +1,7 @@
 import { DatabaseKnex, Transaction, ErrorDatabase } from '../../DatabaseKnex';
 import { MessageError } from '../../../../enum/messageError';
-import { IDevice, IIP, IMacAddress, IToken, IUser } from '../../../../models';
-import { Token, User, History, Ip, MacAddress, Device, URole } from '../../../';
+import { IDevice, IIP, IMacAddress, IToken, IUser, IRole } from '../../../../models';
+import { Token, User, History, Ip, MacAddress, Device, Role, URole } from '../../../';
 import { PasswordEncrypt, Token as tokenTools } from '../../../../tools';
 
 export class AccountControllerQueries {
@@ -90,9 +90,19 @@ export class AccountControllerQueries {
                     code: 500,
                     message: MessageError.USER_NOT_FOUND
                 };
+            const [role]: Pick<IRole, 'id'>[] = await Role.transactionGet({
+                name: 'guest'
+            }, {
+                id: true
+            }, trx);
+            if (!role)
+                throw {
+                    code: 500,
+                    message: MessageError.ROLE_NOT_FOUND
+                };
             await Promise.all([
                 URole.transactionCreate({
-                    roleId: 7,
+                    roleId: role.id,
                     userUuid: user.uuid,
                 }, trx),
                 History.transactionCreate({

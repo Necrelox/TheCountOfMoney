@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `EchBoard`.`USER_TOKEN`
+CREATE TABLE IF NOT EXISTS `TheCountOfMoney`.`USER_TOKEN`
 (
     `createdAt` DATETIME       NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `expireAt`  DATETIME       NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS `EchBoard`.`USER_TOKEN`
     UNIQUE INDEX `userUuid_UNIQUE` (`userUuid` ASC) VISIBLE,
     CONSTRAINT `fk_USER_TOKEN_1`
         FOREIGN KEY (`userUuid`)
-            REFERENCES `EchBoard`.`USER` (`uuid`)
+            REFERENCES `TheCountOfMoney`.`USER` (`uuid`)
             ON DELETE CASCADE
             ON UPDATE NO ACTION
 )

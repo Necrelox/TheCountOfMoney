@@ -15,6 +15,9 @@ export enum MessageError {
     USER_NOT_FOUND = 'User not found.',
     USER_INVALID_PASSWORD = 'Invalid password.',
 
+    /** ROLE */
+    ROLE_NOT_FOUND = 'Role not found.',
+
     /** ACTIVITY */
 
     /** BODY */

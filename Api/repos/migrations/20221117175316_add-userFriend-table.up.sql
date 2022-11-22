@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `EchBoard`.`USER_FRIEND`
+CREATE TABLE IF NOT EXISTS `TheCountOfMoney`.`USER_FRIEND`
 (
     `createdAt`  DATETIME   NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `acceptedAt` DATETIME   NULL,
@@ -12,12 +12,12 @@ CREATE TABLE IF NOT EXISTS `EchBoard`.`USER_FRIEND`
     UNIQUE INDEX `uuid_UNIQUE` (`uuid` ASC) VISIBLE,
     CONSTRAINT `fk_USER_FRIEND_1`
         FOREIGN KEY (`user`)
-            REFERENCES `EchBoard`.`USER` (`uuid`)
+            REFERENCES `TheCountOfMoney`.`USER` (`uuid`)
             ON DELETE CASCADE
             ON UPDATE NO ACTION,
     CONSTRAINT `fk_USER_FRIEND_2`
         FOREIGN KEY (`friend`)
-            REFERENCES `EchBoard`.`USER` (`uuid`)
+            REFERENCES `TheCountOfMoney`.`USER` (`uuid`)
             ON DELETE CASCADE
             ON UPDATE NO ACTION
 )

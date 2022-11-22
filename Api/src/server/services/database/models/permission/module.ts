@@ -9,7 +9,7 @@ import { IModule } from '../../../../models';
  * IColumnsModule
  */
 export interface IColumnsModule {
-    url: boolean,
+    moduleName: boolean,
     id: boolean | string,
 }
 /**

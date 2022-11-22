@@ -3,5 +3,5 @@
  */
 export interface IModule {
     id: number;
-    url: string;
+    moduleName: string;
 }

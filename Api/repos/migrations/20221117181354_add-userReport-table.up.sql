@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `EchBoard`.`USER_REPORT`
+CREATE TABLE IF NOT EXISTS `TheCountOfMoney`.`USER_REPORT`
 (
     `createdAt`      DATETIME   NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `reason`         TEXT       NOT NULL,
@@ -11,12 +11,12 @@ CREATE TABLE IF NOT EXISTS `EchBoard`.`USER_REPORT`
     INDEX `fk_USER_REPORT_2_idx` (`userReported` ASC) VISIBLE,
     CONSTRAINT `fk_USER_REPORT_1`
         FOREIGN KEY (`userSendReport`)
-            REFERENCES `EchBoard`.`USER` (`uuid`)
+            REFERENCES `TheCountOfMoney`.`USER` (`uuid`)
             ON DELETE CASCADE
             ON UPDATE NO ACTION,
     CONSTRAINT `fk_USER_REPORT_2`
         FOREIGN KEY (`userReported`)
-            REFERENCES `EchBoard`.`USER` (`uuid`)
+            REFERENCES `TheCountOfMoney`.`USER` (`uuid`)
             ON DELETE CASCADE
             ON UPDATE NO ACTION
 )

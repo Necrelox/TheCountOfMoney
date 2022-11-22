@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS `EchBoard`.`ROLE`;
+DROP TABLE IF EXISTS `TheCountOfMoney`.`ROLE`;
