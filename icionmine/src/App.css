@@ -32,6 +32,13 @@
   background-color: #EFEAE2 !important;
 }
 
+.navbar {
+  height: 6rem;
+}
+
+img{
+  height: 10rem;
+}
 
 @keyframes App-logo-spin {
   from {

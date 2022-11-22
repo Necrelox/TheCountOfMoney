@@ -1,42 +1,44 @@
 import React from 'react';
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Form from 'react-bootstrap/Form';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import Image from 'react-bootstrap/Image'
+
 class NavBar extends React.Component {
     render() {
       return (
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Disabled</a>
-                </li>
-                </ul>
-                <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                </form>
-            </div>
-        </nav>
+        <Navbar bg="light" expand="lg">
+            <Container fluid>
+                <Image src='https://cdn.discordapp.com/attachments/1042840275485196303/1044567747562045460/IciOnMineLogo.png'/>
+            <Navbar.Toggle aria-controls="navbarScroll" />
+            <Navbar.Collapse id="navbarScroll">
+                <Nav
+                className="me-auto my-2 my-lg-0"
+                style={{ maxHeight: '100px' }}
+                navbarScroll
+                >
+                <Nav.Link href="#action1">Home</Nav.Link>
+                <Nav.Link href="#action2">Graphs</Nav.Link>
+                <Nav.Link href="#action2">Preferences</Nav.Link>
+                </Nav>
+                <Form className="d-flex">
+                <Form.Control
+                    type="search"
+                    placeholder="Search"
+                    className="me-2"
+                    aria-label="Search"
+                />
+                <Button variant="outline-success">Search</Button>
+                </Form>
+                <Nav>
+                    <Nav.Link href="#action1">Connection</Nav.Link>
+                    <Nav.Link href="#action2">Inscription</Nav.Link>
+                </Nav>
+            </Navbar.Collapse>
+            </Container>
+        </Navbar>
         );
     }
   }
