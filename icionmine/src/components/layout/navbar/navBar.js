@@ -11,7 +11,7 @@ class NavBar extends React.Component {
       return (
         <Navbar bg="light" expand="lg">
             <Container fluid>
-                <Image class='logo-img' src='https://cdn.discordapp.com/attachments/1042840275485196303/1044567747562045460/IciOnMineLogo.png'/>
+                <img class='logo-img' src='https://cdn.discordapp.com/attachments/1042840275485196303/1044567747562045460/IciOnMineLogo.png'/>
             <Navbar.Toggle aria-controls="navbarScroll" />
             <Navbar.Collapse id="navbarScroll">
                 <Nav
