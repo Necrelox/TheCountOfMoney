@@ -3,7 +3,6 @@
     "node_modules",
     "**/*.spec.ts",
     "bin/",
-    "src/addons/"
   ],
   "compilerOptions": {
     "allowUnreachableCode": false,

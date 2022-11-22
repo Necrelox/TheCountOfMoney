@@ -51,7 +51,10 @@ export class AccountController {
                     checkFalsy: true
                 }).withMessage('Email is required.').bail()
                 .matches(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).withMessage('Email is not valid.').bail()
-                .isEmail().withMessage('Email is not valid').bail(),
+                .isEmail().withMessage('Email is not valid.').bail()
+                .custom(async (value) => {
+                    await Mailer.checkEmailIsTemporary(value);
+                }).withMessage('Email is temporary mail.').bail(),
             body('username')
                 .exists({
                     checkNull: true,
@@ -67,7 +70,7 @@ export class AccountController {
                     checkNull: true,
                     checkFalsy: true
                 }).withMessage('Password is required.').bail()
-                .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/).withMessage('Password do contain one majuscule and one number minimum.').bail()
+                .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/).withMessage('Password must contain at least one capital letter and one number.').bail()
                 .isLength({
                     min: 6,
                     max: 32
@@ -83,7 +86,7 @@ export class AccountController {
                         checkFalsy: true,
                     }).withMessage('Email is required.').bail()
                     .matches(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).withMessage('Email is not valid.').bail()
-                    .isEmail().withMessage('Email is not valid').bail(),
+                    .isEmail().withMessage('Email is not valid.').bail(),
                 check('username')
                     .exists({
                         checkNull: true,
@@ -100,7 +103,7 @@ export class AccountController {
                     checkNull: true,
                     checkFalsy: true
                 }).withMessage('Password is required.').bail()
-                .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/).withMessage('Password do contain one majuscule and one number minimum.').bail()
+                .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/).withMessage('Password must contain at least one capital letter and one number.').bail()
                 .isLength({
                     min: 6,
                     max: 32
@@ -133,7 +136,7 @@ export class AccountController {
                     checkNull: true,
                     checkFalsy: true
                 }).withMessage('Password is required.').bail()
-                .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/).withMessage('Password do contain one majuscule and one number minimum.').bail()
+                .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/).withMessage('Password must contain at least one capital letter and one number.').bail()
                 .isLength({
                     min: 6,
                     max: 32
@@ -168,7 +171,6 @@ export class AccountController {
     private async postMethodSignup(req: Request, res: Response) {
         try {
             validationResult(req).throw();
-            await Mailer.checkEmailIsTemporary(req.body.email);
             await AccountControllerQueries.createAccountTransaction({
                 email: req.body.email,
                 username: req.body.username,
@@ -176,7 +178,7 @@ export class AccountController {
             });
             res.status(201).send({
                 code: 'OK',
-                message: 'User and Token created successfully.',
+                message: 'User has been created.',
             });
         } catch (error: any) {
             res.status(error.code || 500).send({
@@ -198,9 +200,8 @@ export class AccountController {
             const token: Pick<IToken, 'token' | 'expireAt'> = await AccountControllerQueries.loginAndGetTokenTransaction(userReflect, req.body.password);
             res.status(200).send({
                 code: 'OK',
-                message: 'User and Token created successfully.',
+                message: 'User has logged in.',
                 token: token.token,
-                expireAt: token.expireAt,
             });
         } catch (error: any) {
             res.status(error.code || 500).send({
@@ -226,7 +227,7 @@ export class AccountController {
             });
             res.status(200).send({
                 code: 'OK',
-                message: 'User and Token created successfully.',
+                message: 'User has logged in.',
                 token: token.token,
             });
         } catch (error: any) {

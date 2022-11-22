@@ -18,12 +18,6 @@
     "userDevice.update",
     "userDevice.delete",
 
-    "userDocuments",
-    "userDocuments.write",
-    "userDocuments.read",
-    "userDocuments.update",
-    "userDocuments.delete",
-
     "userFriend",
     "userFriend.write",
     "userFriend.read",

@@ -7,19 +7,10 @@ import { MessageError } from '../../enum/messageError';
 
 export class Mailer {
 
-    public static async checkEmailHasBadSyntax(email: string) {
-        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        if (!re.test(email))
-            throw {
-                code: 'Mailer::checkEmailHasBadSyntax',
-                message: MessageError.EMAIL_BAD_SYNTAX
-            };
-    }
-
     public static async checkEmailIsTemporary(email: string) {
         if ((emailTempo).includes(email.split('@')[1] as string))
             throw {
-                code: 'Mailer::checkEmailIsTemporary',
+                code: 500,
                 message: MessageError.EMAIL_IS_TEMPORARY
             };
     }

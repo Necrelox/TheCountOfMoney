@@ -17,10 +17,4 @@ export enum MessageError {
 
     /** ROLE */
     ROLE_NOT_FOUND = 'Role not found.',
-
-    /** ACTIVITY */
-
-    /** BODY */
-
-
 }
