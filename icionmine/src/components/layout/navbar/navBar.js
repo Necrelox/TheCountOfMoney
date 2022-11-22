@@ -1,17 +1,17 @@
 import React from 'react';
-import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Image from 'react-bootstrap/Image'
+import '../styles/navBar.css';
 
 class NavBar extends React.Component {
     render() {
       return (
-        <Navbar bg="light" expand="lg">
+        <Navbar className="navColor" expand="lg">
             <Container fluid>
-                <img class='logo-img' src='https://cdn.discordapp.com/attachments/1042840275485196303/1044567747562045460/IciOnMineLogo.png'/>
+                <Image className='logo-img' src={require('../../../assets/Logo.png')} alt="IciOMine" class='logo-img' />
             <Navbar.Toggle aria-controls="navbarScroll" />
             <Navbar.Collapse id="navbarScroll">
                 <Nav
@@ -19,9 +19,9 @@ class NavBar extends React.Component {
                 style={{ maxHeight: '100px' }}
                 navbarScroll
                 >
-                <Nav.Link href="#action1">Home</Nav.Link>
-                <Nav.Link href="#action2">Graphs</Nav.Link>
-                <Nav.Link href="#action2">Preferences</Nav.Link>
+                <Nav.Link href="#home">Home</Nav.Link>
+                <Nav.Link href="#graphs">Graphs</Nav.Link>
+                <Nav.Link href="#preferences">Preferences</Nav.Link>
                 </Nav>
                 <Form className="d-flex">
                 <Form.Control
@@ -29,12 +29,11 @@ class NavBar extends React.Component {
                     placeholder="Search"
                     className="me-2"
                     aria-label="Search"
-                />
-                <Button variant="outline-success">Search</Button>
+                />  
                 </Form>
                 <Nav>
-                    <Nav.Link href="#action1">Connection</Nav.Link>
-                    <Nav.Link href="#action2">Inscription</Nav.Link>
+                    <Nav.Link href="#login">Connection</Nav.Link>
+                    <Nav.Link className='navButton' href="#register">Inscription</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
             </Container>
