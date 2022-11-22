@@ -1,0 +1,93 @@
+{
+  "roles": [
+    "admin",
+    "guest"
+  ],
+  "modules": [
+    "admin",
+
+    "user",
+    "user.write",
+    "user.read",
+    "user.update",
+    "user.delete",
+
+    "userDevice",
+    "userDevice.write",
+    "userDevice.read",
+    "userDevice.update",
+    "userDevice.delete",
+
+    "userFriend",
+    "userFriend.write",
+    "userFriend.read",
+    "userFriend.update",
+    "userFriend.delete",
+
+    "userHistory",
+    "userHistory.write",
+    "userHistory.read",
+    "userHistory.update",
+    "userHistory.delete",
+
+    "userIp",
+    "userIp.write",
+    "userIp.read",
+    "userIp.update",
+    "userIp.delete",
+
+    "userLogo",
+    "userLogo.write",
+    "userLogo.read",
+    "userLogo.update",
+    "userLogo.delete",
+
+    "userMacAddress",
+    "userMacAddress.write",
+    "userMacAddress.read",
+    "userMacAddress.update",
+    "userMacAddress.delete",
+
+    "userReport",
+    "userReport.write",
+    "userReport.read",
+    "userReport.update",
+    "userReport.delete",
+
+    "userRole",
+    "userRole.write",
+    "userRole.read",
+    "userRole.update",
+    "userRole.delete",
+
+    "userToken",
+    "userToken.write",
+    "userToken.read",
+    "userToken.update",
+    "userToken.delete",
+
+    "role",
+    "role.write",
+    "role.read",
+    "role.update",
+    "role.delete",
+
+    "module",
+    "module.write",
+    "module.read",
+    "module.update",
+    "module.delete",
+
+    "crypto"
+  ],
+  "roleModule": {
+
+    "admin": [
+      "admin"
+    ],
+
+    "guest": [
+      "crypto"
+    ]
+  }
+}
