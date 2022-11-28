@@ -11,7 +11,7 @@ class NavBar extends React.Component {
       return (
         <Navbar className="navColor" expand="lg">
             <Container fluid>
-                <Image className='logo-img' src={require('../../../assets/Logo.png')} alt="IciOMine" class='logo-img' />
+                <Image className='logo-img' src={require('../../../assets/Logo.png')} alt="IciOMine"/>
             <Navbar.Toggle aria-controls="navbarScroll" />
             <Navbar.Collapse id="navbarScroll">
                 <Nav
@@ -19,9 +19,9 @@ class NavBar extends React.Component {
                 style={{ maxHeight: '100px' }}
                 navbarScroll
                 >
-                <Nav.Link href="#home">Home</Nav.Link>
-                <Nav.Link href="#graphs">Graphs</Nav.Link>
-                <Nav.Link href="#preferences">Preferences</Nav.Link>
+                <Nav.Link href="home">Home</Nav.Link>
+                <Nav.Link href="graphs">Graphs</Nav.Link>
+                <Nav.Link href="preferences">Preferences</Nav.Link>
                 </Nav>
                 <Form className="d-flex">
                 <Form.Control
@@ -32,8 +32,8 @@ class NavBar extends React.Component {
                 />  
                 </Form>
                 <Nav>
-                    <Nav.Link href="#login">Connection</Nav.Link>
-                    <Nav.Link className='navButton' href="#register">Inscription</Nav.Link>
+                    <Nav.Link href="login">Connection</Nav.Link>
+                    <Nav.Link className='navButton' href="register">Inscription</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
             </Container>
