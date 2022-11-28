@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Image from 'react-bootstrap/Image'
-import '../styles/navBar.css';
+import './navBar.css';
 
 class NavBar extends React.Component {
     render() {
