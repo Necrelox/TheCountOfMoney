@@ -1,8 +1,7 @@
 import React from 'react';
 import './homeText.css';
 
-class CryptoCard extends React.Component {
-    isLoading = true;
+class HomeText extends React.Component {
     constructor(props) {
         super(props);
       }
@@ -30,4 +29,4 @@ class CryptoCard extends React.Component {
     }
   }
 
-export default CryptoCard;
+export default HomeText;

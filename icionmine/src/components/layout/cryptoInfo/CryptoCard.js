@@ -35,6 +35,9 @@ class CryptoCard extends React.Component {
     }
 
     render() {
+      if(this.isLoading) {
+        return <div>Loading...</div>
+      }else
       return (
         <div className="myCard">
           <a href={this.state.crypto.links?.homepage[0]} target="_blank" className='linkAligned'><img src={this.state.crypto.image?.large} /></a>

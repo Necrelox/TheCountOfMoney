@@ -46,6 +46,9 @@ class Favorites extends React.Component {
   }
 
   render() {
+    if(this.isLoading) {
+      return <div>Loading...</div>
+    }else 
     return (
       <div className='favs'>
         <button>+</button>
