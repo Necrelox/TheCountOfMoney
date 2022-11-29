@@ -19,7 +19,7 @@ class NavBar extends React.Component {
                 style={{ maxHeight: '100px' }}
                 navbarScroll
                 >
-                <Nav.Link href="home">Home</Nav.Link>
+                <Nav.Link href="/">Home</Nav.Link>
                 <Nav.Link href="graphs">Graphs</Nav.Link>
                 <Nav.Link href="preferences">Preferences</Nav.Link>
                 </Nav>

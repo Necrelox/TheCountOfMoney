@@ -6,7 +6,7 @@ function AppRouter() {
       <BrowserRouter>
         <div>
             <Routes>
-                <Route path="/home" element={< Home />} />
+                <Route path="/" element={< Home />} />
                 <Route render={() => <h1>Not found!</h1>} />
             </Routes>
         </div>

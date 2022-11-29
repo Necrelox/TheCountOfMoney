@@ -1,0 +1,41 @@
+.cryptoFavorites {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    column-gap: 2rem;
+    row-gap: 2rem;
+    border-radius: 5px;
+}
+
+.favs {
+    margin: 1rem;
+    box-shadow: 0 10px 20px 0 rgba(46, 80, 65, 0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: .3rem;
+}
+
+.favs button {
+    transition: all .5s ease-out;
+    border-radius: 1rem;
+    border: none;
+    text-align: center;
+    background-color: transparent;
+    color: #2E5041;
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.favs button:hover {
+    transform: rotate(360deg);
+    transition: all .5s ease-out;
+}
+
+@media screen and (max-width: 992px) {
+    .favs {
+        margin: 0;
+    }
+}
