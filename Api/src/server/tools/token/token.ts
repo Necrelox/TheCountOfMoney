@@ -1,6 +1,6 @@
-import { createHmac, randomBytes } from 'crypto';
 import { IToken, IURoleFKRoleFKRoleModuleFKModule, IUser } from '../../models';
 import { URole } from '../../services';
+import { createHmac, randomBytes } from 'crypto';
 
 export class Token {
     public static async generateToken(user: Pick<IUser, 'uuid' | 'username'>, expireAt: Date): Promise<Pick<IToken, 'token' | 'salt'>> {
@@ -27,7 +27,7 @@ export class Token {
 
         const payload: string = Buffer.from(JSON.stringify({
             username: user.username,
-            permissions: sanitizeRolePermission,
+            roles: sanitizeRolePermission,
         })).toString(   'base64');
         const saltSignature: Buffer = randomBytes(128);
         const signature: string = createHmac('sha512', saltSignature)

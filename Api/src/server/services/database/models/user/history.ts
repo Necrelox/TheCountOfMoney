@@ -11,7 +11,7 @@ import { IColumnsUser, tableName as userTable } from './user';
  */
 export interface IColumnsHistory {
     log: boolean;
-    createdAt: boolean;
+    createdAt: boolean | string;
     userUuid: boolean | string;
     uuid: boolean | string;
 }

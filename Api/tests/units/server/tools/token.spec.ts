@@ -4,7 +4,7 @@ import { Token } from '../../../../src/server/tools';
 import { faker } from '@faker-js/faker';
 import { Knex } from 'knex';
 import Transaction = Knex.Transaction;
-import { Role, User } from '../../../../src/server/services';
+import { User } from '../../../../src/server/services';
 
 const userReflect: Partial<IUser> = {
     username: faker.internet.userName(),
@@ -29,13 +29,10 @@ describe('Testing class Token', () => {
             if (!user) {
                 throw new Error('User not created');
             }
-            const [role]: Pick<IRole, 'id'>[] = await Role.transactionGet({
-                name: 'guest'
-            }, {
-                id: true
-            }, trx);
-            if (!role)
-                throw new Error('Role not found');
+            const [role]: Pick<IRole, 'id'>[] = await knex.select('id').from('ROLE').where('name', 'guest').transacting(trx);
+            if (!role) {
+                throw new Error('Role not created');
+            }
             await knex.insert([
                 {
                     roleId: role.id,
@@ -116,16 +113,16 @@ describe('Testing class Token', () => {
         expect(typeof (payload)).toBe('string');
         const payloadDecoded: {
             username: string,
-            permissions: {
+            roles: {
                 [key: string]: string[]
             }
         } = JSON.parse(Buffer.from(payload, 'base64').toString('utf8'));
         expect(payloadDecoded).toMatchObject({
             username: expect.any(String),
-            permissions: expect.any(Object)
+            roles: expect.any(Object)
         });
         expect(payloadDecoded.username).toBe(userReflect.username);
-        expect(payloadDecoded.permissions).toMatchObject({
+        expect(payloadDecoded.roles).toMatchObject({
             guest: expect.any(Array),
         });
     });

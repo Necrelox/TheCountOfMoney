@@ -6,6 +6,10 @@
   "modules": [
     "admin",
 
+    "account",
+    "account.read",
+    "account.update",
+
     "user",
     "user.write",
     "user.read",
@@ -87,7 +91,8 @@
     ],
 
     "guest": [
-      "crypto"
+      "crypto",
+      "account"
     ]
   }
 }

@@ -10,7 +10,7 @@ import { IColumnsUser, tableName as userTable } from './user';
  * IColumnReport
  */
 export interface IColumnsReport {
-    createdAt: boolean;
+    createdAt: boolean | string;
     reason: boolean;
     userSendReport: boolean;
     userReported: boolean;

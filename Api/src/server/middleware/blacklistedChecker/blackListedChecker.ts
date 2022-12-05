@@ -5,7 +5,7 @@ import { MessageError } from '../../enum/messageError';
 
 export async function blackListedChecker(req: Request, res: Response, next: NextFunction) {
     try {
-        const bearerToken = req.headers.authorization?.split(' ')[1] as string;
+        const bearerToken: string = req.headers.authorization?.split(' ')[1] as string;
         const [tokenFKUser]: Pick<ITokenFKUser, 'isBlackListed'>[] = await Token.getFKUser({
             token: bearerToken
         }, {
