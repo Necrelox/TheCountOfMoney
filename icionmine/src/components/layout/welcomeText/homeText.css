@@ -1,0 +1,51 @@
+.horFlex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    column-gap: 2rem;
+}
+
+.verFlex {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.vl {
+    border-left: 4px solid #9E5345;
+    height: auto;
+}
+
+.title {
+    color: #9E5345;
+    font-size: 3rem;
+    font-weight: bold;
+    width: fit-content;
+}
+
+.title::first-letter {
+    font-size: 6rem;
+    width: fit-content;
+}
+
+.titleText {
+    width: 30rem;
+}
+
+.subtitle {
+    font-weight: bold;
+    width: fit-content;
+}
+
+.myArticle {
+    width: fit-content;
+}
+
+@media screen and (max-width: 992px) {
+    .horFlex {
+        margin: auto;
+    }
+    .titleText {
+        width: fit-content;
+    }
+}

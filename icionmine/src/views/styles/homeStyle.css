@@ -1,0 +1,8 @@
+.flexHome {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    padding: 1rem;
+    margin: auto;
+    row-gap: 1rem;
+}
