@@ -25,7 +25,6 @@ class Favorites extends React.Component {
         const thirdDigit = this.getRandomInt(result.data.length);
         const fourthDigit = this.getRandomInt(result.data.length);
         const crypto = [result.data[firstDigit].id, result.data[secondDigit].id, result.data[thirdDigit].id, result.data[fourthDigit].id];
-        console.log(crypto);
         this.setState({ favt: crypto });
         this.isLoading = false;
       } else {
