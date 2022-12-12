@@ -10,7 +10,7 @@ import { IColumnsUser, tableName as userTable } from './user';
  * IColumnToken
  */
 export interface IColumnsToken {
-    createdAt: boolean;
+    createdAt: boolean | string;
     expireAt: boolean;
     salt: boolean;
     token: boolean;

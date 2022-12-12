@@ -11,7 +11,7 @@ import { IColumnsUser, tableName as userTable } from './user';
  */
 export interface IColumnsLogo {
     path: boolean;
-    createdAt: boolean;
+    createdAt: boolean | string;
     seed: boolean;
     sizeMo: boolean;
     active: boolean;

@@ -15,7 +15,7 @@ export interface IColumnsUser {
     activityMessage: boolean;
     isConnected: boolean;
     isBlackListed: boolean;
-    createdAt: boolean;
+    createdAt: boolean | string;
     uuid: boolean | string;
 }
 

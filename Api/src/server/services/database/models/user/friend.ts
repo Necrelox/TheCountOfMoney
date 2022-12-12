@@ -10,7 +10,7 @@ import { IColumnsUser, tableName as userTable } from './user';
  * IColumnFriend
  */
 export interface IColumnsFriend {
-    createdAt: boolean;
+    createdAt: boolean | string;
     acceptedAt: boolean;
     isAccepted: boolean;
     user: boolean;

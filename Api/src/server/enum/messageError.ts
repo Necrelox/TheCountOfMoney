@@ -1,10 +1,18 @@
 export enum MessageError {
 
+    /**
+     * TOKEN
+     */
     TOKEN_NOT_GIVEN = 'Token not given',
     TOKEN_EXPIRED = 'Token expired.',
     TOKEN_INVALID_SIGNATURE = 'Token invalid signature.',
     TOKEN_NOT_FOUND = 'Token not found.',
     TOKEN_FK_USER_NOT_FOUND = 'Token foreign key user not found.',
+
+    /**
+     * PERMISSION
+     */
+    PERMISSION_DENIED = 'Permission denied.',
 
     /** EMAIL */
     EMAIL_BAD_SYNTAX = 'Email has bad syntax.',

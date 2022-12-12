@@ -11,7 +11,7 @@ import { IColumnsUser, tableName as userTable } from './user';
  */
 export interface IColumnsMacAddress {
     macAddress: boolean;
-    createdAt: boolean;
+    createdAt: boolean | string;
     active: boolean;
     userUuid: boolean;
     uuid: boolean | string;
