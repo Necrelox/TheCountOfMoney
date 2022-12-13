@@ -1,3 +1,4 @@
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./views/Home";
 import Graph from "./views/Graph";
@@ -13,4 +14,4 @@ function AppRouter() {
   );
 }
 
-export default AppRouter;
+export default React.memo(AppRouter);
