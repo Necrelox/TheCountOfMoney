@@ -1,21 +1,25 @@
-import React from 'react';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import CryptoCard from '../cryptoInfo/CryptoCard';
 import axios from 'axios';
 import './favorites.css';
 
-class Favorites extends React.Component {
-  
+interface FavoritesState {
+  favt: string[];
+}
+
+class Favorites extends React.Component<{}, FavoritesState> {
   isLoading = true;
 
-  constructor(props) {
-      super(props);
-      this.state = {
-        favt: []
-      };
+  constructor(props: {}) {
+    super(props);
+    this.state = {
+      favt: []
+    };
   }
 
   async getFavorites() {
-    try{
+    try {
       this.isLoading = true;
       const result = await axios.get(`https://api.coingecko.com/api/v3/coins/list`);
       if (result.status === 200) {
@@ -30,16 +34,16 @@ class Favorites extends React.Component {
       } else {
         throw new Error(`Error while loading crypto ${result.status}`);
       }
-    }catch(e){
+    } catch (e) {
       this.isLoading = false;
       // emit vers le parents, et le parent fais un toast
     }
   }
 
-  getRandomInt(max) {
+  getRandomInt(max: number) {
     return Math.floor(Math.random() * Math.floor(max));
   }
-  
+
   componentDidMount() {
     this.getFavorites();
   }
