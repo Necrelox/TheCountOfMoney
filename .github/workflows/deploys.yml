@@ -51,6 +51,7 @@ jobs:
           npm run seed
       - name: Execute node test
         run: |
+          cd ./Api
           npm run test
       - name: Deploy coverage
         uses: peaceiris/actions-gh-pages@v3
