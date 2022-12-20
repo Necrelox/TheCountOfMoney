@@ -12,6 +12,7 @@ interface Props {
 
 interface State {
     data: any[],
+    selectedItem: string;
     favorites: string[];
 
 }
@@ -29,11 +30,13 @@ export default class FinancialChartStockIndexChart extends React.Component<Props
                 {Date: '23/9/2022', Open: 16071.06, High: 16073.23, Low: 16068.98, Close: 16070.75},
                 {Date: '23/9/2022', Open: 16071.06, High: 16073.23, Low: 16068.98, Close: 16070.75}
             ],
+            selectedItem: 'artemis',
             favorites: []
         }
     }
 
     private changeSelected = async (event: any) => {
+        this.setState({selectedItem: event.target.value});
         try {
             this.isLoading = true;
             this.setState({data: await this.sqlHelper.loadGraphData(event.target.value)}); 
@@ -47,6 +50,7 @@ export default class FinancialChartStockIndexChart extends React.Component<Props
     public async componentDidMount() {
         try {
             this.setState({favorites: await this.sqlHelper.getFavorites()});
+            this.setState({selectedItem: this.state.favorites[0]});
             if(this.state.favorites.length > 0)
                 this.setState({data: await this.sqlHelper.loadGraphData(this.state.favorites[0])}); 
             this.isLoading = false;
@@ -63,7 +67,7 @@ export default class FinancialChartStockIndexChart extends React.Component<Props
             return (
                 <div>
                 <div>
-                <select onChange={this.changeSelected} value={this.state.favorites[0]}>
+                <select onChange={this.changeSelected} value={this.state.selectedItem}>
                 {
                     this.state.favorites.map((item) => {
                     return <option value={item} key={item}>{item}</option>
@@ -78,7 +82,7 @@ export default class FinancialChartStockIndexChart extends React.Component<Props
                             height="400px"
                             isToolbarVisible={true}
                             chartType="Candle"
-                            chartTitle={this.state.favorites[0]}
+                            chartTitle={this.state.selectedItem}
                             titleAlignment="Left"
                             titleLeftMargin="25"
                             titleTopMargin="10"
