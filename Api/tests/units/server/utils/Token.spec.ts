@@ -36,7 +36,7 @@ describe('Testing class Token', () => {
             if (!user) {
                 throw new Error('User not created');
             }
-            const [role]: Pick<IRole, 'id'>[] = await knex.select('id').from('ROLE').where('name', 'guest').transacting(trx);
+            const [role]: Pick<IRole, 'id'>[] = await knex.select('id').from('ROLE').where('name', 'user').transacting(trx);
             if (!role) {
                 throw new Error('Role not created');
             }
@@ -130,7 +130,7 @@ describe('Testing class Token', () => {
         });
         expect(payloadDecoded.username).toBe(userReflect.username);
         expect(payloadDecoded.roles).toMatchObject({
-            guest: expect.any(Array),
+            user: expect.any(Array),
         });
     });
 

@@ -100,7 +100,7 @@ export class Account {
                 throw new ErrorEntity(MessageError.CLIENT_USER_NOT_FOUND);
 
             const [role]: Pick<IRole, 'id'>[] = await Role.transactionGet({
-                name: 'guest'
+                name: 'user'
             }, {
                 id: true
             }, trx);
