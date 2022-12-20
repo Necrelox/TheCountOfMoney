@@ -11,7 +11,6 @@ interface graphData {
 }
 
 export class SqlHelper {
-
     constructor() {
     }
 
@@ -27,10 +26,10 @@ export class SqlHelper {
             const crypto = [result.data[firstDigit].id, result.data[secondDigit].id, result.data[thirdDigit].id, result.data[fourthDigit].id];
             return crypto;
             } else {
-                throw new Error(`Error while loading crypto ${result.status}`);
+                throw new Error(`Error while loading favorites ${result.status}`);
             }
         } catch (e) {
-            return [];
+            throw new Error(`Error while loading favorites ${e}`);
         }
     }
 
@@ -40,12 +39,21 @@ export class SqlHelper {
           if (result.status === 200) {
             if (!result.data) throw new Error('No data');
             const apiData: any[] = result.data;
+            for (let i = 0; i < apiData.length; i++) {
+                apiData[i] = {
+                    date: new Date(apiData[i][0]),
+                    open: apiData[i][1],
+                    high: apiData[i][2],
+                    low: apiData[i][3],
+                    close: apiData[i][4],
+                }
+            }
             return apiData;
           } else {
-            throw new Error(`Error while loading apiData ${result.status}`);
+            throw new Error(`Error while loading graph data ${result.status}`);
           }
         } catch (e) {
-            return [];
+            throw new Error(`Error while loading graph data ${e}`);
         }
       }
     

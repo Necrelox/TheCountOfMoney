@@ -13,7 +13,6 @@ interface Props {
 
 interface State {
     data: any[],
-    selectedItem: string;
     favorites: string[];
 
 }
@@ -31,72 +30,44 @@ export default class FinancialChartStockIndexChart extends React.Component<Props
                 {Date: '23/9/2022', Open: 16071.06, High: 16073.23, Low: 16068.98, Close: 16070.75},
                 {Date: '23/9/2022', Open: 16071.06, High: 16073.23, Low: 16068.98, Close: 16070.75}
             ],
-            selectedItem: 'artemis',
             favorites: []
         }
     }
 
-    private parseData(data: any[]) {
-        this.state.data.splice(0, this.state.data.length);
-        const arr: any[] = [];
-        for (const item of data) {
-            const date = new Date(item[0]);
-            const open = item[1];
-            const high = item[2];
-            const low = item[3];
-            const close = item[4];
-            arr.push({ Date: date, Open: open, High: high, Low: low, Close: close});
-        }
-        this.setState({ data: arr });
-    }
-
-    async loadGraphData() {
-        try {
-          this.isLoading = true;
-          const result = await axios.get(`https://api.coingecko.com/api/v3/coins/${this.state.selectedItem}/ohlc?vs_currency=eur&days=7`);
-          if (result.status === 200) {
-            if (!result.data) throw new Error('No data');
-            const apiData: any[] = result.data;
-            this.isLoading = false;
-            return apiData;
-          } else {
-            throw new Error(`Error while loading apiData ${result.status}`);
-          }
-        } catch (e) {
-          this.isLoading = false;
-          // emit vers le parent, et le parent fait un toast
-        }
-      }
-
     private changeSelected = async (event: any) => {
-        this.setState({selectedItem: event.target.value});
-        const arr = await this.loadGraphData();
-        if(Array.isArray(arr)){
-            this.parseData(arr);
+        try {
+            this.isLoading = true;
+            this.setState({data: await this.sqlHelper.loadGraphData(event.target.value)}); 
+            this.isLoading = false;
+        }
+        catch (e) {
+            console.log(e);
         }
     }
 
     public async componentDidMount() {
-        const arr = await this.loadGraphData(); 
-        if(Array.isArray(arr)){
-            this.parseData(arr);
+        try {
+            this.setState({favorites: await this.sqlHelper.getFavorites()});
+            if(this.state.favorites.length > 0)
+                this.setState({data: await this.sqlHelper.loadGraphData(this.state.favorites[0])}); 
+            this.isLoading = false;
+        } catch (e) {
+            console.log(e);
         }
-        this.setState({favorites: await this.sqlHelper.getFavorites()});
+
     }
 
     public render(): JSX.Element {
-        //if is loading return loading
-        if (this.isLoading) {
-            return <div>Loading...</div>;
-        }
-        else {
+        if(this.isLoading) 
+            return (<div>Loading...</div>);
+        else
             return (
                 <div>
                 <div>
-                <select onChange={this.changeSelected} value={this.state.selectedItem}>
+                <select onChange={this.changeSelected} value={this.state.favorites[0]}>
                 {
                     this.state.favorites.map((item) => {
-                    return <option value={item}>{item}</option>
+                    return <option value={item} key={item}>{item}</option>
                     })
                 }
                 </select>
@@ -108,7 +79,7 @@ export default class FinancialChartStockIndexChart extends React.Component<Props
                             height="400px"
                             isToolbarVisible={true}
                             chartType="Candle"
-                            chartTitle={this.state.selectedItem}
+                            chartTitle={this.state.favorites[0]}
                             titleAlignment="Left"
                             titleLeftMargin="25"
                             titleTopMargin="10"
@@ -131,10 +102,5 @@ export default class FinancialChartStockIndexChart extends React.Component<Props
                 </div>
 
             );
-        }
     }
 }
-
-// rendering above class to the React DOM
-// const root = ReactDOM.createRoot(document.getElementById('root'));
-// root.render(<CandleGraph/>);
