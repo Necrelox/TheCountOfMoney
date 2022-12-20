@@ -2,6 +2,19 @@
   "displayName": "TheCountOfMoney-API",
   "preset": "ts-jest",
   "coverageDirectory": "./coverage",
+  "moduleNameMapper": {
+    "^@/controllers/(.*)$": "<rootDir>/src/server/controllers/$1",
+    "^@/services/(.*)$": "<rootDir>/src/server/services/$1",
+    "^@/middlewares/(.*)$": "<rootDir>/src/server/middlewares/$1",
+    "^@/models/(.*)$": "<rootDir>/src/server/models/$1",
+    "^@/utils/(.*)$": "<rootDir>/src/server/utils/$1",
+
+    "^@/controllers$": "<rootDir>/src/server/controllers",
+    "^@/services$": "<rootDir>/src/server/services",
+    "^@/middlewares$": "<rootDir>/src/server/middlewares",
+    "^@/models$": "<rootDir>/src/server/models",
+    "^@/utils$": "<rootDir>/src/server/utils"
+  },
   "testMatch": [
     "**/?(*.)+(spec).ts"
   ],

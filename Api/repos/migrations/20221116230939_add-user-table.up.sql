@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `TheCountOfMoney`.`USER`
+CREATE TABLE IF NOT EXISTS `IOM`.`USER`
 (
     `username`        VARCHAR(45)    NOT NULL,
     `email`           VARCHAR(255)   NOT NULL,

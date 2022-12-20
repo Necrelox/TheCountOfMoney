@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `TheCountOfMoney`.`USER_DEVICE`
+CREATE TABLE IF NOT EXISTS `IOM`.`USER_DEVICE`
 (
     `device`    VARCHAR(255) NOT NULL,
     `createdAt` DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS `TheCountOfMoney`.`USER_DEVICE`
     INDEX `fk_USER_DEVICE_1_idx` (`userUuid` ASC) VISIBLE,
     CONSTRAINT `fk_USER_DEVICE_1`
         FOREIGN KEY (`userUuid`)
-            REFERENCES `TheCountOfMoney`.`USER` (`uuid`)
+            REFERENCES `IOM`.`USER` (`uuid`)
             ON DELETE CASCADE
             ON UPDATE NO ACTION
 )

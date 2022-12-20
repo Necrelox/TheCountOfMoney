@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `TheCountOfMoney`.`ROLE`
+CREATE TABLE IF NOT EXISTS `IOM`.`ROLE`
 (
     `name` VARCHAR(45) NOT NULL,
     `id`   INT         NOT NULL,

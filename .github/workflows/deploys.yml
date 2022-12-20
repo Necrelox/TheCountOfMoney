@@ -1,0 +1,78 @@
+name: deploys
+run-name: Tests and Deploy production
+on:
+  push:
+    branches:
+      - prod
+
+jobs:
+  test-api:
+    name: Test API
+    runs-on: ubuntu-latest
+    env:
+      MYSQL_ROOT_PASSWORD: 1l8s6e2tl3sclz836ue9rpr709lusxte
+      MYSQL_DATABASE: IOM
+      MYSQL_USER: ruby
+      MYSQL_PASSWORD: F3OIMykQK8861xwSLdOw
+    services:
+      db:
+        image: mysql:8.0.31
+        ports: ['3306:3306']
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ env.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE: ${{ env.MYSQL_DATABASE }}
+          MYSQL_USER: ${{ env.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ env.MYSQL_PASSWORD }}
+        options: >-
+          --health-cmd "mysqladmin ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Checkout du repo sur le container
+        uses: actions/checkout@v3
+        with:
+          ref: prod
+      - name: Setup Node js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '19.3.0'
+      - name: Install dependencies
+        run: |
+          cd ./Api
+          npm install
+      - name: Run migrations
+        run: |
+          cd ./Api
+          npm run migrate
+      - name: Run seed
+        run: |
+          cd ./Api
+          npm run seed
+      - name: Execute node test
+        run: |
+          npm run test
+      - name: Deploy coverage
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./Api/coverage/lcov-report
+
+  deploy:
+    needs: [test-api]
+    runs-on: ubuntu-latest
+    name: Deploy to production
+    steps:
+      - name: Deploy to production server and compose up
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd TheCountOfMoney/
+            git pull
+            docker compose down
+            docker system prune -a -f
+            docker compose up -d --build
