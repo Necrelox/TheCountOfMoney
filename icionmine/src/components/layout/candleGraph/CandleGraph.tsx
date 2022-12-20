@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import axios from 'axios';
 import { IgrFinancialChart } from 'igniteui-react-charts';
 import { IgrFinancialChartModule } from 'igniteui-react-charts';
+import { SqlHelper } from '../../../database/sql';
 
 IgrFinancialChartModule.register();
 
@@ -11,7 +12,9 @@ interface Props {
 }
 
 interface State {
-    data: any[];
+    data: any[],
+    selectedItem: string;
+    favorites: string[];
 
 }
 
@@ -19,6 +22,7 @@ IgrFinancialChartModule.register();
 
 export default class FinancialChartStockIndexChart extends React.Component<Props, State> {
     private isLoading: boolean = true;
+    sqlHelper= new SqlHelper();
 
     constructor(props: Props) {
         super(props);
@@ -26,7 +30,9 @@ export default class FinancialChartStockIndexChart extends React.Component<Props
             data: [
                 {Date: '23/9/2022', Open: 16071.06, High: 16073.23, Low: 16068.98, Close: 16070.75},
                 {Date: '23/9/2022', Open: 16071.06, High: 16073.23, Low: 16068.98, Close: 16070.75}
-            ]
+            ],
+            selectedItem: 'artemis',
+            favorites: []
         }
     }
 
@@ -47,7 +53,7 @@ export default class FinancialChartStockIndexChart extends React.Component<Props
     async loadGraphData() {
         try {
           this.isLoading = true;
-          const result = await axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/ohlc?vs_currency=eur&days=7`);
+          const result = await axios.get(`https://api.coingecko.com/api/v3/coins/${this.state.selectedItem}/ohlc?vs_currency=eur&days=7`);
           if (result.status === 200) {
             if (!result.data) throw new Error('No data');
             const apiData: any[] = result.data;
@@ -62,11 +68,20 @@ export default class FinancialChartStockIndexChart extends React.Component<Props
         }
       }
 
+    private changeSelected = async (event: any) => {
+        this.setState({selectedItem: event.target.value});
+        const arr = await this.loadGraphData();
+        if(Array.isArray(arr)){
+            this.parseData(arr);
+        }
+    }
+
     public async componentDidMount() {
         const arr = await this.loadGraphData(); 
         if(Array.isArray(arr)){
             this.parseData(arr);
         }
+        this.setState({favorites: await this.sqlHelper.getFavorites()});
     }
 
     public render(): JSX.Element {
@@ -76,19 +91,29 @@ export default class FinancialChartStockIndexChart extends React.Component<Props
         }
         else {
             return (
+                <div>
+                <div>
+                <select onChange={this.changeSelected} value={this.state.selectedItem}>
+                {
+                    this.state.favorites.map((item) => {
+                    return <option value={item}>{item}</option>
+                    })
+                }
+                </select>
+                </div>
                 <div className="container sample" >
                     <div className="container" >
                         <IgrFinancialChart
-                            width="100%"
+                            width="900px"
                             height="400px"
                             isToolbarVisible={true}
                             chartType="Candle"
-                            chartTitle="Bitcoin"
+                            chartTitle={this.state.selectedItem}
                             titleAlignment="Left"
                             titleLeftMargin="25"
                             titleTopMargin="10"
                             titleBottomMargin="10"
-                            subtitle="Variations of bitcoin price in the last 7 days"
+                            subtitle="Variations of price in the last 7 days"
                             subtitleAlignment="Left"
                             subtitleLeftMargin="25"
                             subtitleTopMargin="5"
@@ -103,6 +128,8 @@ export default class FinancialChartStockIndexChart extends React.Component<Props
                             dataSource={this.state.data}/>
                     </div>
                 </div>
+                </div>
+
             );
         }
     }
