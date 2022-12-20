@@ -8,7 +8,17 @@ interface graphData {
     high: number;
     low: number;
     close: number;
-}
+};
+
+interface cryptoData {
+    id: number;
+    symbol: string;
+    eur: number;
+    usd: number;
+    image: string;
+    link: string;
+    price24h: number;
+};
 
 export class SqlHelper {
     constructor() {
@@ -54,6 +64,29 @@ export class SqlHelper {
           }
         } catch (e) {
             throw new Error(`Error while loading graph data ${e}`);
+        }
+      }
+
+      async loadCryptoData(crypto: string) : Promise<cryptoData> {
+        try {
+          const result = await axios.get(`https://api.coingecko.com/api/v3/coins/${crypto}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`);
+          if (result.status === 200) {
+            if (!result.data) throw new Error('No data');
+            const crypto : cryptoData = {
+                id : result.data.id,
+                symbol : result.data.symbol,
+                eur : result.data.market_data.current_price.eur,
+                usd: result.data.market_data.current_price.usd,
+                image: result.data.image.large,
+                link: result.data.links.homepage[0],
+                price24h: result.data.market_data.price_change_percentage_24h,
+            };
+            return crypto;
+          } else {
+            throw new Error(`Error while loading crypto data ${result.status}`);
+          }
+        } catch (e) {
+            throw new Error(`Error while loading crypto data ${e}`);
         }
       }
     

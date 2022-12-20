@@ -1,10 +1,16 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import axios from 'axios';
 import './cryptoCard.css';
+import { SqlHelper } from '../../../database/sql';
 
 interface Crypto {
-  [key: string]: any;
+  id: number;
+  symbol: string;
+  eur: number;
+  usd: number;
+  image: string;
+  link: string;
+  price24h: number;
 }
 
 interface Props {
@@ -17,34 +23,32 @@ interface State {
 
 class CryptoCard extends React.Component<Props, State> {
   isLoading = true;
+  sqlHelper= new SqlHelper();
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      crypto: {}
+      crypto: {
+        id: 0,
+        symbol: '',
+        eur: 0,
+        usd: 0,
+        image: '',
+        link: '',
+        price24h: 0
+      }
     };
   }
 
-  async loadCrypto() {
-    try {
+  async componentDidMount() {
+    try{
       this.isLoading = true;
-      const result = await axios.get(`https://api.coingecko.com/api/v3/coins/${this.props.crypto}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`);
-      if (result.status === 200) {
-        if (!result.data) throw new Error('No data');
-        const crypto = result.data;
-        this.setState({ crypto });
-        this.isLoading = false;
-      } else {
-        throw new Error(`Error while loading crypto ${result.status}`);
-      }
-    } catch (e) {
+      this.setState({crypto : await this.sqlHelper.loadCryptoData(this.props.crypto)});
       this.isLoading = false;
-      // emit vers le parents, et le parent fais un toast
     }
-  }
-
-  componentDidMount() {
-    this.loadCrypto();
+    catch(e){
+      console.log(e);
+    }
   }
 
   render() {
@@ -53,15 +57,15 @@ class CryptoCard extends React.Component<Props, State> {
     }
     return (
       <div className="myCard">
-        <a href={this.state.crypto.links?.homepage[0]} target="_blank" className="linkAligned">
-          <img src={this.state.crypto.image?.large} />
+        <a href={this.state.crypto.link} target="_blank" className="linkAligned">
+          <img src={this.state.crypto.image} />
         </a>
             <p>{this.state.crypto.id}</p>
             <h4>{this.state.crypto.symbol}</h4>
-            <p>{this.state.crypto.market_data?.current_price?.eur} €</p>
-            {this.state.crypto.market_data?.price_change_percentage_24h > 0 ? 
-            <code className='green'>{this.state.crypto.market_data?.price_change_percentage_24h} %</code> 
-            : <code className='red'>{this.state.crypto.market_data?.price_change_percentage_24h} %</code>}
+            <p>{this.state.crypto.eur} €</p>
+            {this.state.crypto.price24h > 0 ? 
+            <code className='green'>{this.state.crypto.price24h} %</code> 
+            : <code className='red'>{this.state.crypto.price24h} %</code>}
         </div>
         );
     }
