@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import './cryptoCard.css';
-import { SqlHelper } from '../../../database/sql';
+import { SqlHelper } from '@/database/SqlHelper';
 
-interface Crypto {
+interface ICrypto {
   id: number;
   symbol: string;
   eur: number;
@@ -13,19 +13,18 @@ interface Crypto {
   price24h: number;
 }
 
-interface Props {
+interface IProps {
   crypto: string;
 }
 
-interface State {
-  crypto: Crypto;
+interface IState {
+  crypto: ICrypto;
 }
 
-class CryptoCard extends React.Component<Props, State> {
+class CryptoCard extends React.Component<IProps, IState> {
   isLoading = true;
-  sqlHelper= new SqlHelper();
 
-  constructor(props: Props) {
+  constructor(props: IProps) {
     super(props);
     this.state = {
       crypto: {
@@ -43,7 +42,7 @@ class CryptoCard extends React.Component<Props, State> {
   async componentDidMount() {
     try{
       this.isLoading = true;
-      this.setState({crypto : await this.sqlHelper.loadCryptoData(this.props.crypto)});
+      this.setState({crypto : await SqlHelper.loadCryptoData(this.props.crypto)});
       this.isLoading = false;
     }
     catch(e){
@@ -56,7 +55,7 @@ class CryptoCard extends React.Component<Props, State> {
       return <div>Loading...</div>;
     }
     return (
-      <div className="myCard">
+      <div className="crypto-card">
         <a href={this.state.crypto.link} target="_blank" className="linkAligned">
           <img src={this.state.crypto.image} />
         </a>
