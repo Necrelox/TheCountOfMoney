@@ -5,6 +5,26 @@
     "bin/",
   ],
   "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "@/controllers": ["./server/controllers"],
+      "@/controllers/*": ["./server/controllers/*"],
+      "@/services": ["./server/services/"],
+      "@/services/*": ["./server/services/*"],
+      "@/middlewares": ["./server/middlewares"],
+      "@/middlewares/*": ["./server/middlewares/*"],
+      "@/models": ["./server/models"],
+      "@/models/*": ["./server/models/*"],
+      "@/utils": ["./server/utils"],
+      "@/utils/*": ["./server/utils/*"]
+    },
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "target": "ES2021",
+    "outDir": "prod/",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "alwaysStrict": true,
@@ -21,15 +41,7 @@
     "strictPropertyInitialization": true,
     "useUnknownInCatchVariables": true,
     "allowUmdGlobalAccess": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "baseUrl": "./src",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "target": "ES2021",
-    "outDir": "prod/",
-    "esModuleInterop": true,
-    "resolveJsonModule": true
+    "suppressImplicitAnyIndexErrors": true
   },
   "lib": [
     "es2021"
