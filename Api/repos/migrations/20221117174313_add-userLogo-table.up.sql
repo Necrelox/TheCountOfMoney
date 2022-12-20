@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `TheCountOfMoney`.`USER_LOGO`
+CREATE TABLE IF NOT EXISTS `IOM`.`USER_LOGO`
 (
     `path`      VARCHAR(255) NOT NULL,
     `createdAt` DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS `TheCountOfMoney`.`USER_LOGO`
     INDEX `fk_USER_LOGO_1_idx` (`userUuid` ASC) VISIBLE,
     CONSTRAINT `fk_USER_LOGO_1`
         FOREIGN KEY (`userUuid`)
-            REFERENCES `TheCountOfMoney`.`USER` (`uuid`)
+            REFERENCES `IOM`.`USER` (`uuid`)
             ON DELETE CASCADE
             ON UPDATE NO ACTION
 ) ENGINE = InnoDB;

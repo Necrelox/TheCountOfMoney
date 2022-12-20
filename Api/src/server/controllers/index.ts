@@ -1,1 +1,1 @@
-export { AccountController } from './account/accountController';
+export { AccountController } from './Account';

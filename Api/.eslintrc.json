@@ -59,7 +59,7 @@
         "no-extra-boolean-cast": "error",
         "no-extra-semi": "error",
         "no-fallthrough": "error",
-        "no-func-assign":   "error",
+        "no-func-assign": "error",
         "no-global-assign": "error",
         "no-import-assign": "error",
         "no-invalid-regexp": "error",

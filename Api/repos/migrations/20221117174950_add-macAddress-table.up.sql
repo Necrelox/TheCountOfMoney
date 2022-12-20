@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `TheCountOfMoney`.`USER_MAC_ADDRESS`
+CREATE TABLE IF NOT EXISTS `IOM`.`USER_MAC_ADDRESS`
 (
     `macAddress` VARCHAR(255) NOT NULL,
     `createdAt`  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `TheCountOfMoney`.`USER_MAC_ADDRESS`
     UNIQUE INDEX `macAddress_UNIQUE` (`macAddress` ASC) VISIBLE,
     CONSTRAINT `fk_USER_MACADDRESS_1`
         FOREIGN KEY (`userUuid`)
-            REFERENCES `TheCountOfMoney`.`USER` (`uuid`)
+            REFERENCES `IOM`.`USER` (`uuid`)
             ON DELETE CASCADE
             ON UPDATE NO ACTION
 )

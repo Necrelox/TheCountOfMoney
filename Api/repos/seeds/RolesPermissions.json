@@ -1,7 +1,7 @@
 {
   "roles": [
     "admin",
-    "guest"
+    "user"
   ],
   "modules": [
     "admin",
@@ -21,12 +21,6 @@
     "userDevice.read",
     "userDevice.update",
     "userDevice.delete",
-
-    "userFriend",
-    "userFriend.write",
-    "userFriend.read",
-    "userFriend.update",
-    "userFriend.delete",
 
     "userHistory",
     "userHistory.write",
@@ -52,12 +46,6 @@
     "userMacAddress.update",
     "userMacAddress.delete",
 
-    "userReport",
-    "userReport.write",
-    "userReport.read",
-    "userReport.update",
-    "userReport.delete",
-
     "userRole",
     "userRole.write",
     "userRole.read",
@@ -82,17 +70,17 @@
     "module.update",
     "module.delete",
 
+    "crypto-actu-rss",
     "crypto"
   ],
   "roleModule": {
-
     "admin": [
       "admin"
     ],
-
-    "guest": [
-      "crypto",
-      "account"
+    "user": [
+      "account",
+      "crypto-actu-rss",
+      "crypto"
     ]
   }
 }

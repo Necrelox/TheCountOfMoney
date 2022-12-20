@@ -1,7 +1,5 @@
 export * from './IDevice';
 export * from './IDeviceFKUser';
-export * from './IFriend';
-export * from './IFriendFKUser';
 export * from './IHistory';
 export * from './IHistoryFKUser';
 export * from './IIP';
@@ -10,8 +8,6 @@ export * from './ILogo';
 export * from './ILogoFKUser';
 export * from './IMacAddress';
 export * from './IMacAddressFKUser';
-export * from './IReport';
-export * from './IReportFKUser';
 export * from './IURole';
 export * from './IURoleFKRole';
 export * from './IURoleFKUser';
