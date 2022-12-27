@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { MessageError, ErrorEntity } from '@/utils';
 
 interface IGraphData {
   date: Date;
@@ -23,7 +24,7 @@ export class SqlHelper {
   public static async getFavorites() : Promise<string[]> {
     const result = await axios.get(`https://api.coingecko.com/api/v3/coins/list`);
     if (result.status === 200) {
-      if (!result.data) throw new Error('No data');
+      if (!result.data) throw new ErrorEntity(MessageError.CRYPTO_NO_DATA_FOUND);
       const firstDigit = this.getRandomInt(result.data.length);
       const secondDigit = this.getRandomInt(result.data.length);
       const thirdDigit = this.getRandomInt(result.data.length);
@@ -31,14 +32,14 @@ export class SqlHelper {
       const crypto = [result.data[firstDigit].id, result.data[secondDigit].id, result.data[thirdDigit].id, result.data[fourthDigit].id];
       return crypto;
     } else {
-      throw new Error(`Error while loading favorites ${result.status}`);
+      throw new ErrorEntity(MessageError.CRYPTO_FAVORITES);
     }
   }
   
   public static async loadGraphData(selectedItem : string) : Promise<IGraphData[]> {
     const result = await axios.get(`https://api.coingecko.com/api/v3/coins/${selectedItem}/ohlc?vs_currency=eur&days=7`);
     if (result.status === 200) {
-      if (!result.data) throw new Error('No data');
+      if (!result.data) throw new ErrorEntity(MessageError.CRYPTO_NO_DATA_FOUND);
       const apiData: any[] = result.data;
       for (let i = 0; i < apiData.length; i++) {
         apiData[i] = {
@@ -51,14 +52,14 @@ export class SqlHelper {
       }
       return apiData;
     } else {
-      throw new Error(`Error while loading graph data ${result.status}`);
+      throw new ErrorEntity(MessageError.CRYPTO_GRAPH_DATA);
     }
   }
   
   public static async loadCryptoData(crypto: string) : Promise<ICryptoData> {
     const result = await axios.get(`https://api.coingecko.com/api/v3/coins/${crypto}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`);
     if (result.status === 200) {
-      if (!result.data) throw new Error('No data');
+      if (!result.data) throw new ErrorEntity(MessageError.CRYPTO_NO_DATA_FOUND);
       const crypto : ICryptoData = {
         id : result.data.id,
         symbol : result.data.symbol,
@@ -70,7 +71,7 @@ export class SqlHelper {
       };
       return crypto;
     } else {
-      throw new Error(`Error while loading crypto data ${result.status}`);
+      throw new ErrorEntity(MessageError.CRYPTO_DATA);
     }
   }
   

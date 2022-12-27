@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { IgrFinancialChart } from 'igniteui-react-charts';
 import { IgrFinancialChartModule } from 'igniteui-react-charts';
 import { SqlHelper } from '@/database/SqlHelper';
+import { MessageError, ErrorEntity } from '@/utils';
 
 IgrFinancialChartModule.register();
 
@@ -41,7 +42,7 @@ export default class FinancialChartStockIndexChart extends React.Component<{}, I
     
     private changeSelected = async (event: Required<React.ChangeEvent<HTMLSelectElement>>) => {
         try {
-            if(!event.target.value) throw new Error('No value selected');
+            if(!event.target.value) throw new ErrorEntity(MessageError.CANDLEGRAPH_NO_EVENT_TARGET_VALUE);
             this.setState({selectedItem: event.target.value});
             this.isLoading = true;
             this.setState({data: await SqlHelper.loadGraphData(event.target.value)}); 
@@ -55,7 +56,7 @@ export default class FinancialChartStockIndexChart extends React.Component<{}, I
     public async componentDidMount() {
         try {
             this.setState({favorites: await SqlHelper.getFavorites()});
-            if(!this.state.favorites) throw new Error('No favorites');
+            if(!this.state.favorites) throw new ErrorEntity(MessageError.CANDLEGRAPH_NO_FAVORITES);
             this.setState({selectedItem: this.state.favorites[0]});
             this.setState({data: await SqlHelper.loadGraphData(this.state.favorites[0])}); 
             this.isLoading = false;
