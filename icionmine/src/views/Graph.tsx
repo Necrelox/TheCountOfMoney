@@ -6,7 +6,7 @@ import './styles/homeStyle.css';
 class Home extends React.Component<{}, {}>  {
     render() {
       return (
-          <div className='flexHome'>
+          <div className='flexGraph'>
             <CandleGraph />
           </div>
         );

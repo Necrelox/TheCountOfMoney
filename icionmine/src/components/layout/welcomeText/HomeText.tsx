@@ -2,10 +2,8 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import './homeText.css';
 
-interface HomeTextProps {}
-
-class HomeText extends React.Component<HomeTextProps, {}> {
-  constructor(props: HomeTextProps) {
+class HomeText extends React.Component<{}, {}> {
+  constructor(props: {}) {
     super(props);
   }
 
