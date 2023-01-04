@@ -31,7 +31,7 @@ export default class LoginForm extends React.Component<{}, IFavoritesState> {
     }
   }
 
-  private handleSubmit = async (event: any) => {
+  private handleSubmit = async (event: React.SyntheticEvent ) => {
         event.preventDefault();
         try{
             const result = await SqlHelper.login(this.state.username, this.state.password);

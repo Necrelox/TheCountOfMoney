@@ -7,7 +7,7 @@ export default class Logout extends React.Component<{}, {}>  {
         localStorage.removeItem('expiryToken');
         localStorage.removeItem('username');
         localStorage.removeItem('userRole');
-        window.location.href = '/login';
+        window.location.href = '/';
     }
 
     render() {

@@ -22,7 +22,7 @@ export default class SignInForm extends React.Component<{}, IFavoritesState> {
     };
   }
 
-  private handleSubmit = async (event: any) => {
+  private handleSubmit = async (event: React.SyntheticEvent) => {
         event.preventDefault();
         try{
             const result = await SqlHelper.signup(this.state.username, this.state.password, this.state.email);

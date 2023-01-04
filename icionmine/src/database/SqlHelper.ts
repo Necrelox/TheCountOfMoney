@@ -116,7 +116,7 @@ export class SqlHelper {
       localStorage.setItem('username', tokenPayload.username);
       localStorage.setItem('expiryToken', JSON.stringify(tokenHeader.exp));
       localStorage.setItem('userRole', roles[0]);
-      window.location.reload();
+      window.location.href = "/";
       return result.data;
     } else {
       throw new ErrorEntity(MessageError.LOGIN);
