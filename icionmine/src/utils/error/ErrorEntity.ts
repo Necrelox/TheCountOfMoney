@@ -5,6 +5,10 @@ export enum MessageError {
     CRYPTO_NO_DATA_FOUND = 'Data not found.',
     CANDLEGRAPH_NO_FAVORITES = 'Favorites state is null.',
     CANDLEGRAPH_NO_EVENT_TARGET_VALUE = 'Event target value is missing.',
+    LOGIN_NO_DATA_FOUND = 'Data not found.',
+    LOGIN = 'Error while loading login.',
+    SIGNUP_NO_DATA_FOUND = 'Data not found.',
+    SIGNUP = 'Error while loading signup.',
 }
 
 export class ErrorEntity extends Error {
@@ -23,6 +27,10 @@ export class ErrorEntity extends Error {
         [MessageError.CRYPTO_NO_DATA_FOUND]: 400,
         [MessageError.CANDLEGRAPH_NO_FAVORITES]: 400,
         [MessageError.CANDLEGRAPH_NO_EVENT_TARGET_VALUE]: 400,
+        [MessageError.LOGIN_NO_DATA_FOUND]: 400,
+        [MessageError.LOGIN]: 400,
+        [MessageError.SIGNUP_NO_DATA_FOUND]: 400,
+        [MessageError.SIGNUP]: 400,
     };
 
     private static createBetterSqlMessageError(sqlCode: string, sqlMessage: string): string {

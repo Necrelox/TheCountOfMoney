@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { MessageError, ErrorEntity } from '@/utils';
+import {Buffer} from 'buffer';
 
 interface IGraphData {
   date: Date;
@@ -18,6 +19,29 @@ interface ICryptoData {
   link: string;
   price24h: number;
 };
+
+interface ILoginData {
+  code: string;
+  message: string;
+  token: string;
+};
+
+interface ISignUpData {
+  code: string;
+  message: string;
+};
+
+interface IToken {
+  alg: string;
+  exp: string;
+}
+
+interface ITokenPayload {
+  username: string;
+  roles: {
+    permissions: string[];
+  };
+}
 
 export class SqlHelper {
   
@@ -77,5 +101,36 @@ export class SqlHelper {
   
   private static getRandomInt(max: number) : number {
     return Math.floor(Math.random() * Math.floor(max));
+  }
+
+  public static async login(username: string, password: string) : Promise<ILoginData> {
+    const result = await axios.post(`http://localhost:3973/account/login`, { username, password });
+    if (result.status === 200) {
+      if (!result.data) throw new ErrorEntity(MessageError.LOGIN_NO_DATA_FOUND);
+      const header = result.data.token.split(".")[0];
+      const payLoad = result.data.token.split(".")[1];
+      const tokenHeader : IToken = JSON.parse(Buffer.from(header, 'base64').toString('utf8'));
+      const tokenPayload: ITokenPayload = JSON.parse(Buffer.from(payLoad, 'base64').toString('utf8'));
+      const roles = Object.keys(tokenPayload.roles);
+      if(!roles[0]) throw new Error("No roles found");
+      localStorage.setItem('username', tokenPayload.username);
+      localStorage.setItem('expiryToken', JSON.stringify(tokenHeader.exp));
+      localStorage.setItem('userRole', roles[0]);
+      window.location.href = "/";
+      return result.data;
+    } else {
+      throw new ErrorEntity(MessageError.LOGIN);
+    }
+  }
+
+  public static async signup(username: string, password: string, email: string) : Promise<ISignUpData> {
+    const result = await axios.post(`http://localhost:3973/account/signup`, { username, password, email });
+    if (result.status === 201) {
+      if (!result.data) throw new ErrorEntity(MessageError.SIGNUP_NO_DATA_FOUND);
+      await this.login(username, password);
+      return result.data;
+    } else {
+      throw new ErrorEntity(MessageError.SIGNUP);
+    }
   }
 }
