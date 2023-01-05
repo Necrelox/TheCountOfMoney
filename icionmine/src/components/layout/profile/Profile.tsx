@@ -26,7 +26,6 @@ export default class Profile extends React.Component<{}, IProfileState> {
 
   private handleSubmit = async () => {
         try{
-            // console.log(localStorage.getItem("token"));
             const result = await SqlHelper.editProfile(this.state.username, this.state.password, this.state.email, this.state.message);
             if(!result) throw new Error("Login error");
         }
