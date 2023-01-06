@@ -32,10 +32,10 @@ interface ISignUpData {
 };
 
 interface IEditProfileData {
-  name: string;
+  username: string;
   email: string;
   password: string;
-  message: string;
+  activityMessage: string;
 };
 
 interface IToken {
@@ -142,27 +142,29 @@ export class SqlHelper {
     }
   }
 
-  public static async editProfile(username: string, password: string, email: string, message: string) : Promise<IEditProfileData> {
-    const result = await axios.put(`http://localhost:3973/account/me`, 
-      { 
-        username: username, 
-        password: password, 
-        email: email, 
-        activityMessage: message 
-      },
-     { 
-      headers: 
-      {
-        'Authorization': 'Bearer ' + localStorage.getItem("token"),
-        'Content-Type': 'application/www-form-urlencoded',
-        Accept: '*/*',
-      } 
-    });
+  public static async editProfile(username: string = '', password: string = '', email: string = '', activityMessage: string = '') : Promise<IEditProfileData> {
+    const config = {
+      headers: { 
+        Authorization: 'Bearer ' + localStorage.getItem("token")
+     }
+    };
+
+    const bodyParameters: Partial<IEditProfileData> = {};
+    if (username) bodyParameters.username = username;
+    if (password) bodyParameters.password = password;
+    if (email) bodyParameters.email = email;
+    if (activityMessage) bodyParameters.activityMessage = activityMessage;
+
+    const result = await axios.put(`http://localhost:3973/account/me`, bodyParameters, config );
+    console.log(result);
     if (result.status === 200) {
+      console.log(result.data);
       if (!result.data) throw new ErrorEntity(MessageError.SIGNUP_NO_DATA_FOUND);
       return result.data;
     } else {
       throw new ErrorEntity(MessageError.SIGNUP);
     }
+
+  
   }
 }
