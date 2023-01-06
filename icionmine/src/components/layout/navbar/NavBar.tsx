@@ -7,16 +7,30 @@ import Image from 'react-bootstrap/Image'
 import './navBar.css';
 import { ExpansionPanelDescriptionMetadata } from 'igniteui-react-core';
 
-class NavBar extends React.Component {
+interface IState {
+    isExpired: boolean;
+}
+
+class NavBar extends React.Component<{}, IState> {
     expired: boolean;
-    expiryDate: Date;
-    currentDate: Date;
+    expiryDate: number;
+    currentDate: number;
+    stringDate: string;
 
     constructor(props: any) {
         super(props);
         this.expired = false;
-        this.expiryDate = new Date(localStorage.getItem('expiryToken')!);
-        this.currentDate = new Date();
+        if(localStorage.getItem('expiryToken') != null) {
+            this.stringDate = localStorage.getItem('expiryToken')?.split('T')[0] as string + " " + localStorage.getItem('expiryToken')?.split('T')[1].split('.')[0] as string;
+            this.expiryDate = new Date(this.stringDate + "Z\"").getTime();
+        } else {
+            this.expiryDate = 0;
+            this.stringDate = "";
+        }
+        this.state = {
+            isExpired: this.expired
+        }
+        this.currentDate = new Date().getTime();
     }
 
     componentDidMount(): void {
@@ -25,22 +39,10 @@ class NavBar extends React.Component {
         } else {
             this.expired = false;
         }
+        this.setState({isExpired: this.expired});
     }
 
     render() {
-        let expiryDate = Date.parse(localStorage.getItem('expiryToken')!);
-        let currentDate = Date.now();
-
-        let connected;
-        if(localStorage.getItem('userRole') == "user" || localStorage.getItem('userRole') == "admin" && expiryDate >= currentDate) {
-            connected = <Nav.Link href="logout">Logout</Nav.Link>
-        } else {
-            connected = (<Nav>
-                <Nav.Link href="register">Inscription</Nav.Link>
-                <Nav.Link className='navButton' href="login">Connexion</Nav.Link>
-                </Nav>)
-        }
-
       return (
         <Navbar className="navColor" expand="lg">
             <Container fluid>
@@ -54,7 +56,7 @@ class NavBar extends React.Component {
                 >
                 <Nav.Link href="/">Home</Nav.Link>
                 <Nav.Link href="graphs">Graphs</Nav.Link>
-                {localStorage.getItem('userRole') == "user" || localStorage.getItem('userRole') == "admin" && !this.expired
+                {(localStorage.getItem('userRole') == "user" || localStorage.getItem('userRole') == "admin") && !this.state.isExpired
                 ? <Nav.Link href="preferences">Preferences</Nav.Link> : null}
                 </Nav>
                 <Form className="d-flex">
@@ -65,7 +67,18 @@ class NavBar extends React.Component {
                     aria-label="Search"
                 />  
                 </Form>
-                    {connected}
+                {(localStorage.getItem('userRole') == "user" || localStorage.getItem('userRole') == "admin") && !this.state.isExpired 
+                ? (
+                    <Nav>
+                        <Nav.Link href="logout">Logout</Nav.Link>
+                    </Nav>
+                    ) 
+                : (
+                    <Nav>
+                        <Nav.Link href="register">Inscription</Nav.Link>
+                        <Nav.Link className='navButton' href="login">Connexion</Nav.Link>
+                    </Nav>
+                )}
             </Navbar.Collapse>
             </Container>
         </Navbar>
