@@ -15,7 +15,10 @@ function AppRouter() {
             <Route path="/login" element={< Login />} />
             <Route path="/register" element={< SignIn />} />
             <Route path="/logout" element={< Logout />} />
-            <Route path="/preferences" element={< Preferences />} />
+            {localStorage.getItem('userRole') == "user" || localStorage.getItem('userRole') == "admin" 
+            ? <Route path="/preferences" element={< Preferences />} /> 
+            : null}
+            
         </Routes>
       </BrowserRouter>
   );
