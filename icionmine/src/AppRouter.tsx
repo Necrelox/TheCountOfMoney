@@ -4,6 +4,7 @@ import Graph from "./views/Graph";
 import Login from "./views/Login";
 import SignIn from "./views/SignIn";
 import Logout from "./views/Logout";
+import Preferences from "./views/Preferences";
 
 function AppRouter() {
   return (
@@ -14,6 +15,10 @@ function AppRouter() {
             <Route path="/login" element={< Login />} />
             <Route path="/register" element={< SignIn />} />
             <Route path="/logout" element={< Logout />} />
+            {localStorage.getItem('userRole') == "user" || localStorage.getItem('userRole') == "admin" 
+            ? <Route path="/preferences" element={< Preferences />} /> 
+            : null}
+            
         </Routes>
       </BrowserRouter>
   );

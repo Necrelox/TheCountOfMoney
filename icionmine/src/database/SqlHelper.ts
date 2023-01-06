@@ -31,6 +31,13 @@ interface ISignUpData {
   message: string;
 };
 
+interface IEditProfileData {
+  username: string;
+  email: string;
+  password: string;
+  activityMessage: string;
+};
+
 interface IToken {
   alg: string;
   exp: string;
@@ -116,6 +123,7 @@ export class SqlHelper {
       localStorage.setItem('username', tokenPayload.username);
       localStorage.setItem('expiryToken', JSON.stringify(tokenHeader.exp));
       localStorage.setItem('userRole', roles[0]);
+      localStorage.setItem('token', result.data.token);
       window.location.href = "/";
       return result.data;
     } else {
@@ -132,5 +140,31 @@ export class SqlHelper {
     } else {
       throw new ErrorEntity(MessageError.SIGNUP);
     }
+  }
+
+  public static async editProfile(username: string = '', password: string = '', email: string = '', activityMessage: string = '') : Promise<IEditProfileData> {
+    const config = {
+      headers: { 
+        Authorization: 'Bearer ' + localStorage.getItem("token")
+     }
+    };
+
+    const bodyParameters: Partial<IEditProfileData> = {};
+    if (username) bodyParameters.username = username;
+    if (password) bodyParameters.password = password;
+    if (email) bodyParameters.email = email;
+    if (activityMessage) bodyParameters.activityMessage = activityMessage;
+
+    const result = await axios.put(`http://localhost:3973/account/me`, bodyParameters, config );
+    console.log(result);
+    if (result.status === 200) {
+      console.log(result.data);
+      if (!result.data) throw new ErrorEntity(MessageError.SIGNUP_NO_DATA_FOUND);
+      return result.data;
+    } else {
+      throw new ErrorEntity(MessageError.SIGNUP);
+    }
+
+  
   }
 }
