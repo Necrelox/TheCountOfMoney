@@ -3,9 +3,9 @@
     border-radius: 10px;
     padding: 20px;
     color: #C28364;
-    margin-top: 5vh;
-    width: 90vw;
-    height: 70vh;
+    margin-top: 2vh;
+    width: fit-content;
+    height: fit-content;
 }
 
 .flex-column {
@@ -31,12 +31,3 @@ input {
     font-size: 1.2rem;
     font-weight: bold;
 }
-
-/* .login-wrapper-card h1 {
-    color: #C28364;
-     
-    2E5041
-    EFEAE2
-    9E5345
-    C28364 
-} */

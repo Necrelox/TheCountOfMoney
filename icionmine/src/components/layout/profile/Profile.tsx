@@ -67,10 +67,6 @@ export default class Profile extends React.Component<{}, IProfileState> {
                 <p>Password</p>
                 <input type="password" onChange={e => this.setPassword(e.target.value)} />
                 </label>
-                <label>
-                <p>Message</p>
-                <input type="text" onChange={e => this.setMessage(e.target.value)} />
-                </label>
                 <div>
                 <button type="submit" className="login-button">Edit</button>
                 </div>

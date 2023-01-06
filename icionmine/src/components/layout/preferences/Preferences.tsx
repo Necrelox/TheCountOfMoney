@@ -19,17 +19,6 @@ export default class Preferences extends React.Component<{}, IPreferencesState> 
         password: ""
     };
   }
-  
-  async componentDidMount() {
-    try{
-      this.isLoading = true;
-    //   this.setState({username: await SqlHelper.getFavorites()});
-      this.isLoading = false;
-    }
-    catch(e){
-      console.log(e);
-    }
-  }
 
   private handleSubmit = async (event: React.SyntheticEvent ) => {
         event.preventDefault();

@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import Preferences from '@layout/preferences/Preferences';
 import Profile from '@layout/profile/Profile';
+import './styles/preferences.css';
 
 interface IsPreferencesState {
   isProfile: boolean;
@@ -41,9 +42,11 @@ export default class Login extends React.Component<{}, IsPreferencesState>  {
     }
 
     return (
-        <div>
-          <button onClick={this.openProfile}>Profile</button>
-          <button onClick={this.openPreferences}>Preferences</button>
+        <div className='flex-col'>
+          <div className='flex-row'>
+            <button className='pref-button' onClick={this.openProfile}>Profile</button>
+            <button className='pref-button' onClick={this.openPreferences}>Preferences</button>
+          </div>
           {showForm}
         </div>
       );

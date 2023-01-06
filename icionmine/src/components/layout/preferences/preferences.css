@@ -4,8 +4,8 @@
     padding: 20px;
     color: #C28364;
     margin-top: 5vh;
-    width: 90vw;
-    height: 70vh;
+    width: fit-content;
+    height: fit-content;
 }
 
 .flex-column {
