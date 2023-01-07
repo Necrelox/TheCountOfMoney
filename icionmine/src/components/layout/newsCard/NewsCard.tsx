@@ -5,6 +5,7 @@ import './newsCard.css';
 
 interface IProps {
     newsData: INews;
+    itemId: number;
 }
 
 interface INews {
@@ -37,14 +38,15 @@ export default class NewsCard extends React.Component<IProps, IState> {
   
   render() {
     return (
-        <div className='newsCard flex-column' >
+        <div className='newsCard flex-column' id={this.props.itemId.toString()}>
             <button className='newsCard-button' onClick={this.toggleClick}> {this.sign} </button>
-            {this.props.newsData.title}
+            <div dangerouslySetInnerHTML={{ __html: this.props.newsData.title }} />
             {this.props.newsData.pubDate}
             {this.state.isClicked 
             ? (<div>
                 <div dangerouslySetInnerHTML={{ __html: this.props.newsData.content }} /> 
-                <button className='newsCard-button' onClick={this.toggleClick}> {this.sign} </button>
+                {/* <button className='newsCard-button' onClick={this.toggleClick}> {this.sign} </button> */}
+                <a href={'#' + this.props.itemId.toString()}>To the top</a>
                 </div>) 
                 : <div dangerouslySetInnerHTML={{ __html: this.props.newsData.description }} />
             }

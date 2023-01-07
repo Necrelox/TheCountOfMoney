@@ -5,6 +5,7 @@ import NewsCard from '../newsCard/NewsCard';
 
 interface IState {
     myNews: INews[];
+    page: string;
 }
 
 interface INews {
@@ -17,37 +18,53 @@ interface INews {
 
 export default class News extends React.Component<{}, IState> {
   private isLoading: boolean;
+  private fullNews: INews[];
+  private pageNumber: number;
   
   constructor(props: {}) {
     super(props);
     this.isLoading = true;
+    this.fullNews = [];
+    this.pageNumber = 0;
     this.state = {
-        myNews: []
+        myNews: [],
+        page: "1"
     };
   }
 
   async componentDidMount() {
     try{
         this.isLoading = true;
-        let result = await SqlHelper.getNews();
+        this.fullNews = (await SqlHelper.getNews()).articles;
         //get first 10 elements of result
-        this.setState({myNews: result.articles.slice(0, 10)});
+        //round to next integer
+        this.pageNumber = Math.ceil(this.fullNews.length / 10);
+        this.setState({myNews: this.fullNews.slice(0, 10)});
         this.isLoading = false;
     }
     catch(e){
         console.log(e);
     }
   }
-  
+
+
+  setPage(page: string) {
+    this.setState({page: page});
+    this.setState({myNews: this.fullNews.slice((parseInt(page) - 1) * 10, parseInt(page) * 10)});
+}
+
   render() {
     return (
-        <div className="login-wrapper-card flex-column">
+        <div className="flex-column">
             <h5>Check out the latest news!</h5>
+            <p>
+            <input type="number" className='news-input' min="1" max={this.pageNumber} onChange={e => this.setPage(e.target.value)} />/{this.pageNumber}
+            </p>
             <div className="news-wrapper">
                 {this.state.myNews.map((news, index) => {
                     return (
                         <div key={index}>
-                            <NewsCard newsData={news}/>
+                            <NewsCard newsData={news} itemId={index}/>
                         </div>
                     );
                 })}
