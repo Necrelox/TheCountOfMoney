@@ -6,8 +6,13 @@ import APIChoice from './APIChoice';
 import PersonalPrefs from './PersonalPrefs';
 
 interface IPreferencesState {
-  username: string;
-  password: string;
+  cryptoFromChild: IClickedCrypto;
+}
+
+interface IClickedCrypto {
+  id: string;
+  symbol: string;
+  name: string;
 }
 
 export default class Preferences extends React.Component<{}, IPreferencesState> {
@@ -17,29 +22,17 @@ export default class Preferences extends React.Component<{}, IPreferencesState> 
     super(props);
     this.isLoading = true;
     this.state = {
-        username: "",
-        password: ""
+      cryptoFromChild: {
+        id: "",
+        symbol: "",
+        name: ""
+      }
     };
   }
 
-  private handleSubmit = async (event: React.SyntheticEvent ) => {
-        event.preventDefault();
-        try{
-            const result = await SqlHelper.login(this.state.username, this.state.password);
-            if(!result) throw new Error("Login error");
-        }
-        catch(e){
-            console.log(e);
-        }
-    }
-
-    setUserName(username: string) {
-        this.setState({username: username});
-    }
-
-    setPassword(password: string) {
-        this.setState({password: password});
-    }
+  handleCryptoClick = (crypto: IClickedCrypto) => {
+    this.setState({cryptoFromChild: crypto});
+  }
   
   render() {
     return (
@@ -47,10 +40,9 @@ export default class Preferences extends React.Component<{}, IPreferencesState> 
             <h1>Choose your favorite crypto from this list.</h1>
             <h5>If you don't find the desired crypto currency, please contact your administrator.</h5>
             <div className='flex-row'>
-                <APIChoice />
-                <PersonalPrefs />
+                <PersonalPrefs cryptoToAdd={this.state.cryptoFromChild}/>
+                <APIChoice clickedCrypto={this.handleCryptoClick}/>
             </div>
-            <button>OK</button>
         </div>
       );
     }

@@ -79,7 +79,6 @@ export class SqlHelper {
     if (result.status === 200) {
       if (!result.data) throw new ErrorEntity(MessageError.CRYPTO_NO_DATA_FOUND);
       const crypto = result.data;
-      console.log(crypto);
       return crypto;
     } else {
       throw new ErrorEntity(MessageError.CRYPTO_FAVORITES);
