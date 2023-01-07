@@ -32,6 +32,40 @@ input {
     font-weight: bold;
 }
 
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    column-gap: 2rem;
+}
+
+.table-container {
+    max-height: 40vh;
+    max-width: 30vw;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.hiddenData {
+    display: none;
+}
+
+td:hover {
+    background-color: #9E5345;
+    color: #EFEAE2;
+}
+
+.search-bar {
+    position: sticky;
+    top: 0;
+}
+
+.sticky-bottom {
+    position: sticky;
+    bottom: 0;
+}
+
 /* .login-wrapper-card h1 {
     color: #C28364;
      

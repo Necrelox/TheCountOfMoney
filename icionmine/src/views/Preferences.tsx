@@ -19,7 +19,7 @@ export default class Login extends React.Component<{}, IsPreferencesState>  {
     };
   }
 
-  onComponentDidMount() {
+  componentDidMount() {
     this.isLoading = true;
     this.setState({isProfile: true});
     this.isLoading = false;
