@@ -32,6 +32,14 @@ input {
     font-weight: bold;
 }
 
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    column-gap: 2rem;
+}
+
 /* .login-wrapper-card h1 {
     color: #C28364;
      

@@ -10,6 +10,12 @@ interface IGraphData {
   close: number;
 };
 
+interface IAllCoinsData {
+  id: string;
+  symbol: string;
+  name: string;
+};
+
 interface ICryptoData {
   id: number;
   symbol: string;
@@ -61,6 +67,19 @@ export class SqlHelper {
       const thirdDigit = this.getRandomInt(result.data.length);
       const fourthDigit = this.getRandomInt(result.data.length);
       const crypto = [result.data[firstDigit].id, result.data[secondDigit].id, result.data[thirdDigit].id, result.data[fourthDigit].id];
+      return crypto;
+    } else {
+      throw new ErrorEntity(MessageError.CRYPTO_FAVORITES);
+    }
+  }
+  
+  
+  public static async getAllCoins() : Promise<IAllCoinsData[]> {
+    const result = await axios.get(`https://api.coingecko.com/api/v3/coins/list`);
+    if (result.status === 200) {
+      if (!result.data) throw new ErrorEntity(MessageError.CRYPTO_NO_DATA_FOUND);
+      const crypto = result.data;
+      console.log(crypto);
       return crypto;
     } else {
       throw new ErrorEntity(MessageError.CRYPTO_FAVORITES);

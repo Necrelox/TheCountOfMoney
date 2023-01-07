@@ -2,6 +2,8 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import './preferences.css';
 import {SqlHelper} from '@/database/SqlHelper';
+import APIChoice from './APIChoice';
+import PersonalPrefs from './PersonalPrefs';
 
 interface IPreferencesState {
   username: string;
@@ -44,19 +46,11 @@ export default class Preferences extends React.Component<{}, IPreferencesState> 
         <div className="login-wrapper-card flex-column">
             <h1>Choose your favorite crypto from this list.</h1>
             <h5>If you don't find the desired crypto currency, please contact your administrator.</h5>
-            <form onSubmit={this.handleSubmit} className="flex-column">
-                <label>
-                <p>List</p>
-                <input type="text" onChange={e => this.setUserName(e.target.value)} />
-                </label>
-                <label>
-                <p>Blabla</p>
-                <input type="password" onChange={e => this.setPassword(e.target.value)} />
-                </label>
-                <div>
-                <button type="submit" className="login-button">Edit</button>
-                </div>
-            </form>
+            <div className='flex-row'>
+                <APIChoice />
+                <PersonalPrefs />
+            </div>
+            <button>OK</button>
         </div>
       );
     }
