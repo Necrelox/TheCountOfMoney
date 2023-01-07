@@ -1,62 +1,63 @@
 /**
  * Local Modules
  */
-import { IDevice, IDeviceFKUser } from '@/models';
-import { transformColumnsToArray } from '@/services/actions/ColumnSelectorBuilder';
+import { ILogo, ILogoFKUser } from '@/models';
+import { transformColumnsToArray } from '@/services/actions/queries/ColumnSelectorBuilder';
 import { IColumnsUser, tableName as userTable } from './User';
 import { DatabaseKnex, ErrorDatabase, Transaction } from '@/services';
 import { ErrorEntity, MessageError } from '@/utils';
 
 /**
- * IColumnDevice
+ * IColumnLogo
  */
-export interface IColumnsDevice {
-    device: boolean;
+export interface IColumnsLogo {
+    path: boolean;
     createdAt: boolean | string;
+    seed: boolean;
+    sizeMo: boolean;
     active: boolean;
     userUuid: boolean;
     uuid: boolean | string;
 }
 
 /**
- * IColumnDeviceFKUser
+ * IColumnLogoFKUser
  */
-export interface IColumnsDeviceFKUser extends IColumnsDevice, IColumnsUser {}
+export interface IColumnsLogoFKUser extends IColumnsLogo, IColumnsUser {}
+
 /**
  * Table Name
  */
-export const tableName = 'USER_DEVICE';
+export const tableName = 'USER_LOGO';
 
 /**
- * Device class : is the class that contains the queries for the table USER_DEVICE
- * @class Device
+ * Logo class : is the class that contains the queries for the table USER_LOGO
  */
-export class Device {
+export class Logo {
     /**
-     * Get device
-     * @param deviceReflectToFind
+     * Get Logo
+     * @param logoReflectToFind
      * @param columns
-     * @return {Promise<IDevice[]>}
      */
-    public static async get(deviceReflectToFind: Partial<IDevice>, columns: Partial<IColumnsDevice>) : Promise<IDevice[]> {
+    public static async get(logoReflectToFind: Partial<ILogo>, columns: Partial<IColumnsLogo>) : Promise<ILogo[]> {
         return DatabaseKnex.getInstance()
             .select(transformColumnsToArray(columns))
-            .where(deviceReflectToFind).from(tableName)
+            .where(logoReflectToFind).from(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
             });
     }
 
     /**
-     * Get device FK user
-     * @param deviceReflectToFind
+     * Get Logo FK user
+     * @param logoReflectToFind
      * @param columns
-     * @return {Promise<IDeviceFKUser[]>}
+     * @return Promise<ILogoFKUser[]>
      */
-    public static async getFKUser(deviceReflectToFind: Partial<IDevice>, columns: Partial<IColumnsDeviceFKUser>) : Promise<IDeviceFKUser[]> {
+    public static async getFKUser(logoReflectToFind: Partial<ILogo>, columns: Partial<IColumnsLogoFKUser>) : Promise<ILogoFKUser[]> {
         return DatabaseKnex.getInstance()
             .select(transformColumnsToArray(columns))
-            .where(deviceReflectToFind).from(tableName)
+            .where(logoReflectToFind).from(tableName)
             .join(userTable, `${tableName}.userUuid`, '=', `${userTable}.uuid`)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -64,15 +65,14 @@ export class Device {
     }
 
     /**
-     * Update a device
-     * @param deviceReflectToUpdate
-     * @param deviceReflectToFind
-     * @static
+     * Update Logo
+     * @param logoReflectToUpdate
+     * @param logoReflectToFind
      */
-    public static async update(deviceReflectToUpdate: Partial<IDevice>, deviceReflectToFind: Partial<IDevice>) {
-        DatabaseKnex.getInstance()
-            .update(deviceReflectToUpdate)
-            .where(deviceReflectToFind)
+    public static async update(logoReflectToUpdate: Partial<ILogo>, logoReflectToFind: Partial<ILogo>) {
+        return DatabaseKnex.getInstance()
+            .update(logoReflectToUpdate)
+            .where(logoReflectToFind)
             .from(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -80,13 +80,12 @@ export class Device {
     }
 
     /**
-     * Create a device
-     * @param deviceReflectToCreate
-     * @static
+     * Create Logo
+     * @param logoReflectToCreate
      */
-    public static async create(deviceReflectToCreate: Partial<IDevice>) {
+    public static async create(logoReflectToCreate: Partial<ILogo>) {
         return DatabaseKnex.getInstance()
-            .insert(deviceReflectToCreate)
+            .insert(logoReflectToCreate)
             .into(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -94,14 +93,13 @@ export class Device {
     }
 
     /**
-     * Delete a device
-     * @param deviceReflectToFind
-     * @static
+     * Delete Logo
+     * @param logoReflectToFind
      */
-    public static async delete(deviceReflectToFind: Partial<IDevice>) {
-        DatabaseKnex.getInstance()
+    public static async delete(logoReflectToFind: Partial<ILogo>) {
+        return DatabaseKnex.getInstance()
             .delete()
-            .where(deviceReflectToFind)
+            .where(logoReflectToFind)
             .from(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -109,16 +107,16 @@ export class Device {
     }
 
     /**
-     * Transaction Get device
-     * @param deviceReflectToFind
+     * Transaction get Logo
+     * @param logoReflectToFind
      * @param columns
      * @param trx
-     * @return {Promise<IDevice[]>}
+     * @return Promise<ILogo[]>
      */
-    public static async transactionGet(deviceReflectToFind: Partial<IDevice>, columns: Partial<IColumnsDevice>, trx: Transaction) : Promise<IDevice[]> {
+    public static async transactionGet(logoReflectToFind: Partial<ILogo>, columns: Partial<IColumnsLogo>, trx: Transaction) : Promise<ILogo[]> {
         return DatabaseKnex.getInstance()
             .select(transformColumnsToArray(columns))
-            .where(deviceReflectToFind).from(tableName)
+            .where(logoReflectToFind).from(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -126,16 +124,16 @@ export class Device {
     }
 
     /**
-     * Transaction Get device FK user
-     * @param deviceReflectToFind
+     * Transaction get Logo FK user
+     * @param logoReflectToFind
      * @param columns
      * @param trx
-     * @return {Promise<IDeviceFKUser[]>}
+     * @return Promise<ILogoFKUser[]>
      */
-    public static async transactionGetFKUser(deviceReflectToFind: Partial<IDevice>, columns: Partial<IColumnsDeviceFKUser>, trx: Transaction) : Promise<IDeviceFKUser[]> {
+    public static async transactionGetFKUser(logoReflectToFind: Partial<ILogo>, columns: Partial<IColumnsLogoFKUser>, trx: Transaction) : Promise<ILogoFKUser[]> {
         return DatabaseKnex.getInstance()
             .select(transformColumnsToArray(columns))
-            .where(deviceReflectToFind).from(tableName)
+            .where(logoReflectToFind).from(tableName)
             .join(userTable, `${tableName}.userUuid`, '=', `${userTable}.uuid`)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
@@ -144,15 +142,15 @@ export class Device {
     }
 
     /**
-     * Transaction Update a device
-     * @param deviceReflectToUpdate
-     * @param deviceReflectToFind
+     * Transaction update Logo
+     * @param logoReflectToUpdate
+     * @param logoReflectToFind
      * @param trx
      */
-    public static async transactionUpdate(deviceReflectToUpdate: Partial<IDevice>, deviceReflectToFind: Partial<IDevice>, trx: Transaction) {
+    public static async transactionUpdate(logoReflectToUpdate: Partial<ILogo>, logoReflectToFind: Partial<ILogo>, trx: Transaction) {
         return DatabaseKnex.getInstance()
-            .update(deviceReflectToUpdate)
-            .where(deviceReflectToFind)
+            .update(logoReflectToUpdate)
+            .where(logoReflectToFind)
             .from(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
@@ -161,13 +159,13 @@ export class Device {
     }
 
     /**
-     * Transaction Create a device
-     * @param deviceReflectToCreate
+     * Transaction create Logo
+     * @param logoReflectToCreate
      * @param trx
      */
-    public static async transactionCreate(deviceReflectToCreate: Partial<IDevice>, trx: Transaction) {
+    public static async transactionCreate(logoReflectToCreate: Partial<ILogo>, trx: Transaction) {
         return DatabaseKnex.getInstance()
-            .insert(deviceReflectToCreate)
+            .insert(logoReflectToCreate)
             .into(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
@@ -176,14 +174,14 @@ export class Device {
     }
 
     /**
-     * Transaction Delete a device
-     * @param deviceReflectToFind
+     * Transaction delete Logo
+     * @param logoReflectToFind
      * @param trx
      */
-    public static async transactionDelete(deviceReflectToFind: Partial<IDevice>, trx: Transaction) {
+    public static async transactionDelete(logoReflectToFind: Partial<ILogo>, trx: Transaction) {
         return DatabaseKnex.getInstance()
             .delete()
-            .where(deviceReflectToFind)
+            .where(logoReflectToFind)
             .from(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {

@@ -1,79 +1,77 @@
 /**
  * Local Modules
  */
-import { transformColumnsToArray } from '@/services/actions/ColumnSelectorBuilder';
-import { IToken, ITokenFKUser } from '@/models';
+import { transformColumnsToArray } from '@/services/actions/queries/ColumnSelectorBuilder';
+import { IHistory, IHistoryFKUser } from '@/models';
+import { ErrorEntity, MessageError } from '@/utils';
 import { DatabaseKnex, ErrorDatabase, Transaction } from '@/services';
 import { IColumnsUser, tableName as userTable } from './User';
-import { ErrorEntity, MessageError } from '@/utils';
 
 /**
- * IColumnToken
+ * IColumnHistory
  */
-export interface IColumnsToken {
+export interface IColumnsHistory {
+    log: boolean;
     createdAt: boolean | string;
-    expireAt: boolean;
-    salt: boolean;
-    token: boolean;
-    userUuid: boolean;
-    uuid: string | boolean;
+    userUuid: boolean | string;
+    uuid: boolean | string;
 }
 
 /**
- * IColumnTokenFKUser
+ * IColumnHistoryFKUser
  */
-export interface IColumnsTokenFKUser extends IColumnsToken, IColumnsUser {}
+export interface IColumnsHistoryFKUser extends IColumnsHistory, IColumnsUser {}
 
 /**
  * Table Name
  */
-export const tableName = 'USER_TOKEN';
+export const tableName = 'USER_HISTORY';
 
 /**
- * Token class : is the class that contains the queries for the table USER_TOKEN
+ * History class : is the class that contains the queries for the table USER_HISTORY
+ * @class History
  */
-export class Token {
-
+export class History {
     /**
-     * Get Token
-     * @param tokenReflectToFind
+     * Get history
+     * @param historyReflectToFind
      * @param columns
-     * @return Promise<IToken[]>
+     * @return {Promise<IHistory[]>}
      */
-    public static async get(tokenReflectToFind: Partial<IToken>, columns: Partial<IColumnsToken>) : Promise<IToken[]> {
+    public static async get(historyReflectToFind: Partial<IHistory>, columns: Partial<IColumnsHistory>) : Promise<IHistory[]> {
         return DatabaseKnex.getInstance()
             .select(transformColumnsToArray(columns))
-            .where(tokenReflectToFind).from(tableName)
+            .where(historyReflectToFind).from(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
             });
     }
 
     /**
-     * Get Token FK user
-     * @param tokenReflectToFind
+     * Get history FK user
+     * @param historyReflectToFind
      * @param columns
-     * @return Promise<IToken[]>
+     * @return {Promise<IHistoryFKUser[]>}
      */
-    public static async getFKUser(tokenReflectToFind: Partial<IToken>, columns: Partial<IColumnsTokenFKUser>) : Promise<ITokenFKUser[]> {
+    public static async getFKUser(historyReflectToFind: Partial<IHistory>, columns: Partial<IColumnsHistoryFKUser>) : Promise<IHistoryFKUser[]> {
         return DatabaseKnex.getInstance()
             .select(transformColumnsToArray(columns))
-            .where(tokenReflectToFind).from(tableName)
-            .join(userTable, tableName + '.userUuid', '=', userTable + '.uuid')
+            .where(historyReflectToFind).from(tableName)
+            .join(userTable, `${tableName}.userUuid`, '=', `${userTable}.uuid`)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
             });
     }
 
     /**
-     * Update Token
-     * @param tokenReflectToUpdate
-     * @param tokenReflectToFind
+     * Update a history
+     * @param historyReflectToUpdate
+     * @param historyReflectToFind
      */
-    public static async update(tokenReflectToUpdate: Partial<IToken>, tokenReflectToFind: Partial<IToken>) {
+    public static async update(historyReflectToUpdate: Partial<IHistory>, historyReflectToFind: Partial<IHistory>)  {
         return DatabaseKnex.getInstance()
-            .update(tokenReflectToUpdate)
-            .where(tokenReflectToFind)
+            .update(historyReflectToUpdate)
+            .where(historyReflectToFind)
             .from(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -81,12 +79,12 @@ export class Token {
     }
 
     /**
-     * Create Token
-     * @param tokenReflectToCreate
+     * Create a history
+     * @param historyReflectToCreate
      */
-    public static async create(tokenReflectToCreate: Partial<IToken>) {
+    public static async create(historyReflectToCreate: Partial<IHistory>) {
         return DatabaseKnex.getInstance()
-            .insert(tokenReflectToCreate)
+            .insert(historyReflectToCreate)
             .into(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -94,13 +92,13 @@ export class Token {
     }
 
     /**
-     * Delete Token
-     * @param tokenReflectToFind
+     * Delete a history
+     * @param historyReflectToFind
      */
-    public static async delete(tokenReflectToFind: Partial<IToken>) {
+    public static async delete(historyReflectToFind: Partial<IHistory>) {
         return DatabaseKnex.getInstance()
             .delete()
-            .where(tokenReflectToFind)
+            .where(historyReflectToFind)
             .from(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -108,16 +106,16 @@ export class Token {
     }
 
     /**
-     * Transaction Get Token
-     * @param tokenReflectToFind
+     * Transaction get history
+     * @param historyReflectToFind
      * @param columns
      * @param trx
-     * @return Promise<IToken[]>
+     * @return {Promise<IHistory[]>}
      */
-    public static async transactionGet(tokenReflectToFind: Partial<IToken>, columns: Partial<IColumnsToken>, trx: Transaction) : Promise<IToken[]> {
+    public static async transactionGet(historyReflectToFind: Partial<IHistory>, columns: Partial<IColumnsHistory>, trx: Transaction) : Promise<IHistory[]> {
         return DatabaseKnex.getInstance()
             .select(transformColumnsToArray(columns))
-            .where(tokenReflectToFind).from(tableName)
+            .where(historyReflectToFind).from(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -125,17 +123,17 @@ export class Token {
     }
 
     /**
-     * Transaction Get Token with User
-     * @param tokenReflectToFind
+     * Transaction get history FK user
+     * @param historyReflectToFind
      * @param columns
      * @param trx
-     * @return Promise<ITokenFKUser[]>
+     * @return {Promise<IHistoryFKUser[]>}
      */
-    public static async transactionGetFKUser(tokenReflectToFind: Partial<IToken>, columns: Partial<IColumnsTokenFKUser>, trx: Transaction) : Promise<ITokenFKUser[]> {
+    public static async transactionGetFKUser(historyReflectToFind: Partial<IHistory>, columns: Partial<IColumnsHistoryFKUser>, trx: Transaction) : Promise<IHistoryFKUser[]> {
         return DatabaseKnex.getInstance()
             .select(transformColumnsToArray(columns))
-            .where(tokenReflectToFind).from(tableName)
-            .join(userTable, tableName + '.userUuid', '=', userTable + '.uuid')
+            .where(historyReflectToFind).from(tableName)
+            .join(userTable, `${tableName}.userUuid`, '=', `${userTable}.uuid`)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -143,15 +141,15 @@ export class Token {
     }
 
     /**
-     * Transaction Update Token
-     * @param tokenReflectToUpdate
-     * @param tokenReflectToFind
+     * Transaction update a history
+     * @param historyReflectToUpdate
+     * @param historyReflectToFind
      * @param trx
      */
-    public static async transactionUpdate(tokenReflectToUpdate: Partial<IToken>, tokenReflectToFind: Partial<IToken>, trx: Transaction) {
+    public static async transactionUpdate(historyReflectToUpdate: Partial<IHistory>, historyReflectToFind: Partial<IHistory>, trx: Transaction) {
         return DatabaseKnex.getInstance()
-            .update(tokenReflectToUpdate)
-            .where(tokenReflectToFind)
+            .update(historyReflectToUpdate)
+            .where(historyReflectToFind)
             .from(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
@@ -160,13 +158,13 @@ export class Token {
     }
 
     /**
-     * Transaction Create Token
-     * @param tokenReflectToCreate
+     * Transaction create a history
+     * @param historyReflectToCreate
      * @param trx
      */
-    public static async transactionCreate(tokenReflectToCreate: Partial<IToken>, trx: Transaction) {
+    public static async transactionCreate(historyReflectToCreate: Partial<IHistory>, trx: Transaction) {
         return DatabaseKnex.getInstance()
-            .insert(tokenReflectToCreate)
+            .insert(historyReflectToCreate)
             .into(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
@@ -175,14 +173,14 @@ export class Token {
     }
 
     /**
-     * Transaction Delete Token
-     * @param tokenReflectToFind
+     * Transaction delete a history
+     * @param historyReflectToFind
      * @param trx
      */
-    public static async transactionDelete(tokenReflectToFind: Partial<IToken>, trx: Transaction)  {
+    public static async transactionDelete(historyReflectToFind: Partial<IHistory>, trx: Transaction) {
         return DatabaseKnex.getInstance()
             .delete()
-            .where(tokenReflectToFind)
+            .where(historyReflectToFind)
             .from(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
@@ -190,3 +188,5 @@ export class Token {
             });
     }
 }
+
+

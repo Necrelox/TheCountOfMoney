@@ -3,7 +3,7 @@
  */
 import { IToken, IUser } from '@/models';
 import { bearerToken, blackListedChecker, permissionChecker } from '@/middlewares';
-import { Account } from '@/services';
+import { AccountService } from '@/services';
 import { errorManager, Mailer, PasswordEncrypt } from '@/utils';
 
 /**
@@ -13,7 +13,7 @@ import { Router, IRouter, Request, Response } from 'express';
 import { body, check, oneOf, validationResult } from 'express-validator';
 
 /**
- * Account class : is the controller of the account module
+ * AccountService class : is the controller of the account module
  */
 export class AccountController {
 
@@ -21,14 +21,14 @@ export class AccountController {
      * Get router
      * @private
      * @type {IRouter}
-     * @memberof Account
+     * @memberof AccountService
      * @readonly
      */
     private _router: IRouter = Router();
 
     /**
-     * Creates an instance of Account and initialize router
-     * @memberof Account
+     * Creates an instance of AccountService and initialize router
+     * @memberof AccountService
      * @constructor
      * @public
      */
@@ -37,9 +37,9 @@ export class AccountController {
     }
 
     /**
-     * Initialize route of the account module
+     * Initialize route of the account
      * @private
-     * @memberof Account
+     * @memberof AccountService
      * @return {void}
      */
     private initializeAccountController() {
@@ -200,7 +200,7 @@ export class AccountController {
     private async postMethodSignup(req: Request, res: Response) {
         try {
             validationResult(req).throw();
-            await Account.createAccountTransaction({
+            await AccountService.createAccountTransaction({
                 email: req.body.email,
                 username: req.body.username,
                 password: PasswordEncrypt.encrypt(req.body.password)
@@ -224,7 +224,7 @@ export class AccountController {
         try {
             validationResult(req).throw();
             const userReflect: Pick<IUser, 'email' | 'username' | 'password'> = req.body;
-            const token: Pick<IToken, 'token' | 'expireAt'> = await Account.loginAndGetTokenTransaction(userReflect, req.body.password);
+            const token: Pick<IToken, 'token' | 'expireAt'> = await AccountService.loginAndGetTokenTransaction(userReflect, req.body.password);
             res.status(200).send({
                 code: 'OK',
                 message: 'User has logged in.',
@@ -245,7 +245,7 @@ export class AccountController {
         try {
             validationResult(req).throw();
             const userReflect: Pick<IUser, 'email' | 'username' | 'password'> = req.body;
-            const token: Pick<IToken, 'token' | 'expireAt'> = await Account.loginAndGetTokenTransaction(userReflect, req.body.password, {
+            const token: Pick<IToken, 'token' | 'expireAt'> = await AccountService.loginAndGetTokenTransaction(userReflect, req.body.password, {
                 ip: req.body.ip,
                 device: req.body.deviceType,
                 macAddress: req.body.macAddress
@@ -269,7 +269,7 @@ export class AccountController {
     private async postMethodLogout(req: Request, res: Response) {
         try {
             const bearerToken : string = req.headers.authorization?.split(' ')[1] as string;
-            await Account.logoutUserTransaction(bearerToken);
+            await AccountService.logoutUserTransaction(bearerToken);
             res.status(200).send({
                 code: 'OK',
                 message: 'User logout successfully.',
@@ -291,7 +291,7 @@ export class AccountController {
             res.status(200).send({
                 code: 'OK',
                 message: 'User information.',
-                userInfo: await Account.getUserInfoTransaction(bearerToken),
+                userInfo: await AccountService.getUserInfoTransaction(bearerToken),
             });
         } catch (error) {
             errorManager(error, res);
@@ -308,7 +308,7 @@ export class AccountController {
         try {
             validationResult(req).throw();
             const bearerToken : string = req.headers.authorization?.split(' ')[1] as string;
-            await Account.updateUserInfoTransaction(bearerToken, req.body);
+            await AccountService.updateUserInfoTransaction(bearerToken, req.body);
             res.status(200).send({
                 code: 'OK',
                 message: 'User updated.',

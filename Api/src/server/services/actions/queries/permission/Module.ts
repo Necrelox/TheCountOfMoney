@@ -1,55 +1,51 @@
 /**
  * Local Modules
  */
-import { transformColumnsToArray } from '@/services/actions/ColumnSelectorBuilder';
-import { IUser } from '@/models';
 import { DatabaseKnex, ErrorDatabase, Transaction } from '@/services';
+import { transformColumnsToArray } from '@/services/actions/queries/ColumnSelectorBuilder';
+import { IModule } from '@/models';
 import { ErrorEntity, MessageError } from '@/utils';
 
 /**
- * IColumnUser
+ * IColumnsModule
  */
-export interface IColumnsUser {
-    email: boolean;
-    username: boolean;
-    password: boolean;
-    activityMessage: boolean;
-    isConnected: boolean;
-    isBlackListed: boolean;
-    createdAt: boolean | string;
-    uuid: boolean | string;
+export interface IColumnsModule {
+    moduleName: boolean,
+    id: boolean | string,
 }
-
 /**
  * Table Name
  */
-export const tableName = 'USER';
+export const tableName = 'MODULE';
 
-export class User {
+/**
+ * Module class : is the class that contains the queries for the table MODULE
+ */
+export class Module {
     /**
-     * Get User
-     * @param userReflectToFind
+     * Get Module
+     * @param moduleReflectToFind
      * @param columns
-     * @return Promise<IUser[]>
+     * @return Promise<IModule[]>
      */
-    public static async get(userReflectToFind: Partial<IUser>, columns: Partial<IColumnsUser>): Promise<IUser[]> {
+    public static async get(moduleReflectToFind: Partial<IModule>, columns: Partial<IColumnsModule>) : Promise<IModule[]> {
         return DatabaseKnex.getInstance()
             .select(transformColumnsToArray(columns))
-            .where(userReflectToFind).from(tableName)
+            .where(moduleReflectToFind).from(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
             });
     }
 
     /**
-     * Update User
-     * @param userReflectToUpdate
-     * @param userReflectToFind
+     * Update Module
+     * @param moduleReflectToUpdate
+     * @param moduleReflectToFind
      */
-    public static async update(userReflectToUpdate: Partial<IUser>, userReflectToFind: Partial<IUser>) {
+    public static async update(moduleReflectToUpdate: Partial<IModule>, moduleReflectToFind: Partial<IModule>) {
         return DatabaseKnex.getInstance()
-            .update(userReflectToUpdate)
-            .where(userReflectToFind)
+            .update(moduleReflectToUpdate)
+            .where(moduleReflectToFind)
             .from(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -57,12 +53,12 @@ export class User {
     }
 
     /**
-     * Create User
-     * @param userReflectToCreate
+     * Create Module
+     * @param moduleReflectToCreate
      */
-    public static async create(userReflectToCreate: Partial<IUser>) {
+    public static async create(moduleReflectToCreate: Partial<IModule>) {
         return DatabaseKnex.getInstance()
-            .insert(userReflectToCreate)
+            .insert(moduleReflectToCreate)
             .into(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -70,13 +66,13 @@ export class User {
     }
 
     /**
-     * Delete User
-     * @param userReflectToFind
+     * Delete Module
+     * @param moduleReflectToFind
      */
-    public static async delete(userReflectToFind: Partial<IUser>) {
+    public static async delete(moduleReflectToFind: Partial<IModule>) {
         return DatabaseKnex.getInstance()
             .delete()
-            .where(userReflectToFind)
+            .where(moduleReflectToFind)
             .from(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -84,16 +80,16 @@ export class User {
     }
 
     /**
-     * Transaction Get User
-     * @param userReflectToFind
+     * Transaction Get Module
+     * @param moduleReflectToFind
      * @param columns
      * @param trx
-     * @return Promise<IUser[]>
+     * @return Promise<IModule[]>
      */
-    public static async transactionGet(userReflectToFind: Partial<IUser>, columns: Partial<IColumnsUser>, trx: Transaction): Promise<IUser[]> {
+    public static async transactionGet(moduleReflectToFind: Partial<IModule>, columns: Partial<IColumnsModule>, trx: Transaction) : Promise<IModule[]> {
         return DatabaseKnex.getInstance()
             .select(transformColumnsToArray(columns))
-            .where(userReflectToFind).from(tableName)
+            .where(moduleReflectToFind).from(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -101,16 +97,16 @@ export class User {
     }
 
     /**
-     * Transaction Update User
-     * @param userReflectToUpdate
-     * @param userReflectToFind
+     * Transaction Update Module
+     * @param moduleReflectToUpdate
+     * @param moduleReflectToFind
      * @param trx
      */
-    public static async transactionUpdate(userReflectToUpdate: Partial<IUser>, userReflectToFind: Partial<IUser>, trx: Transaction) {
+    public static async transactionUpdate(moduleReflectToUpdate: Partial<IModule>, moduleReflectToFind: Partial<IModule>, trx: Transaction) {
         return DatabaseKnex.getInstance()
-            .update(userReflectToUpdate)
-            .into(tableName)
-            .where(userReflectToFind)
+            .update(moduleReflectToUpdate)
+            .where(moduleReflectToFind)
+            .from(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -118,13 +114,13 @@ export class User {
     }
 
     /**
-     * Transaction Create User
-     * @param userReflectToCreate
+     * Transaction Create Module
+     * @param moduleReflectToCreate
      * @param trx
      */
-    public static async transactionCreate(userReflectToCreate: Partial<IUser>, trx: Transaction) {
+    public static async transactionCreate(moduleReflectToCreate: Partial<IModule>, trx: Transaction) {
         return DatabaseKnex.getInstance()
-            .insert(userReflectToCreate)
+            .insert(moduleReflectToCreate)
             .into(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
@@ -133,14 +129,14 @@ export class User {
     }
 
     /**
-     * Transaction Delete User
-     * @param userReflectToFind
+     * Transaction Delete Module
+     * @param moduleReflectToFind
      * @param trx
      */
-    public static async transactionDelete(userReflectToFind: Partial<IUser>, trx: Transaction) {
+    public static async transactionDelete(moduleReflectToFind: Partial<IModule>, trx: Transaction)  {
         return DatabaseKnex.getInstance()
             .delete()
-            .where(userReflectToFind)
+            .where(moduleReflectToFind)
             .from(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {

@@ -1,78 +1,79 @@
 /**
  * Local Modules
  */
-import { ILogo, ILogoFKUser } from '@/models';
-import { transformColumnsToArray } from '@/services/actions/ColumnSelectorBuilder';
-import { IColumnsUser, tableName as userTable } from './User';
+import { transformColumnsToArray } from '@/services/actions/queries/ColumnSelectorBuilder';
+import { IToken, ITokenFKUser } from '@/models';
 import { DatabaseKnex, ErrorDatabase, Transaction } from '@/services';
+import { IColumnsUser, tableName as userTable } from './User';
 import { ErrorEntity, MessageError } from '@/utils';
 
 /**
- * IColumnLogo
+ * IColumnToken
  */
-export interface IColumnsLogo {
-    path: boolean;
+export interface IColumnsToken {
     createdAt: boolean | string;
-    seed: boolean;
-    sizeMo: boolean;
-    active: boolean;
+    expireAt: boolean;
+    salt: boolean;
+    token: boolean;
     userUuid: boolean;
-    uuid: boolean | string;
+    uuid: string | boolean;
 }
 
 /**
- * IColumnLogoFKUser
+ * IColumnTokenFKUser
  */
-export interface IColumnsLogoFKUser extends IColumnsLogo, IColumnsUser {}
+export interface IColumnsTokenFKUser extends IColumnsToken, IColumnsUser {}
 
 /**
  * Table Name
  */
-export const tableName = 'USER_LOGO';
+export const tableName = 'USER_TOKEN';
 
 /**
- * Logo class : is the class that contains the queries for the table USER_LOGO
+ * Token class : is the class that contains the queries for the table USER_TOKEN
  */
-export class Logo {
+export class Token {
+
     /**
-     * Get Logo
-     * @param logoReflectToFind
+     * Get Token
+     * @param tokenReflectToFind
      * @param columns
+     * @return Promise<IToken[]>
      */
-    public static async get(logoReflectToFind: Partial<ILogo>, columns: Partial<IColumnsLogo>) : Promise<ILogo[]> {
+    public static async get(tokenReflectToFind: Partial<IToken>, columns: Partial<IColumnsToken>) : Promise<IToken[]> {
         return DatabaseKnex.getInstance()
             .select(transformColumnsToArray(columns))
-            .where(logoReflectToFind).from(tableName)
+            .where(tokenReflectToFind).from(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
             });
     }
 
     /**
-     * Get Logo FK user
-     * @param logoReflectToFind
+     * Get Token FK user
+     * @param tokenReflectToFind
      * @param columns
-     * @return Promise<ILogoFKUser[]>
+     * @return Promise<IToken[]>
      */
-    public static async getFKUser(logoReflectToFind: Partial<ILogo>, columns: Partial<IColumnsLogoFKUser>) : Promise<ILogoFKUser[]> {
+    public static async getFKUser(tokenReflectToFind: Partial<IToken>, columns: Partial<IColumnsTokenFKUser>) : Promise<ITokenFKUser[]> {
         return DatabaseKnex.getInstance()
             .select(transformColumnsToArray(columns))
-            .where(logoReflectToFind).from(tableName)
-            .join(userTable, `${tableName}.userUuid`, '=', `${userTable}.uuid`)
+            .where(tokenReflectToFind).from(tableName)
+            .join(userTable, tableName + '.userUuid', '=', userTable + '.uuid')
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
             });
     }
 
     /**
-     * Update Logo
-     * @param logoReflectToUpdate
-     * @param logoReflectToFind
+     * Update Token
+     * @param tokenReflectToUpdate
+     * @param tokenReflectToFind
      */
-    public static async update(logoReflectToUpdate: Partial<ILogo>, logoReflectToFind: Partial<ILogo>) {
+    public static async update(tokenReflectToUpdate: Partial<IToken>, tokenReflectToFind: Partial<IToken>) {
         return DatabaseKnex.getInstance()
-            .update(logoReflectToUpdate)
-            .where(logoReflectToFind)
+            .update(tokenReflectToUpdate)
+            .where(tokenReflectToFind)
             .from(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -80,12 +81,12 @@ export class Logo {
     }
 
     /**
-     * Create Logo
-     * @param logoReflectToCreate
+     * Create Token
+     * @param tokenReflectToCreate
      */
-    public static async create(logoReflectToCreate: Partial<ILogo>) {
+    public static async create(tokenReflectToCreate: Partial<IToken>) {
         return DatabaseKnex.getInstance()
-            .insert(logoReflectToCreate)
+            .insert(tokenReflectToCreate)
             .into(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -93,13 +94,13 @@ export class Logo {
     }
 
     /**
-     * Delete Logo
-     * @param logoReflectToFind
+     * Delete Token
+     * @param tokenReflectToFind
      */
-    public static async delete(logoReflectToFind: Partial<ILogo>) {
+    public static async delete(tokenReflectToFind: Partial<IToken>) {
         return DatabaseKnex.getInstance()
             .delete()
-            .where(logoReflectToFind)
+            .where(tokenReflectToFind)
             .from(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -107,16 +108,16 @@ export class Logo {
     }
 
     /**
-     * Transaction get Logo
-     * @param logoReflectToFind
+     * Transaction Get Token
+     * @param tokenReflectToFind
      * @param columns
      * @param trx
-     * @return Promise<ILogo[]>
+     * @return Promise<IToken[]>
      */
-    public static async transactionGet(logoReflectToFind: Partial<ILogo>, columns: Partial<IColumnsLogo>, trx: Transaction) : Promise<ILogo[]> {
+    public static async transactionGet(tokenReflectToFind: Partial<IToken>, columns: Partial<IColumnsToken>, trx: Transaction) : Promise<IToken[]> {
         return DatabaseKnex.getInstance()
             .select(transformColumnsToArray(columns))
-            .where(logoReflectToFind).from(tableName)
+            .where(tokenReflectToFind).from(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -124,17 +125,17 @@ export class Logo {
     }
 
     /**
-     * Transaction get Logo FK user
-     * @param logoReflectToFind
+     * Transaction Get Token with User
+     * @param tokenReflectToFind
      * @param columns
      * @param trx
-     * @return Promise<ILogoFKUser[]>
+     * @return Promise<ITokenFKUser[]>
      */
-    public static async transactionGetFKUser(logoReflectToFind: Partial<ILogo>, columns: Partial<IColumnsLogoFKUser>, trx: Transaction) : Promise<ILogoFKUser[]> {
+    public static async transactionGetFKUser(tokenReflectToFind: Partial<IToken>, columns: Partial<IColumnsTokenFKUser>, trx: Transaction) : Promise<ITokenFKUser[]> {
         return DatabaseKnex.getInstance()
             .select(transformColumnsToArray(columns))
-            .where(logoReflectToFind).from(tableName)
-            .join(userTable, `${tableName}.userUuid`, '=', `${userTable}.uuid`)
+            .where(tokenReflectToFind).from(tableName)
+            .join(userTable, tableName + '.userUuid', '=', userTable + '.uuid')
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -142,15 +143,15 @@ export class Logo {
     }
 
     /**
-     * Transaction update Logo
-     * @param logoReflectToUpdate
-     * @param logoReflectToFind
+     * Transaction Update Token
+     * @param tokenReflectToUpdate
+     * @param tokenReflectToFind
      * @param trx
      */
-    public static async transactionUpdate(logoReflectToUpdate: Partial<ILogo>, logoReflectToFind: Partial<ILogo>, trx: Transaction) {
+    public static async transactionUpdate(tokenReflectToUpdate: Partial<IToken>, tokenReflectToFind: Partial<IToken>, trx: Transaction) {
         return DatabaseKnex.getInstance()
-            .update(logoReflectToUpdate)
-            .where(logoReflectToFind)
+            .update(tokenReflectToUpdate)
+            .where(tokenReflectToFind)
             .from(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
@@ -159,13 +160,13 @@ export class Logo {
     }
 
     /**
-     * Transaction create Logo
-     * @param logoReflectToCreate
+     * Transaction Create Token
+     * @param tokenReflectToCreate
      * @param trx
      */
-    public static async transactionCreate(logoReflectToCreate: Partial<ILogo>, trx: Transaction) {
+    public static async transactionCreate(tokenReflectToCreate: Partial<IToken>, trx: Transaction) {
         return DatabaseKnex.getInstance()
-            .insert(logoReflectToCreate)
+            .insert(tokenReflectToCreate)
             .into(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
@@ -174,14 +175,14 @@ export class Logo {
     }
 
     /**
-     * Transaction delete Logo
-     * @param logoReflectToFind
+     * Transaction Delete Token
+     * @param tokenReflectToFind
      * @param trx
      */
-    public static async transactionDelete(logoReflectToFind: Partial<ILogo>, trx: Transaction) {
+    public static async transactionDelete(tokenReflectToFind: Partial<IToken>, trx: Transaction)  {
         return DatabaseKnex.getInstance()
             .delete()
-            .where(logoReflectToFind)
+            .where(tokenReflectToFind)
             .from(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
@@ -189,5 +190,3 @@ export class Logo {
             });
     }
 }
-
-

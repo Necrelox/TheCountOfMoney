@@ -1,77 +1,78 @@
 /**
  * Local Modules
  */
-import { transformColumnsToArray } from '@/services/actions/ColumnSelectorBuilder';
-import { IHistory, IHistoryFKUser } from '@/models';
-import { ErrorEntity, MessageError } from '@/utils';
-import { DatabaseKnex, ErrorDatabase, Transaction } from '@/services';
+import { IIP, IIPFKUser } from '@/models';
+import { transformColumnsToArray } from '@/services/actions/queries/ColumnSelectorBuilder';
 import { IColumnsUser, tableName as userTable } from './User';
+import { DatabaseKnex, ErrorDatabase, Transaction } from '@/services';
+import { ErrorEntity, MessageError } from '@/utils';
 
 /**
- * IColumnHistory
+ * IColumnIP
  */
-export interface IColumnsHistory {
-    log: boolean;
+export interface IColumnsIp {
+    ip: boolean;
     createdAt: boolean | string;
-    userUuid: boolean | string;
+    active: boolean;
+    userUuid: boolean;
     uuid: boolean | string;
 }
 
 /**
- * IColumnHistoryFKUser
+ * IColumnIPFKUser
  */
-export interface IColumnsHistoryFKUser extends IColumnsHistory, IColumnsUser {}
+export interface IColumnsIpFKUser extends IColumnsIp, IColumnsUser {}
 
 /**
  * Table Name
  */
-export const tableName = 'USER_HISTORY';
+export const tableName = 'USER_IP';
 
 /**
- * History class : is the class that contains the queries for the table USER_HISTORY
- * @class History
+ * IP class : is the class that contains the queries for the table USER_IP
+ * @class IP
  */
-export class History {
+export class Ip {
     /**
-     * Get history
-     * @param historyReflectToFind
+     * Get ip
+     * @param ipReflectToFind
      * @param columns
-     * @return {Promise<IHistory[]>}
+     * @return {Promise<IIP[]>}
      */
-    public static async get(historyReflectToFind: Partial<IHistory>, columns: Partial<IColumnsHistory>) : Promise<IHistory[]> {
+    public static async get(ipReflectToFind: Partial<IIP>, columns: Partial<IColumnsIp>) : Promise<IIP[]> {
         return DatabaseKnex.getInstance()
             .select(transformColumnsToArray(columns))
-            .where(historyReflectToFind).from(tableName)
+            .where(ipReflectToFind).from(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
             });
     }
 
     /**
-     * Get history FK user
-     * @param historyReflectToFind
+     * Get ip FK user
+     * @param ipReflectToFind
      * @param columns
-     * @return {Promise<IHistoryFKUser[]>}
+     * @return {Promise<IIPFKUser[]>}
      */
-    public static async getFKUser(historyReflectToFind: Partial<IHistory>, columns: Partial<IColumnsHistoryFKUser>) : Promise<IHistoryFKUser[]> {
+    public static async getFKUser(ipReflectToFind: Partial<IIP>, columns: Partial<IColumnsIpFKUser>) : Promise<IIPFKUser[]> {
         return DatabaseKnex.getInstance()
             .select(transformColumnsToArray(columns))
-            .where(historyReflectToFind).from(tableName)
-            .join(userTable, `${tableName}.userUuid`, '=', `${userTable}.uuid`)
+            .where(ipReflectToFind).from(tableName)
+            .join(userTable, `${tableName}.userUuid`, '=' ,`${userTable}.uuid`)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
             });
     }
 
     /**
-     * Update a history
-     * @param historyReflectToUpdate
-     * @param historyReflectToFind
+     * Update ip
+     * @param ipReflectToUpdate
+     * @param ipReflectToFind
      */
-    public static async update(historyReflectToUpdate: Partial<IHistory>, historyReflectToFind: Partial<IHistory>)  {
+    public static async update(ipReflectToUpdate: Partial<IIP>, ipReflectToFind: Partial<IIP>) {
         return DatabaseKnex.getInstance()
-            .update(historyReflectToUpdate)
-            .where(historyReflectToFind)
+            .update(ipReflectToUpdate)
+            .where(ipReflectToFind)
             .from(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -79,12 +80,12 @@ export class History {
     }
 
     /**
-     * Create a history
-     * @param historyReflectToCreate
+     * Create ip
+     * @param ipReflectToCreate
      */
-    public static async create(historyReflectToCreate: Partial<IHistory>) {
+    public static async create(ipReflectToCreate: Partial<IIP>) {
         return DatabaseKnex.getInstance()
-            .insert(historyReflectToCreate)
+            .insert(ipReflectToCreate)
             .into(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -92,13 +93,13 @@ export class History {
     }
 
     /**
-     * Delete a history
-     * @param historyReflectToFind
+     * Delete ip
+     * @param ipReflectToFind
      */
-    public static async delete(historyReflectToFind: Partial<IHistory>) {
+    public static async delete(ipReflectToFind: Partial<IIP>) {
         return DatabaseKnex.getInstance()
             .delete()
-            .where(historyReflectToFind)
+            .where(ipReflectToFind)
             .from(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -106,16 +107,16 @@ export class History {
     }
 
     /**
-     * Transaction get history
-     * @param historyReflectToFind
+     * Transaction get ip
+     * @param ipReflectToFind
      * @param columns
      * @param trx
-     * @return {Promise<IHistory[]>}
+     * @return {Promise<IIP[]>}
      */
-    public static async transactionGet(historyReflectToFind: Partial<IHistory>, columns: Partial<IColumnsHistory>, trx: Transaction) : Promise<IHistory[]> {
+    public static async transactionGet(ipReflectToFind: Partial<IIP>, columns: Partial<IColumnsIp>, trx: Transaction) : Promise<IIP[]> {
         return DatabaseKnex.getInstance()
             .select(transformColumnsToArray(columns))
-            .where(historyReflectToFind).from(tableName)
+            .where(ipReflectToFind).from(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -123,16 +124,16 @@ export class History {
     }
 
     /**
-     * Transaction get history FK user
-     * @param historyReflectToFind
+     * Transaction get ip FK user
+     * @param ipReflectToFind
      * @param columns
      * @param trx
-     * @return {Promise<IHistoryFKUser[]>}
+     * @return {Promise<IIPFKUser[]>}
      */
-    public static async transactionGetFKUser(historyReflectToFind: Partial<IHistory>, columns: Partial<IColumnsHistoryFKUser>, trx: Transaction) : Promise<IHistoryFKUser[]> {
+    public static async transactionGetFKUser(ipReflectToFind: Partial<IIP>, columns: Partial<IColumnsIpFKUser>, trx: Transaction) : Promise<IIPFKUser[]> {
         return DatabaseKnex.getInstance()
             .select(transformColumnsToArray(columns))
-            .where(historyReflectToFind).from(tableName)
+            .where(ipReflectToFind).from(tableName)
             .join(userTable, `${tableName}.userUuid`, '=', `${userTable}.uuid`)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
@@ -141,15 +142,15 @@ export class History {
     }
 
     /**
-     * Transaction update a history
-     * @param historyReflectToUpdate
-     * @param historyReflectToFind
+     * Transaction update ip
+     * @param ipReflectToUpdate
+     * @param ipReflectToFind
      * @param trx
      */
-    public static async transactionUpdate(historyReflectToUpdate: Partial<IHistory>, historyReflectToFind: Partial<IHistory>, trx: Transaction) {
+    public static async transactionUpdate(ipReflectToUpdate: Partial<IIP>, ipReflectToFind: Partial<IIP>, trx: Transaction) {
         return DatabaseKnex.getInstance()
-            .update(historyReflectToUpdate)
-            .where(historyReflectToFind)
+            .update(ipReflectToUpdate)
+            .where(ipReflectToFind)
             .from(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
@@ -158,13 +159,13 @@ export class History {
     }
 
     /**
-     * Transaction create a history
-     * @param historyReflectToCreate
+     * Transaction create ip
+     * @param ipReflectToCreate
      * @param trx
      */
-    public static async transactionCreate(historyReflectToCreate: Partial<IHistory>, trx: Transaction) {
+    public static async transactionCreate(ipReflectToCreate: Partial<IIP>, trx: Transaction) {
         return DatabaseKnex.getInstance()
-            .insert(historyReflectToCreate)
+            .insert(ipReflectToCreate)
             .into(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
@@ -173,14 +174,14 @@ export class History {
     }
 
     /**
-     * Transaction delete a history
-     * @param historyReflectToFind
+     * Transaction delete ip
+     * @param ipReflectToFind
      * @param trx
      */
-    public static async transactionDelete(historyReflectToFind: Partial<IHistory>, trx: Transaction) {
+    public static async transactionDelete(ipReflectToFind: Partial<IIP>, trx: Transaction) {
         return DatabaseKnex.getInstance()
             .delete()
-            .where(historyReflectToFind)
+            .where(ipReflectToFind)
             .from(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {

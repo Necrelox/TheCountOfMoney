@@ -1,3 +1,4 @@
 export { DatabaseKnex, Transaction, ErrorDatabase } from './DatabaseKnex';
-export { Account } from './Account';
+export { AccountService } from './AccountService';
+export { CryptoService } from './CryptoService';
 

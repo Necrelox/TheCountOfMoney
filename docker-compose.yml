@@ -25,6 +25,7 @@ services:
       - MYSQL_DATABASE=IOM
       - MYSQL_USER=ruby
       - MYSQL_PASSWORD=F3OIMykQK8861xwSLdOw
+      - MYSQL_PORT=7058
     ports:
       - "3973:3973"
     depends_on:

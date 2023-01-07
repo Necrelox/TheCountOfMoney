@@ -71,7 +71,7 @@
     "module.delete",
 
     "crypto-actu-rss",
-    "crypto"
+    "crypto-preference"
   ],
   "roleModule": {
     "admin": [
@@ -80,7 +80,7 @@
     "user": [
       "account",
       "crypto-actu-rss",
-      "crypto"
+      "crypto-preference"
     ]
   }
 }

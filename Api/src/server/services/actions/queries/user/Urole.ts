@@ -1,7 +1,7 @@
 /**
  * Local Modules
  */
-import { transformColumnsToArray } from '@/services/actions/ColumnSelectorBuilder';
+import { transformColumnsToArray } from '@/services/actions/queries/ColumnSelectorBuilder';
 import { IURole, IURoleFKUser, IURoleFKRole, IURoleFKRoleFKRoleModuleFKModule } from '@/models';
 import { IColumnsRole, tableName as roleTable } from '../permission/Role';
 import { IColumnsModule, tableName as moduleTable } from '../permission/Module';

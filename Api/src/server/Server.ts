@@ -16,7 +16,8 @@ import fileUpload from 'express-fileupload';
 // import Swagger from './swagger.json';
 import { DatabaseKnex } from '@/services';
 import {
-    AccountController
+    AccountController,
+    CryptoController
 } from '@/controllers';
 
 /**
@@ -148,6 +149,7 @@ export class Server {
      */
     private initializeRoutes() {
         this.app.use('/account', new AccountController().getRouter());
+        this.app.use('/crypto', new CryptoController().getRouter());
     }
 
     /**

@@ -1,17 +1,17 @@
 /**
  * Local Modules
  */
-import { IIP, IIPFKUser } from '@/models';
-import { transformColumnsToArray } from '@/services/actions/ColumnSelectorBuilder';
+import { IMacAddress, IMacAddressFKUser } from '@/models';
+import { transformColumnsToArray } from '@/services/actions/queries/ColumnSelectorBuilder';
 import { IColumnsUser, tableName as userTable } from './User';
 import { DatabaseKnex, ErrorDatabase, Transaction } from '@/services';
 import { ErrorEntity, MessageError } from '@/utils';
 
 /**
- * IColumnIP
+ * IColumnMacAddress
  */
-export interface IColumnsIp {
-    ip: boolean;
+export interface IColumnsMacAddress {
+    macAddress: boolean;
     createdAt: boolean | string;
     active: boolean;
     userUuid: boolean;
@@ -19,60 +19,60 @@ export interface IColumnsIp {
 }
 
 /**
- * IColumnIPFKUser
+ * IColumnMacAddressFKUser
  */
-export interface IColumnsIpFKUser extends IColumnsIp, IColumnsUser {}
+export interface IColumnsMacAddressFKUser extends IColumnsMacAddress, IColumnsUser {}
 
 /**
  * Table Name
  */
-export const tableName = 'USER_IP';
+export const tableName = 'USER_MAC_ADDRESS';
 
 /**
- * IP class : is the class that contains the queries for the table USER_IP
- * @class IP
+ * MacAddress class : is the class that contains the queries for the table USER_MACADDRESS
  */
-export class Ip {
+export class MacAddress {
+
     /**
-     * Get ip
-     * @param ipReflectToFind
+     * Get Mac Address
+     * @param macAddressReflectToFind
      * @param columns
-     * @return {Promise<IIP[]>}
+     * @return Promise<IMacAddress[]>
      */
-    public static async get(ipReflectToFind: Partial<IIP>, columns: Partial<IColumnsIp>) : Promise<IIP[]> {
+    public static async get(macAddressReflectToFind: Partial<IMacAddress>, columns: Partial<IColumnsMacAddress>) : Promise<IMacAddress[]> {
         return DatabaseKnex.getInstance()
             .select(transformColumnsToArray(columns))
-            .where(ipReflectToFind).from(tableName)
+            .where(macAddressReflectToFind).from(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
             });
     }
 
     /**
-     * Get ip FK user
-     * @param ipReflectToFind
+     * Get Mac Address FK User
+     * @param macAddressReflectToFind
      * @param columns
-     * @return {Promise<IIPFKUser[]>}
+     * @return Promise<IMacAddressFKUser[]>
      */
-    public static async getFKUser(ipReflectToFind: Partial<IIP>, columns: Partial<IColumnsIpFKUser>) : Promise<IIPFKUser[]> {
+    public static async getFKUser(macAddressReflectToFind: Partial<IMacAddress>, columns: Partial<IColumnsMacAddressFKUser>) : Promise<IMacAddressFKUser[]> {
         return DatabaseKnex.getInstance()
             .select(transformColumnsToArray(columns))
-            .where(ipReflectToFind).from(tableName)
-            .join(userTable, `${tableName}.userUuid`, '=' ,`${userTable}.uuid`)
+            .where(macAddressReflectToFind).from(tableName)
+            .join(userTable, `${tableName}.userUuid`, '=', `${userTable}.uuid`)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
             });
     }
 
     /**
-     * Update ip
-     * @param ipReflectToUpdate
-     * @param ipReflectToFind
+     * Update Mac Address
+     * @param macAddressReflectToUpdate
+     * @param macAddressReflectToFind
      */
-    public static async update(ipReflectToUpdate: Partial<IIP>, ipReflectToFind: Partial<IIP>) {
+    public static async update(macAddressReflectToUpdate: Partial<IMacAddress>, macAddressReflectToFind: Partial<IMacAddress>) {
         return DatabaseKnex.getInstance()
-            .update(ipReflectToUpdate)
-            .where(ipReflectToFind)
+            .update(macAddressReflectToUpdate)
+            .where(macAddressReflectToFind)
             .from(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -80,12 +80,12 @@ export class Ip {
     }
 
     /**
-     * Create ip
-     * @param ipReflectToCreate
+     * Create Mac Address
+     * @param macAddressReflectToCreate
      */
-    public static async create(ipReflectToCreate: Partial<IIP>) {
+    public static async create(macAddressReflectToCreate: Partial<IMacAddress>) {
         return DatabaseKnex.getInstance()
-            .insert(ipReflectToCreate)
+            .insert(macAddressReflectToCreate)
             .into(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -93,13 +93,13 @@ export class Ip {
     }
 
     /**
-     * Delete ip
-     * @param ipReflectToFind
+     * Delete Mac Address
+     * @param macAddressReflectToFind
      */
-    public static async delete(ipReflectToFind: Partial<IIP>) {
+    public static async delete(macAddressReflectToFind: Partial<IMacAddress>) {
         return DatabaseKnex.getInstance()
             .delete()
-            .where(ipReflectToFind)
+            .where(macAddressReflectToFind)
             .from(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -107,16 +107,16 @@ export class Ip {
     }
 
     /**
-     * Transaction get ip
-     * @param ipReflectToFind
+     * Transaction Get Mac Address
+     * @param macAddressReflectToFind
      * @param columns
      * @param trx
-     * @return {Promise<IIP[]>}
+     * @return Promise<IMacAddress[]>
      */
-    public static async transactionGet(ipReflectToFind: Partial<IIP>, columns: Partial<IColumnsIp>, trx: Transaction) : Promise<IIP[]> {
+    public static async transactionGet(macAddressReflectToFind: Partial<IMacAddress>, columns: Partial<IColumnsMacAddress>, trx: Transaction) : Promise<IMacAddress[]> {
         return DatabaseKnex.getInstance()
             .select(transformColumnsToArray(columns))
-            .where(ipReflectToFind).from(tableName)
+            .where(macAddressReflectToFind).from(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -124,16 +124,16 @@ export class Ip {
     }
 
     /**
-     * Transaction get ip FK user
-     * @param ipReflectToFind
+     * Transaction Get Mac Address FK User
+     * @param macAddressReflectToFind
      * @param columns
      * @param trx
-     * @return {Promise<IIPFKUser[]>}
+     * @return Promise<IMacAddressFKUser[]>
      */
-    public static async transactionGetFKUser(ipReflectToFind: Partial<IIP>, columns: Partial<IColumnsIpFKUser>, trx: Transaction) : Promise<IIPFKUser[]> {
+    public static async transactionGetFKUser(macAddressReflectToFind: Partial<IMacAddress>, columns: Partial<IColumnsMacAddressFKUser>, trx: Transaction) : Promise<IMacAddressFKUser[]> {
         return DatabaseKnex.getInstance()
             .select(transformColumnsToArray(columns))
-            .where(ipReflectToFind).from(tableName)
+            .where(macAddressReflectToFind).from(tableName)
             .join(userTable, `${tableName}.userUuid`, '=', `${userTable}.uuid`)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
@@ -142,15 +142,15 @@ export class Ip {
     }
 
     /**
-     * Transaction update ip
-     * @param ipReflectToUpdate
-     * @param ipReflectToFind
+     * Transaction Update Mac Address
+     * @param macAddressReflectToUpdate
+     * @param macAddressReflectToFind
      * @param trx
      */
-    public static async transactionUpdate(ipReflectToUpdate: Partial<IIP>, ipReflectToFind: Partial<IIP>, trx: Transaction) {
+    public static async transactionUpdate(macAddressReflectToUpdate: Partial<IMacAddress>, macAddressReflectToFind: Partial<IMacAddress>, trx: Transaction) {
         return DatabaseKnex.getInstance()
-            .update(ipReflectToUpdate)
-            .where(ipReflectToFind)
+            .update(macAddressReflectToUpdate)
+            .where(macAddressReflectToFind)
             .from(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
@@ -159,13 +159,13 @@ export class Ip {
     }
 
     /**
-     * Transaction create ip
-     * @param ipReflectToCreate
+     * Transaction Create Mac Address
+     * @param macAddressReflectToCreate
      * @param trx
      */
-    public static async transactionCreate(ipReflectToCreate: Partial<IIP>, trx: Transaction) {
+    public static async transactionCreate(macAddressReflectToCreate: Partial<IMacAddress>, trx: Transaction) {
         return DatabaseKnex.getInstance()
-            .insert(ipReflectToCreate)
+            .insert(macAddressReflectToCreate)
             .into(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
@@ -174,14 +174,14 @@ export class Ip {
     }
 
     /**
-     * Transaction delete ip
-     * @param ipReflectToFind
+     * Transaction Delete Mac Address
+     * @param macAddressReflectToFind
      * @param trx
      */
-    public static async transactionDelete(ipReflectToFind: Partial<IIP>, trx: Transaction) {
+    public static async transactionDelete(macAddressReflectToFind: Partial<IMacAddress>, trx: Transaction) {
         return DatabaseKnex.getInstance()
             .delete()
-            .where(ipReflectToFind)
+            .where(macAddressReflectToFind)
             .from(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {

@@ -1,63 +1,64 @@
 /**
  * Local Modules
  */
-import { transformColumnsToArray } from '@/services/actions/ColumnSelectorBuilder';
-import { IRole } from '@/models';
+import { transformColumnsToArray } from '@/services/actions/queries/ColumnSelectorBuilder';
+import { IPreference } from '@/models';
 import { DatabaseKnex, ErrorDatabase, Transaction } from '@/services';
 import { ErrorEntity, MessageError } from '@/utils';
 
 /**
- * IColumnsRole
+ * IColumnsPreference
  */
-export interface IColumnsRole {
-    name: boolean,
+export interface IColumnsPreference {
+    name: boolean;
+    symbol: boolean;
     id: boolean | string,
 }
 /**
  * Table Name
  */
-export const tableName = 'ROLE';
+export const tableName = 'PREFERENCE';
 
 /**
- * Role class : is the class that contains the queries for the table ROLE
+ * Preference class : is the class that contains the queries for the table PREFRENCE
  */
-export class Role {
+export class Preference {
     /**
-     * Get Role
-     * @param roleReflectToFind
+     * Get Preference
+     * @param preferenceReflectToFind
      * @param columns
-     * @return Promise<IRole[]>
+     * @return Promise<IPreference[]>
      */
-    public static async get(roleReflectToFind: Partial<IRole>, columns: Partial<IColumnsRole>) : Promise<IRole[]> {
+    public static async get(preferenceReflectToFind: Partial<IPreference>, columns: Partial<IColumnsPreference>) : Promise<IPreference[]> {
         return DatabaseKnex.getInstance()
             .select(transformColumnsToArray(columns))
-            .where(roleReflectToFind).from(tableName)
+            .where(preferenceReflectToFind).from(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
             });
     }
 
     /**
-     * Update Role
-     * @param roleReflectToUpdate
-     * @param roleReflectToFind
+     * Update Preference
+     * @param preferenceReflectToUpdate
+     * @param preferenceReflectToFind
      */
-    public static async update(roleReflectToUpdate: Partial<IRole>, roleReflectToFind: Partial<IRole>) {
+    public static async update(preferenceReflectToUpdate: Partial<IPreference>, preferenceReflectToFind: Partial<IPreference>) {
         return DatabaseKnex.getInstance()
-            .update(roleReflectToUpdate)
-            .where(roleReflectToFind)
+            .update(preferenceReflectToUpdate)
+            .where(preferenceReflectToFind)
             .from(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
             });
     }
     /**
-     * Create Role
-     * @param roleReflectToCreate
+     * Create Preference
+     * @param preferenceReflectToCreate
      */
-    public static async create(roleReflectToCreate: Partial<IRole>) {
+    public static async create(preferenceReflectToCreate: Partial<IPreference>) {
         return DatabaseKnex.getInstance()
-            .insert(roleReflectToCreate)
+            .insert(preferenceReflectToCreate)
             .into(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -65,13 +66,13 @@ export class Role {
     }
 
     /**
-     * Delete Role
-     * @param roleReflectToFind
+     * Delete Preference
+     * @param preferenceReflectToFind
      */
-    public static async delete(roleReflectToFind: Partial<IRole>) {
+    public static async delete(preferenceReflectToFind: Partial<IPreference>) {
         return DatabaseKnex.getInstance()
             .delete()
-            .where(roleReflectToFind)
+            .where(preferenceReflectToFind)
             .from(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -79,16 +80,16 @@ export class Role {
     }
 
     /**
-     * Transaction Get Role
-     * @param roleReflectToFind
+     * Transaction Get Preference
+     * @param preferenceReflectToFind
      * @param columns
      * @param trx
-     * @return Promise<IRole[]>
+     * @return Promise<IPreference[]>
      */
-    public static async transactionGet(roleReflectToFind: Partial<IRole>, columns: Partial<IColumnsRole>, trx: Transaction) : Promise<IRole[]> {
+    public static async transactionGet(preferenceReflectToFind: Partial<IPreference>, columns: Partial<IColumnsPreference>, trx: Transaction) : Promise<IPreference[]> {
         return DatabaseKnex.getInstance()
             .select(transformColumnsToArray(columns))
-            .where(roleReflectToFind).from(tableName)
+            .where(preferenceReflectToFind).from(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -96,15 +97,15 @@ export class Role {
     }
 
     /**
-     * Transaction Update Role
-     * @param roleReflectToUpdate
-     * @param roleReflectToFind
+     * Transaction Update Preference
+     * @param preferenceReflectToUpdate
+     * @param preferenceReflectToFind
      * @param trx
      */
-    public static async transactionUpdate(roleReflectToUpdate: Partial<IRole>, roleReflectToFind: Partial<IRole>, trx: Transaction) {
+    public static async transactionUpdate(preferenceReflectToUpdate: Partial<IPreference>, preferenceReflectToFind: Partial<IPreference>, trx: Transaction) {
         return DatabaseKnex.getInstance()
-            .update(roleReflectToUpdate)
-            .where(roleReflectToFind)
+            .update(preferenceReflectToUpdate)
+            .where(preferenceReflectToFind)
             .from(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
@@ -113,13 +114,13 @@ export class Role {
     }
 
     /**
-     * Transaction Create Role
-     * @param roleReflectToCreate
+     * Transaction Create Preference
+     * @param preferenceReflectToCreate
      * @param trx
      */
-    public static async transactionCreate(roleReflectToCreate: Partial<IRole>, trx: Transaction) {
+    public static async transactionCreate(preferenceReflectToCreate: Partial<IPreference> | Partial<IPreference>[], trx: Transaction) {
         return DatabaseKnex.getInstance()
-            .insert(roleReflectToCreate)
+            .insert(preferenceReflectToCreate)
             .into(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
@@ -128,14 +129,14 @@ export class Role {
     }
 
     /**
-     * Transaction Delete Role
-     * @param roleReflectToFind
+     * Transaction Delete Preference
+     * @param preferenceReflectToFind
      * @param trx
      */
-    public static async transactionDelete(roleReflectToFind: Partial<IRole>, trx: Transaction)  {
+    public static async transactionDelete(preferenceReflectToFind: Partial<IPreference>, trx: Transaction)  {
         return DatabaseKnex.getInstance()
             .delete()
-            .where(roleReflectToFind)
+            .where(preferenceReflectToFind)
             .from(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {

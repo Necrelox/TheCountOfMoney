@@ -1,64 +1,63 @@
 /**
  * Local Modules
  */
+import { transformColumnsToArray } from '@/services/actions/queries/ColumnSelectorBuilder';
+import { IRole } from '@/models';
 import { DatabaseKnex, ErrorDatabase, Transaction } from '@/services';
-import { transformColumnsToArray } from '@/services/actions/ColumnSelectorBuilder';
-import { IModule } from '@/models';
 import { ErrorEntity, MessageError } from '@/utils';
 
 /**
- * IColumnsModule
+ * IColumnsRole
  */
-export interface IColumnsModule {
-    moduleName: boolean,
+export interface IColumnsRole {
+    name: boolean,
     id: boolean | string,
 }
 /**
  * Table Name
  */
-export const tableName = 'MODULE';
+export const tableName = 'ROLE';
 
 /**
- * Module class : is the class that contains the queries for the table MODULE
+ * Role class : is the class that contains the queries for the table ROLE
  */
-export class Module {
+export class Role {
     /**
-     * Get Module
-     * @param moduleReflectToFind
+     * Get Role
+     * @param roleReflectToFind
      * @param columns
-     * @return Promise<IModule[]>
+     * @return Promise<IRole[]>
      */
-    public static async get(moduleReflectToFind: Partial<IModule>, columns: Partial<IColumnsModule>) : Promise<IModule[]> {
+    public static async get(roleReflectToFind: Partial<IRole>, columns: Partial<IColumnsRole>) : Promise<IRole[]> {
         return DatabaseKnex.getInstance()
             .select(transformColumnsToArray(columns))
-            .where(moduleReflectToFind).from(tableName)
+            .where(roleReflectToFind).from(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
             });
     }
 
     /**
-     * Update Module
-     * @param moduleReflectToUpdate
-     * @param moduleReflectToFind
+     * Update Role
+     * @param roleReflectToUpdate
+     * @param roleReflectToFind
      */
-    public static async update(moduleReflectToUpdate: Partial<IModule>, moduleReflectToFind: Partial<IModule>) {
+    public static async update(roleReflectToUpdate: Partial<IRole>, roleReflectToFind: Partial<IRole>) {
         return DatabaseKnex.getInstance()
-            .update(moduleReflectToUpdate)
-            .where(moduleReflectToFind)
+            .update(roleReflectToUpdate)
+            .where(roleReflectToFind)
             .from(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
             });
     }
-
     /**
-     * Create Module
-     * @param moduleReflectToCreate
+     * Create Role
+     * @param roleReflectToCreate
      */
-    public static async create(moduleReflectToCreate: Partial<IModule>) {
+    public static async create(roleReflectToCreate: Partial<IRole>) {
         return DatabaseKnex.getInstance()
-            .insert(moduleReflectToCreate)
+            .insert(roleReflectToCreate)
             .into(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -66,13 +65,13 @@ export class Module {
     }
 
     /**
-     * Delete Module
-     * @param moduleReflectToFind
+     * Delete Role
+     * @param roleReflectToFind
      */
-    public static async delete(moduleReflectToFind: Partial<IModule>) {
+    public static async delete(roleReflectToFind: Partial<IRole>) {
         return DatabaseKnex.getInstance()
             .delete()
-            .where(moduleReflectToFind)
+            .where(roleReflectToFind)
             .from(tableName)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -80,16 +79,16 @@ export class Module {
     }
 
     /**
-     * Transaction Get Module
-     * @param moduleReflectToFind
+     * Transaction Get Role
+     * @param roleReflectToFind
      * @param columns
      * @param trx
-     * @return Promise<IModule[]>
+     * @return Promise<IRole[]>
      */
-    public static async transactionGet(moduleReflectToFind: Partial<IModule>, columns: Partial<IColumnsModule>, trx: Transaction) : Promise<IModule[]> {
+    public static async transactionGet(roleReflectToFind: Partial<IRole>, columns: Partial<IColumnsRole>, trx: Transaction) : Promise<IRole[]> {
         return DatabaseKnex.getInstance()
             .select(transformColumnsToArray(columns))
-            .where(moduleReflectToFind).from(tableName)
+            .where(roleReflectToFind).from(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -97,15 +96,15 @@ export class Module {
     }
 
     /**
-     * Transaction Update Module
-     * @param moduleReflectToUpdate
-     * @param moduleReflectToFind
+     * Transaction Update Role
+     * @param roleReflectToUpdate
+     * @param roleReflectToFind
      * @param trx
      */
-    public static async transactionUpdate(moduleReflectToUpdate: Partial<IModule>, moduleReflectToFind: Partial<IModule>, trx: Transaction) {
+    public static async transactionUpdate(roleReflectToUpdate: Partial<IRole>, roleReflectToFind: Partial<IRole>, trx: Transaction) {
         return DatabaseKnex.getInstance()
-            .update(moduleReflectToUpdate)
-            .where(moduleReflectToFind)
+            .update(roleReflectToUpdate)
+            .where(roleReflectToFind)
             .from(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
@@ -114,13 +113,13 @@ export class Module {
     }
 
     /**
-     * Transaction Create Module
-     * @param moduleReflectToCreate
+     * Transaction Create Role
+     * @param roleReflectToCreate
      * @param trx
      */
-    public static async transactionCreate(moduleReflectToCreate: Partial<IModule>, trx: Transaction) {
+    public static async transactionCreate(roleReflectToCreate: Partial<IRole>, trx: Transaction) {
         return DatabaseKnex.getInstance()
-            .insert(moduleReflectToCreate)
+            .insert(roleReflectToCreate)
             .into(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
@@ -129,14 +128,14 @@ export class Module {
     }
 
     /**
-     * Transaction Delete Module
-     * @param moduleReflectToFind
+     * Transaction Delete Role
+     * @param roleReflectToFind
      * @param trx
      */
-    public static async transactionDelete(moduleReflectToFind: Partial<IModule>, trx: Transaction)  {
+    public static async transactionDelete(roleReflectToFind: Partial<IRole>, trx: Transaction)  {
         return DatabaseKnex.getInstance()
             .delete()
-            .where(moduleReflectToFind)
+            .where(roleReflectToFind)
             .from(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {

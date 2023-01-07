@@ -15,7 +15,7 @@ import {
 } from './actions';
 import { ErrorEntity, MessageError, PasswordEncrypt, Token as tokenTools } from '@/utils';
 
-export class Account {
+export class AccountService {
 
     /**
      * Add or update the ip of the user

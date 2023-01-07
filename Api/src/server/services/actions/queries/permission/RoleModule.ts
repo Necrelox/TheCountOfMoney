@@ -1,7 +1,7 @@
 /**
  * Local Modules
  */
-import { transformColumnsToArray } from '@/services/actions/ColumnSelectorBuilder';
+import { transformColumnsToArray } from '@/services/actions/queries/ColumnSelectorBuilder';
 import { IRoleModule } from '@/models';
 import { DatabaseKnex, ErrorDatabase, Transaction } from '@/services';
 import { ErrorEntity, MessageError } from '@/utils';
