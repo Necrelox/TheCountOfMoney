@@ -49,7 +49,7 @@ export class CryptoController {
                 .isString().withMessage('crypto must be a string').bail(),
             bearerToken, blackListedChecker, permissionChecker(['admin', 'origin-crypto-preferences.write']), this.postMethodPreference);
 
-        this._router.get('/preference', bearerToken, blackListedChecker, permissionChecker(['admin', 'origin-crypto-preferences.read']), this.getMethodPreference);
+        this._router.get('/preference', this.getMethodPreference);
 
         this._router.delete('/preference',
             body('cryptoId')
