@@ -5,73 +5,19 @@
   ],
   "modules": [
     "admin",
-
     "account",
     "account.read",
     "account.update",
-
-    "user",
-    "user.write",
-    "user.read",
-    "user.update",
-    "user.delete",
-
-    "userDevice",
-    "userDevice.write",
-    "userDevice.read",
-    "userDevice.update",
-    "userDevice.delete",
-
-    "userHistory",
-    "userHistory.write",
-    "userHistory.read",
-    "userHistory.update",
-    "userHistory.delete",
-
-    "userIp",
-    "userIp.write",
-    "userIp.read",
-    "userIp.update",
-    "userIp.delete",
-
-    "userLogo",
-    "userLogo.write",
-    "userLogo.read",
-    "userLogo.update",
-    "userLogo.delete",
-
-    "userMacAddress",
-    "userMacAddress.write",
-    "userMacAddress.read",
-    "userMacAddress.update",
-    "userMacAddress.delete",
-
-    "userRole",
-    "userRole.write",
-    "userRole.read",
-    "userRole.update",
-    "userRole.delete",
-
-    "userToken",
-    "userToken.write",
-    "userToken.read",
-    "userToken.update",
-    "userToken.delete",
-
-    "role",
-    "role.write",
-    "role.read",
-    "role.update",
-    "role.delete",
-
-    "module",
-    "module.write",
-    "module.read",
-    "module.update",
-    "module.delete",
-
     "crypto-actu-rss",
-    "crypto-preference"
+
+    "origin-crypto-preferences.write",
+    "origin-crypto-preferences.read",
+
+    "user-crypto-preferences",
+    "user-crypto-preferences.write",
+    "user-crypto-preferences.read",
+    "user-crypto-preferences.delete"
+
   ],
   "roleModule": {
     "admin": [
@@ -80,7 +26,7 @@
     "user": [
       "account",
       "crypto-actu-rss",
-      "crypto-preference"
+      "origin-crypto-preferences.read"
     ]
   }
 }
