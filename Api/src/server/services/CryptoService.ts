@@ -18,6 +18,8 @@ export class CryptoService {
 
     public static async addPreference(crypto: IPreference[]) {
         return DatabaseKnex.getInstance().transaction(async (trx: Transaction) => {
+
+            await Preference.transactionDeleteAll(trx);
             await Preference.transactionCreate(crypto, trx);
         });
     }
@@ -45,6 +47,7 @@ export class CryptoService {
                 };
             });
 
+            await UserPreference.transactionDeleteAll(trx);
             await UserPreference.transactionCreate(userPref, trx);
         });
     }

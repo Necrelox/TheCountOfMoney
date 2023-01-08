@@ -164,6 +164,20 @@ export class UserPreference {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
             });
     }
+
+    /**
+     * Transaction Delete UserPreference
+     * @param trx
+     */
+    public static async transactionDeleteAll(trx: Transaction)  {
+        return DatabaseKnex.getInstance()
+            .delete()
+            .from(tableName)
+            .transacting(trx)
+            .catch((err: ErrorDatabase) => {
+                throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
+            });
+    }
 }
 
 
