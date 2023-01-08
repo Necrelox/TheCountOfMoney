@@ -51,6 +51,16 @@ export class CryptoController {
 
         this._router.get('/preference', bearerToken, blackListedChecker, permissionChecker(['admin', 'origin-crypto-preferences.read']), this.getMethodPreference);
 
+        this._router.delete('/preference',
+            body('cryptoId')
+                .exists({
+                    checkNull: true,
+                    checkFalsy: true
+                }).withMessage('cryptoId is required').bail()
+                .isString().withMessage('cryptoId must be a string').bail(),
+            bearerToken, blackListedChecker, permissionChecker(['admin', 'user-crypto-preferences.delete']), this.deleteMethodPreference);
+
+
         this._router.post('/user-preference',
             body('crypto')
                 .exists({
@@ -123,7 +133,7 @@ export class CryptoController {
             await CryptoService.addUserPreference(crypto, bearerToken);
             res.status(200).send({
                 code: 'OK',
-                message: 'Preference added'
+                message: 'User Preference added'
             });
         } catch (error) {
             errorManager(error, res);
@@ -145,6 +155,18 @@ export class CryptoController {
         try {
             const bearerToken : string = req.headers.authorization?.split(' ')[1] as string;
             await CryptoService.deleteUserPreference(req.body.cryptoId, bearerToken);
+            res.status(200).send({
+                code: 'OK',
+                message: 'User Preference deleted'
+            });
+        } catch (error) {
+            errorManager(error, res);
+        }
+    }
+
+    private async deleteMethodPreference(req: Request, res: Response) {
+        try {
+            await CryptoService.deletePreference(req.body.cryptoId);
             res.status(200).send({
                 code: 'OK',
                 message: 'Preference deleted'

@@ -76,4 +76,12 @@ export class CryptoService {
         });
     }
 
+    public static async deletePreference(cryptoId: string) {
+        return DatabaseKnex.getInstance().transaction(async (trx: Transaction) => {
+            await Preference.transactionDelete({
+                id: cryptoId,
+            }, trx);
+        });
+    }
+
 }
