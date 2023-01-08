@@ -8,6 +8,12 @@ interface IFavoritesState {
   favt: string[];
 }
 
+interface IPreferenceData {
+  id: string;
+  symbol: string;
+  name: string;
+}
+
 class Favorites extends React.Component<{}, IFavoritesState> {
   private isLoading: boolean;
   
@@ -22,9 +28,12 @@ class Favorites extends React.Component<{}, IFavoritesState> {
   async componentDidMount() {
     try{
       this.isLoading = true;
-      let prefs;
-      if(localStorage.getItem('token') != null)
+      let prefs: IPreferenceData[];
+      if(localStorage.getItem('token') != null){
         prefs = (await SqlHelper.getUserPrefs()).preferences;
+        if(prefs == null)
+          prefs = (await SqlHelper.getAdminPrefs()).preferences;
+      }
       else{
         prefs = (await SqlHelper.getAdminPrefs()).preferences;
       }

@@ -22,6 +22,12 @@ interface IState {
     
 }
 
+interface IPreferenceData {
+    id: string;
+    symbol: string;
+    name: string;
+  }
+
 IgrFinancialChartModule.register();
 
 export default class FinancialChartStockIndexChart extends React.Component<{}, IState> {
@@ -55,10 +61,11 @@ export default class FinancialChartStockIndexChart extends React.Component<{}, I
     
     async componentDidMount() {
         try {
-            let favorites;
+            let favorites: IPreferenceData[];
             if(localStorage.getItem('token') != null) {
-                console.log('user token found');
                 favorites = (await SqlHelper.getUserPrefs()).preferences;
+                if(favorites == null)
+                    favorites = (await SqlHelper.getAdminPrefs()).preferences;
             }
             else{
                 favorites = (await SqlHelper.getAdminPrefs()).preferences;
