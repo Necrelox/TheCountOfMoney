@@ -26,7 +26,10 @@
     "user": [
       "account",
       "crypto-actu-rss",
-      "origin-crypto-preferences.read"
+      "origin-crypto-preferences.read",
+      "user-crypto-preferences.write",
+      "user-crypto-preferences.read",
+      "user-crypto-preferences.delete"
     ]
   }
 }

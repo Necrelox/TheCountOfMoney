@@ -68,9 +68,9 @@ export class CryptoController {
                     checkFalsy: true
                 }).withMessage('crypto is required').bail()
                 .isString().withMessage('crypto must be a string').bail(),
-            bearerToken, blackListedChecker, permissionChecker(['admin', 'user-crypto-preferences.write']), this.postMethodUserPreference);
+            bearerToken, blackListedChecker, permissionChecker(['admin', 'user-crypto-preferences', 'user-crypto-preferences.write']), this.postMethodUserPreference);
 
-        this._router.get('/user-preference', bearerToken, blackListedChecker, permissionChecker(['admin', 'user-crypto-preferences.read']), this.getMethodUserPreference);
+        this._router.get('/user-preference', bearerToken, blackListedChecker, permissionChecker(['admin', 'user-crypto-preferences', 'user-crypto-preferences.read']), this.getMethodUserPreference);
 
         this._router.delete('/user-preference',
             body('cryptoId')
@@ -79,7 +79,7 @@ export class CryptoController {
                     checkFalsy: true
                 }).withMessage('cryptoId is required').bail()
                 .isString().withMessage('cryptoId must be a string').bail(),
-            bearerToken, blackListedChecker, permissionChecker(['admin', 'user-crypto-preferences.delete']), this.deleteMethodUserPreference);
+            bearerToken, blackListedChecker, permissionChecker(['admin', 'user-crypto-preferences', 'user-crypto-preferences.delete']), this.deleteMethodUserPreference);
 
     }
 
