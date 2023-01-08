@@ -36,6 +36,10 @@ class NavBar extends React.Component<{}, IState> {
     componentDidMount(): void {
         if(this.expiryDate < this.currentDate) {
             this.expired = true;
+            localStorage.removeItem('expiryToken');
+            localStorage.removeItem('username');
+            localStorage.removeItem('userRole');
+            localStorage.removeItem('token');
         } else {
             this.expired = false;
         }

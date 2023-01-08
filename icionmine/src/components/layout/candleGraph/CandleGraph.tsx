@@ -22,6 +22,12 @@ interface IState {
     
 }
 
+interface IPreferenceData {
+    id: string;
+    symbol: string;
+    name: string;
+  }
+
 IgrFinancialChartModule.register();
 
 export default class FinancialChartStockIndexChart extends React.Component<{}, IState> {
@@ -55,15 +61,22 @@ export default class FinancialChartStockIndexChart extends React.Component<{}, I
     
     async componentDidMount() {
         try {
-            let favorites = (await SqlHelper.getUserPrefs()).preferences;
-            if(favorites == null){
+            let favorites: IPreferenceData[];
+            if(localStorage.getItem('token') != null) {
+                favorites = (await SqlHelper.getUserPrefs()).preferences;
+                if(favorites == null)
+                    favorites = (await SqlHelper.getAdminPrefs()).preferences;
+            }
+            else{
                 favorites = (await SqlHelper.getAdminPrefs()).preferences;
-
             }
             if(favorites.length < 4){
-                for(let i = favorites.length; i < 4; i++){
-                    this.setState({favorites: [...this.state.favorites, favorites[i].id]});
+                
+                let smallData = [];
+                for(let i = 0; i < favorites.length; i++){
+                    smallData.push(favorites[i].id);          
                 }
+                this.setState({favorites: smallData});
             }else {
                 this.setState({favorites: [favorites[0].id, favorites[1].id, favorites[2].id, favorites[3].id]});
             }
