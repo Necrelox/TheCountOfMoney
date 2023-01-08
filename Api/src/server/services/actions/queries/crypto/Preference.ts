@@ -12,7 +12,7 @@ import { ErrorEntity, MessageError } from '@/utils';
 export interface IColumnsPreference {
     name: boolean;
     symbol: boolean;
-    id: boolean | string,
+    id: boolean,
 }
 /**
  * Table Name
@@ -90,6 +90,16 @@ export class Preference {
         return DatabaseKnex.getInstance()
             .select(transformColumnsToArray(columns))
             .where(preferenceReflectToFind).from(tableName)
+            .transacting(trx)
+            .catch((err: ErrorDatabase) => {
+                throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
+            });
+    }
+
+    public static async transactionGetAll(columns: Partial<IColumnsPreference>, trx: Transaction) : Promise<IPreference[]> {
+        return DatabaseKnex.getInstance()
+            .select(transformColumnsToArray(columns))
+            .from(tableName)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
