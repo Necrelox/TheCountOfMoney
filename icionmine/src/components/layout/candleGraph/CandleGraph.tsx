@@ -53,12 +53,15 @@ export default class FinancialChartStockIndexChart extends React.Component<{}, I
         }
     }
     
-    public async componentDidMount() {
+    async componentDidMount() {
         try {
-            this.setState({favorites: await SqlHelper.getFavorites()});
-            if(!this.state.favorites) throw new ErrorEntity(MessageError.CANDLEGRAPH_NO_FAVORITES);
-            this.setState({selectedItem: this.state.favorites[0]});
-            this.setState({data: await SqlHelper.loadGraphData(this.state.favorites[0])}); 
+            let favorites = await SqlHelper.getFavorites();
+            console.log(favorites);
+            this.setState({favorites: favorites});
+            console.log(this.state.favorites);
+            if(!favorites) throw new ErrorEntity(MessageError.CANDLEGRAPH_NO_FAVORITES);
+            this.setState({selectedItem: favorites[0]});
+            this.setState({data: await SqlHelper.loadGraphData(favorites[0])}); 
             this.isLoading = false;
         } catch (e) {
             console.log(e);

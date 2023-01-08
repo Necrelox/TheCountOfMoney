@@ -56,6 +56,7 @@ class NavBar extends React.Component<{}, IState> {
                 >
                 <Nav.Link href="/">Home</Nav.Link>
                 <Nav.Link href="graphs">Graphs</Nav.Link>
+                <Nav.Link href="news">News</Nav.Link>
                 {(localStorage.getItem('userRole') == "user" || localStorage.getItem('userRole') == "admin") && !this.state.isExpired
                 ? <Nav.Link href="preferences">Preferences</Nav.Link> : null}
                 </Nav>

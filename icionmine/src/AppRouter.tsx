@@ -5,6 +5,7 @@ import Login from "./views/Login";
 import SignIn from "./views/SignIn";
 import Logout from "./views/Logout";
 import Preferences from "./views/Preferences";
+import News from "./views/News";
 
 function AppRouter() {
   return (
@@ -15,6 +16,7 @@ function AppRouter() {
             <Route path="/login" element={< Login />} />
             <Route path="/register" element={< SignIn />} />
             <Route path="/logout" element={< Logout />} />
+            <Route path="/news" element={< News />} />
             {localStorage.getItem('userRole') == "user" || localStorage.getItem('userRole') == "admin" 
             ? <Route path="/preferences" element={< Preferences />} /> 
             : null}

@@ -56,6 +56,19 @@ interface ITokenPayload {
   };
 }
 
+interface IAllNewsData {
+  code: string;
+  articles: INewsData[];
+}
+
+interface INewsData {
+  category: string[];
+  title: string;
+  description: string;
+  pubDate: string;
+  content: string;
+}
+
 export class SqlHelper {
   
   public static async getFavorites() : Promise<string[]> {
@@ -174,9 +187,24 @@ export class SqlHelper {
     if (activityMessage) bodyParameters.activityMessage = activityMessage;
 
     const result = await axios.put(`http://localhost:3973/account/me`, bodyParameters, config );
-    console.log(result);
     if (result.status === 200) {
-      console.log(result.data);
+      if (!result.data) throw new ErrorEntity(MessageError.SIGNUP_NO_DATA_FOUND);
+      return result.data;
+    } else {
+      throw new ErrorEntity(MessageError.SIGNUP);
+    }
+
+  
+  }
+
+  public static async getNews() : Promise<IAllNewsData> {
+    const config = {
+      headers: { 
+        Authorization: 'Bearer ' + localStorage.getItem("token")
+     }
+    };
+    const result = await axios.get(`http://localhost:3973/crypto/actu-rss`, config );
+    if (result.status === 200) {
       if (!result.data) throw new ErrorEntity(MessageError.SIGNUP_NO_DATA_FOUND);
       return result.data;
     } else {
