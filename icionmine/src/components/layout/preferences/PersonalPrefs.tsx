@@ -30,13 +30,14 @@ export default class PersonalPrefs extends React.Component<IProps, IState> {
 
   async componentDidMount() {
     try{
-      //get all users coins
-
-      
-      // this.isLoading = true;
-        // const result: IAllCoinsData[] = await SqlHelper.getAllCoins();
-        // this.setState({cryptoList: result});
-        // this.isLoading = false;
+      if(localStorage.getItem('userRole') == 'admin') {
+        const result: IAllCoinsData[] = (await SqlHelper.getAdminPrefs()).preferences;
+        this.setState({cryptoList: result});
+      }
+      else if(localStorage.getItem('userRole') == 'user') {
+        const result: IAllCoinsData[] = (await SqlHelper.getUserPrefs()).preferences;
+        this.setState({cryptoList: result});
+      }
     }
     catch(e){
         console.log(e);
@@ -64,15 +65,22 @@ export default class PersonalPrefs extends React.Component<IProps, IState> {
   }
 
   sendPrefs = async () => {
-    //send to database
-    console.log(this.state.cryptoList);
+    try{
+      if(localStorage.getItem('userRole') == 'admin') {
+        await SqlHelper.editAdminPref(this.state.cryptoList);
+      }
+      else if(localStorage.getItem('userRole') == 'user') {
+        await SqlHelper.editUserPref(this.state.cryptoList);
+      }
+    }
+    catch(e){
+        console.log(e);
+    }
   }
   
   render() {
     return (
       <div className='table-container'>
-        {/* add a search bar */}
-        {/* <input type='text' placeholder='Search...' className='search-bar' onChange={this.refineSearch}/> */}
         <table>
             <thead>
               <tr>

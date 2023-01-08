@@ -33,11 +33,16 @@ export default class APIChoice extends React.Component<IProps, IState> {
   async componentDidMount() {
     try{
         this.isLoading = true;
-        //if admin is logged in, get all coins
-        //if user is logged in, get all coins that admin has added
-        const result: IAllCoinsData[] = await SqlHelper.getAllCoins();
-        this.allCoins = result;
-        this.setState({coins: result});
+        if(localStorage.getItem('userRole') == 'admin') {
+          const result: IAllCoinsData[] = await SqlHelper.getAllCoins();
+          this.allCoins = result;
+          this.setState({coins: result});
+        }
+        else if(localStorage.getItem('userRole') == 'user') {
+          const result: IAllCoinsData[] = (await SqlHelper.getAdminPrefs()).preferences;;
+          this.allCoins = result;
+          this.setState({coins: result});
+        }
         this.isLoading = false;
     }
     catch(e){

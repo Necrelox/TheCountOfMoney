@@ -22,7 +22,17 @@ class Favorites extends React.Component<{}, IFavoritesState> {
   async componentDidMount() {
     try{
       this.isLoading = true;
-      this.setState({favt: await SqlHelper.getFavorites()});
+      let prefs = (await SqlHelper.getUserPrefs()).preferences;
+      if(prefs == null) {
+        prefs = (await SqlHelper.getAdminPrefs()).preferences;
+      }
+      if(prefs.length < 4) {
+        for(let i = prefs.length; i < 4; i++) {
+          this.setState({favt: [...this.state.favt, prefs[i].id]});
+        }
+      }else {
+        this.setState({favt: [prefs[0].id, prefs[1].id, prefs[2].id, prefs[3].id]});
+      }
       this.isLoading = false;
     }
     catch(e){

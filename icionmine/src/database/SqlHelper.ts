@@ -69,6 +69,23 @@ interface INewsData {
   content: string;
 }
 
+interface IAllPrefData {
+  code: string;
+  preferences: IPreferenceData[];
+}
+
+
+interface IPostPrefData {
+  code: string;
+  message: IPreferenceData[];
+}
+
+interface IPreferenceData {
+  id: string;
+  symbol: string;
+  name: string;
+}
+
 export class SqlHelper {
   
   public static async getFavorites() : Promise<string[]> {
@@ -212,5 +229,77 @@ export class SqlHelper {
     }
 
   
+  }
+
+  public static async getAdminPrefs() : Promise<IAllPrefData> {
+    const config = {
+      headers: { 
+        Authorization: 'Bearer ' + localStorage.getItem("token")
+     }
+    };
+    const result = await axios.get(`http://localhost:3973/crypto/preference`, config );
+    if (result.status === 200) {
+      if (!result.data) throw new ErrorEntity(MessageError.SIGNUP_NO_DATA_FOUND);
+      return result.data;
+    } else {
+      throw new ErrorEntity(MessageError.SIGNUP);
+    }
+  }
+
+
+  public static async getUserPrefs() : Promise<IAllPrefData> {
+    const config = {
+      headers: { 
+        Authorization: 'Bearer ' + localStorage.getItem("token")
+     }
+    };
+    const result = await axios.get(`http://localhost:3973/crypto/user-preference`, config );
+    if (result.status === 200) {
+      if (!result.data) throw new ErrorEntity(MessageError.SIGNUP_NO_DATA_FOUND);
+      return result.data;
+    } else {
+      throw new ErrorEntity(MessageError.SIGNUP);
+    }
+  }
+
+  public static async editAdminPref(prefsList: IPreferenceData[]) : Promise<IPostPrefData> {
+    const config = {
+      headers: { 
+        Authorization: 'Bearer ' + localStorage.getItem("token")
+     }
+    };
+    
+    let bodyParameters: {crypto: string} = {
+      crypto: JSON.stringify(prefsList)
+    };
+    console.log(bodyParameters);
+    const result = await axios.post(`http://localhost:3973/crypto/preference`, bodyParameters, config);
+    if (result.status === 200) {
+      if (!result.data) throw new ErrorEntity(MessageError.SIGNUP_NO_DATA_FOUND);
+      return result.data;
+    } else {
+      throw new ErrorEntity(MessageError.SIGNUP);
+    }
+  }
+
+  
+  public static async editUserPref(prefsList: IPreferenceData[]) : Promise<IPostPrefData> {
+    const config = {
+      headers: { 
+        Authorization: 'Bearer ' + localStorage.getItem("token")
+     }
+    };
+
+    let bodyParameters: {crypto: string} = {
+      crypto: JSON.stringify(prefsList)
+    };
+    console.log(bodyParameters);
+    const result = await axios.post(`http://localhost:3973/crypto/user-preference`, bodyParameters, config);
+    if (result.status === 200) {
+      if (!result.data) throw new ErrorEntity(MessageError.SIGNUP_NO_DATA_FOUND);
+      return result.data;
+    } else {
+      throw new ErrorEntity(MessageError.SIGNUP);
+    }
   }
 }

@@ -55,13 +55,22 @@ export default class FinancialChartStockIndexChart extends React.Component<{}, I
     
     async componentDidMount() {
         try {
-            let favorites = await SqlHelper.getFavorites();
-            console.log(favorites);
-            this.setState({favorites: favorites});
+            let favorites = (await SqlHelper.getUserPrefs()).preferences;
+            if(favorites == null){
+                favorites = (await SqlHelper.getAdminPrefs()).preferences;
+
+            }
+            if(favorites.length < 4){
+                for(let i = favorites.length; i < 4; i++){
+                    this.setState({favorites: [...this.state.favorites, favorites[i].id]});
+                }
+            }else {
+                this.setState({favorites: [favorites[0].id, favorites[1].id, favorites[2].id, favorites[3].id]});
+            }
             console.log(this.state.favorites);
             if(!favorites) throw new ErrorEntity(MessageError.CANDLEGRAPH_NO_FAVORITES);
-            this.setState({selectedItem: favorites[0]});
-            this.setState({data: await SqlHelper.loadGraphData(favorites[0])}); 
+            this.setState({selectedItem: favorites[0].name});
+            this.setState({data: await SqlHelper.loadGraphData(favorites[0].id)}); 
             this.isLoading = false;
         } catch (e) {
             console.log(e);
