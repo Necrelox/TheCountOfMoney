@@ -38,8 +38,7 @@ export class CryptoController {
      * @return {void}
      */
     private initializeCryptoController() {
-        this._router.get('/actu-rss', bearerToken, blackListedChecker, permissionChecker(['admin', 'crypto-actu-rss']), this.getMethodActuRss);
-
+        this._router.get('/actu-rss', this.getMethodActuRss);
         this._router.post('/preference',
             body('crypto')
                 .exists({
@@ -48,9 +47,7 @@ export class CryptoController {
                 }).withMessage('crypto is required').bail()
                 .isString().withMessage('crypto must be a string').bail(),
             bearerToken, blackListedChecker, permissionChecker(['admin', 'origin-crypto-preferences.write']), this.postMethodPreference);
-
         this._router.get('/preference', this.getMethodPreference);
-
         this._router.delete('/preference',
             body('cryptoId')
                 .exists({
@@ -140,11 +137,12 @@ export class CryptoController {
         }
     }
 
-    private async getMethodUserPreference(_req: Request, res: Response) {
+    private async getMethodUserPreference(req: Request, res: Response) {
         try {
+            const bearerToken : string = req.headers.authorization?.split(' ')[1] as string;
             res.status(200).send({
                 code: 'OK',
-                preferences: await CryptoService.getUserPreference()
+                preferences: await CryptoService.getUserPreference(bearerToken)
             });
         } catch (error) {
             errorManager(error, res);

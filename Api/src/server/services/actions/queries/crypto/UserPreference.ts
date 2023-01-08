@@ -106,11 +106,12 @@ export class UserPreference {
             });
     }
 
-    public static async transactionGetFKPreference(columns: Partial<IColumnsUserPreference>, trx: Transaction) : Promise<IPreference[]> {
+    public static async transactionGetFKPreference(columns: Partial<IColumnsUserPreference>, userUuid: Buffer, trx: Transaction) : Promise<IPreference[]> {
         return DatabaseKnex.getInstance()
             .select(transformColumnsToArray(columns))
             .from(tableName)
             .leftJoin('PREFERENCE', 'USER_PREFERENCE.preferenceId', 'PREFERENCE.id')
+            .where('USER_PREFERENCE.userUuid', userUuid)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);
@@ -167,12 +168,14 @@ export class UserPreference {
 
     /**
      * Transaction Delete UserPreference
+     * @param userUuid
      * @param trx
      */
-    public static async transactionDeleteAll(trx: Transaction)  {
+    public static async transactionDeleteAll(userUuid: Buffer, trx: Transaction)  {
         return DatabaseKnex.getInstance()
             .delete()
             .from(tableName)
+            .where('userUuid', userUuid)
             .transacting(trx)
             .catch((err: ErrorDatabase) => {
                 throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);

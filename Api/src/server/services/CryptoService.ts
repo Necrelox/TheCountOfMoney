@@ -18,9 +18,12 @@ export class CryptoService {
 
     public static async addPreference(crypto: IPreference[]) {
         return DatabaseKnex.getInstance().transaction(async (trx: Transaction) => {
-
-            await Preference.transactionDeleteAll(trx);
-            await Preference.transactionCreate(crypto, trx);
+            const actualCrypto: Pick<IPreference, 'id'>[] = await Preference.transactionGetAll({}, trx);
+            const cryptoToAdd: Partial<IPreference>[] = crypto.filter((crypto) => {
+                return !actualCrypto.find((actualCrypto) => actualCrypto.id === crypto.id);
+            });
+            if (cryptoToAdd.length > 0)
+                await Preference.transactionCreate(cryptoToAdd, trx);
         });
     }
 
@@ -47,18 +50,25 @@ export class CryptoService {
                 };
             });
 
-            await UserPreference.transactionDeleteAll(trx);
+            await UserPreference.transactionDeleteAll(tokenFKUser.userUuid, trx);
             await UserPreference.transactionCreate(userPref, trx);
         });
     }
 
-    public static async getUserPreference(): Promise<IPreference[]> {
+    public static async getUserPreference(bearerToken: string): Promise<IPreference[]> {
         return DatabaseKnex.getInstance().transaction(async (trx: Transaction) => {
+            const [tokenFKUser]: Pick<ITokenFKUser, 'userUuid'>[] = await Token.transactionGetFKUser({
+                token: bearerToken,
+            }, {
+                userUuid: true,
+            }, trx);
+            if (!tokenFKUser)
+                throw new ErrorEntity(MessageError.CLIENT_TOKEN_NOT_FOUND);
             return await UserPreference.transactionGetFKPreference({
                 name: true,
                 id: 'PREFERENCE.id',
                 symbol: true,
-            }, trx);
+            }, tokenFKUser.userUuid,trx);
         });
     }
 
