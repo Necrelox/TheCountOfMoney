@@ -53,7 +53,7 @@ export class CryptoService {
         return DatabaseKnex.getInstance().transaction(async (trx: Transaction) => {
             return await UserPreference.transactionGetFKPreference({
                 name: true,
-                id: 'USER_PREFERENCE.id',
+                id: 'PREFERENCE.id',
                 symbol: true,
             }, trx);
         });
