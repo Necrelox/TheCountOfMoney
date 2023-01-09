@@ -1,127 +1,140 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import axios from 'axios';
 import { IgrFinancialChart } from 'igniteui-react-charts';
 import { IgrFinancialChartModule } from 'igniteui-react-charts';
+import { SqlHelper } from '@/database/SqlHelper';
+import { MessageError, ErrorEntity } from '@/utils';
 
 IgrFinancialChartModule.register();
 
-interface Props {
+interface IGraphData {
+    date: Date;
+    open: number;
+    high: number;
+    low: number;
+    close: number;
+};
 
+interface IState {
+    data: IGraphData[],
+    selectedItem: string;
+    favorites: string[];
+    
 }
 
-interface State {
-    apiData: any[];
-    data: any[];
-
-}
+interface IPreferenceData {
+    id: string;
+    symbol: string;
+    name: string;
+  }
 
 IgrFinancialChartModule.register();
 
-export default class FinancialChartStockIndexChart extends React.Component<Props, State> {
-    private isLoading: boolean = true;
-
-    constructor(props: Props) {
+export default class FinancialChartStockIndexChart extends React.Component<{}, IState> {
+    private isLoading: boolean;
+    
+    constructor(props: {}) {
         super(props);
+        this.isLoading = true;
         this.state = { 
             data: [
-                {Date: '23/9/2022', Open: 16071.06, High: 16073.23, Low: 16068.98, Close: 16070.75},
-                {Date: '23/9/2022', Open: 16071.06, High: 16073.23, Low: 16068.98, Close: 16070.75}
+                {date: new Date(1671539471), open: 16071.06, high: 16073.23, low: 16068.98, close: 16070.75},
+                {date: new Date(1671539471), open: 16071.06, high: 16073.23, low: 16068.98, close: 16070.75},
             ],
-            apiData: [
-                [
-                  1670328000000,
-                  16174.28,
-                  16174.28,
-                  16167.98,
-                  16167.98
-                ],
-                [
-                  1670342400000,
-                  16161.68,
-                  16186.28,
-                  16161.68,
-                  16186.28
-                ],
-                [
-                  1670356800000,
-                  16190.59,
-                  16223.16,
-                  16185.2,
-                  16223.16
-                ]
-              ]
+            selectedItem: 'artemis',
+            favorites: []
         }
     }
-
-    private parseData(data: any[]) {
-        this.state.data.splice(0, this.state.data.length);
-        for (const item of this.state.apiData) {
-            const date = new Date(item[0]).toLocaleString();
-            const open = item[1];
-            const high = item[2];
-            const low = item[3];
-            const close = item[4];
-            this.state.data.push({ Date: date, Open: open, High: high, Low: low, Close: close});
+    
+    private changeSelected = async (event: Required<React.ChangeEvent<HTMLSelectElement>>) => {
+        try {
+            if(!event.target.value) throw new ErrorEntity(MessageError.CANDLEGRAPH_NO_EVENT_TARGET_VALUE);
+            this.setState({selectedItem: event.target.value});
+            this.isLoading = true;
+            this.setState({data: await SqlHelper.loadGraphData(event.target.value)}); 
+            this.isLoading = false;
+        }
+        catch (e) {
+            console.log(e);
         }
     }
-
-    // async loadCrypto() {
-    //     try {
-    //       this.isLoading = true;
-    //       const result = await axios.get(`https://api.coingecko.com/api/v3/coins/${this.props.crypto}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`);
-    //       if (result.status === 200) {
-    //         if (!result.data) throw new Error('No data');
-    //         const crypto = result.data;
-    //         // this.setState({ apiData });
-    //         this.isLoading = false;
-    //       } else {
-    //         throw new Error(`Error while loading crypto ${result.status}`);
-    //       }
-    //     } catch (e) {
-    //       this.isLoading = false;
-    //       // emit vers le parents, et le parent fais un toast
-    //     }
-    //   }
-
-    public componentDidMount() {
-        this.parseData(this.state.apiData);
-        console.log(this.state.data);
+    
+    async componentDidMount() {
+        try {
+            let favorites: IPreferenceData[];
+            if(localStorage.getItem('token') != null) {
+                favorites = (await SqlHelper.getUserPrefs()).preferences;
+                if(favorites == null)
+                    favorites = (await SqlHelper.getAdminPrefs()).preferences;
+            }
+            else{
+                favorites = (await SqlHelper.getAdminPrefs()).preferences;
+            }
+            if(favorites.length < 4){
+                
+                let smallData = [];
+                for(let i = 0; i < favorites.length; i++){
+                    smallData.push(favorites[i].id);          
+                }
+                this.setState({favorites: smallData});
+            }else {
+                this.setState({favorites: [favorites[0].id, favorites[1].id, favorites[2].id, favorites[3].id]});
+            }
+            console.log(this.state.favorites);
+            if(!favorites) throw new ErrorEntity(MessageError.CANDLEGRAPH_NO_FAVORITES);
+            this.setState({selectedItem: favorites[0].name});
+            this.setState({data: await SqlHelper.loadGraphData(favorites[0].id)}); 
+            this.isLoading = false;
+        } catch (e) {
+            console.log(e);
+        }
+        
     }
-
+    
     public render(): JSX.Element {
+        if(this.isLoading) 
+        return (<div>Loading...</div>);
+        else
         return (
-        <div className="container sample" >
-            {/* <div className="container" >
-                <IgrFinancialChart
-                    width="100%"
-                    height="400px"
-                    isToolbarVisible={false}
-                    chartType="Candle"
-                    chartTitle="S&P 500"
-                    titleAlignment="Left"
-                    titleLeftMargin="25"
-                    titleTopMargin="10"
-                    titleBottomMargin="10"
-                    subtitle="CME - CME Delayed Price, Currency in USD"
-                    subtitleAlignment="Left"
-                    subtitleLeftMargin="25"
-                    subtitleTopMargin="5"
-                    subtitleBottomMargin="10"
-                    yAxisLabelLocation="OutsideLeft"
-                    yAxisMode="Numeric"
-                    yAxisTitle="Financial Prices"
-                    yAxisTitleLeftMargin="10"
-                    yAxisTitleRightMargin="5"
-                    yAxisLabelLeftMargin="0"
-                    zoomSliderType="None"
-                    dataSource={this.state.data}/>
-            </div> */}
-        </div>
-        );
+            <div>
+            <div>
+            <select onChange={this.changeSelected} value={this.state.selectedItem}>
+            {
+                this.state.favorites.map((item) => {
+                    return <option value={item} key={item}>{item}</option>
+                })
+            }
+            </select>
+            </div>
+            <div className="container sample" >
+            <div className="container" >
+            <IgrFinancialChart
+            width="900px"
+            height="400px"
+            isToolbarVisible={true}
+            chartType="Candle"
+            chartTitle={this.state.selectedItem}
+            titleAlignment="Left"
+            titleLeftMargin="25"
+            titleTopMargin="10"
+            titleBottomMargin="10"
+            subtitle="Variations of price in the last 7 days"
+            subtitleAlignment="Left"
+            subtitleLeftMargin="25"
+            subtitleTopMargin="5"
+            subtitleBottomMargin="10"
+            yAxisLabelLocation="OutsideLeft"
+            yAxisMode="Numeric"
+            yAxisTitle="Price"
+            yAxisTitleLeftMargin="10"
+            yAxisTitleRightMargin="5"
+            yAxisLabelLeftMargin="0"
+            zoomSliderType="None"
+            dataSource={this.state.data}/>
+            </div>
+            </div>
+            </div>
+            
+            );
+        }
     }
-}
-
-// rendering above class to the React DOM
-// const root = ReactDOM.createRoot(document.getElementById('root'));
-// root.render(<CandleGraph/>);

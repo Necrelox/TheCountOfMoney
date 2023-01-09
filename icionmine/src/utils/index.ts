@@ -1,0 +1,1 @@
+export { MessageError, ErrorEntity } from './error/ErrorEntity';

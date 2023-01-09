@@ -5,8 +5,47 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Image from 'react-bootstrap/Image'
 import './navBar.css';
+import { ExpansionPanelDescriptionMetadata } from 'igniteui-react-core';
 
-class NavBar extends React.Component {
+interface IState {
+    isExpired: boolean;
+}
+
+class NavBar extends React.Component<{}, IState> {
+    expired: boolean;
+    expiryDate: number;
+    currentDate: number;
+    stringDate: string;
+
+    constructor(props: any) {
+        super(props);
+        this.expired = false;
+        if(localStorage.getItem('expiryToken') != null) {
+            this.stringDate = localStorage.getItem('expiryToken')?.split('T')[0] as string + " " + localStorage.getItem('expiryToken')?.split('T')[1].split('.')[0] as string;
+            this.expiryDate = new Date(this.stringDate + "Z\"").getTime();
+        } else {
+            this.expiryDate = 0;
+            this.stringDate = "";
+        }
+        this.state = {
+            isExpired: this.expired
+        }
+        this.currentDate = new Date().getTime();
+    }
+
+    componentDidMount(): void {
+        if(this.expiryDate < this.currentDate) {
+            this.expired = true;
+            localStorage.removeItem('expiryToken');
+            localStorage.removeItem('username');
+            localStorage.removeItem('userRole');
+            localStorage.removeItem('token');
+        } else {
+            this.expired = false;
+        }
+        this.setState({isExpired: this.expired});
+    }
+
     render() {
       return (
         <Navbar className="navColor" expand="lg">
@@ -21,20 +60,22 @@ class NavBar extends React.Component {
                 >
                 <Nav.Link href="/">Home</Nav.Link>
                 <Nav.Link href="graphs">Graphs</Nav.Link>
-                <Nav.Link href="preferences">Preferences</Nav.Link>
+                <Nav.Link href="news">News</Nav.Link>
+                {(localStorage.getItem('userRole') == "user" || localStorage.getItem('userRole') == "admin") && !this.state.isExpired
+                ? <Nav.Link href="preferences">Preferences</Nav.Link> : null}
                 </Nav>
-                <Form className="d-flex">
-                <Form.Control
-                    type="search"
-                    placeholder="Search"
-                    className="me-2"
-                    aria-label="Search"
-                />  
-                </Form>
-                <Nav>
-                    <Nav.Link href="login">Connection</Nav.Link>
-                    <Nav.Link className='navButton' href="register">Inscription</Nav.Link>
-                </Nav>
+                {(localStorage.getItem('userRole') == "user" || localStorage.getItem('userRole') == "admin") && !this.state.isExpired 
+                ? (
+                    <Nav>
+                        <Nav.Link href="logout">Logout</Nav.Link>
+                    </Nav>
+                    ) 
+                : (
+                    <Nav>
+                        <Nav.Link href="register">Inscription</Nav.Link>
+                        <Nav.Link className='navButton' href="login">Connexion</Nav.Link>
+                    </Nav>
+                )}
             </Navbar.Collapse>
             </Container>
         </Navbar>

@@ -5,7 +5,6 @@ const RolesPermission = require('./RolesPermissions.json');
  * @returns { Promise<void> }
  */
 exports.seed = async function (knex) {
-
     try {
         await knex.transaction(async (trx) => {
             const roles = [];
@@ -15,7 +14,7 @@ exports.seed = async function (knex) {
                     id: i + 1,
                 });
             }
-    
+
             const modules = [];
             for (let i = 0; i < RolesPermission.modules.length; ++i) {
                 modules.push({
@@ -27,7 +26,7 @@ exports.seed = async function (knex) {
             await knex.insert(modules).into('MODULE').transacting(trx);
             const rolesId = await knex.select().from('ROLE').transacting(trx);
             const modulesId = await knex.select().from('MODULE').transacting(trx);
-    
+
             for (const role of roles) {
                 if (RolesPermission.roleModule[role.name]) {
                     const roleModule = [];

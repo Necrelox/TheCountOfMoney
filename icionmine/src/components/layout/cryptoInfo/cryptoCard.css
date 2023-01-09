@@ -1,4 +1,4 @@
-.myCard{
+.crypto-card{
     padding: 1rem;
     display: flex;
     flex-wrap: wrap;
@@ -8,13 +8,13 @@
     width: 10rem;
 }
 
-.myCard img {
+.crypto-card img {
     max-width: 80%;
     border-radius: 50%;
     transition: all 1s;
 }
 
-.myCard img:hover {
+.crypto-card img:hover {
     transform: rotate3d(1, 0, 1, 360deg);
     transition: all 1s;
 }

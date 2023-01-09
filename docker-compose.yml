@@ -10,9 +10,9 @@ services:
       - MYSQL_USER=ruby
       - MYSQL_PASSWORD=F3OIMykQK8861xwSLdOw
     ports:
-      - "7058:3306"
+      - "3306:3306"
     healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
       timeout: 20s
       retries: 10
   api:
@@ -25,6 +25,7 @@ services:
       - MYSQL_DATABASE=IOM
       - MYSQL_USER=ruby
       - MYSQL_PASSWORD=F3OIMykQK8861xwSLdOw
+      - MYSQL_PORT=3306
     ports:
       - "3973:3973"
     depends_on:
@@ -32,3 +33,14 @@ services:
         condition: service_healthy
     links:
       - database
+  app:
+    build: ./icionmine
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_BASE_URL=api
+      - REACT_APP_PORT=3973
+    depends_on:
+      api:
+        condition: service_healthy
+    links:
+      - api
