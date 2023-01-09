@@ -16,7 +16,7 @@ class HomeText extends React.Component<{}, {}> {
             <p className="title">Welcome</p>
             <p className="subtitle">Come explore the market</p>
             <p className="titleText">
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+            Welcome to icionmine. Get access to a list of cryptocurrencies’ data, trend and more. Get the latest news about crypto. Create your profile to get personalized data from a list of cryptocurrencies of your choice! Be updated anytime.
             </p>
           </div>
         </div>
