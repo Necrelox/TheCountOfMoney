@@ -20,6 +20,7 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3973
+      - APP_IP=51.91.96.23
       - MYSQL_HOST=database
       - MYSQL_ROOT_PASSWORD=1l8s6e2tl3sclz836ue9rpr709lusxte
       - MYSQL_DATABASE=IOM
