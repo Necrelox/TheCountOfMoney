@@ -54,6 +54,8 @@ export default class News extends React.Component<{}, IState> {
 }
 
   render() {
+    if(this.isLoading) return (<div>Loading...</div>)
+    else
     return (
         <div className="flex-column">
             <h5>Check out the latest news!</h5>

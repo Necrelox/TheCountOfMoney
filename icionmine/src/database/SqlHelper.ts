@@ -116,7 +116,7 @@ export class SqlHelper {
   }
   
   public static async loadGraphData(selectedItem : string) : Promise<IGraphData[]> {
-    const result = await axios.get(`https://api.coingecko.com/api/v3/coins/${selectedItem}/ohlc?vs_currency=eur&days=7`);
+    const result = await axios.get(`https://api.coingecko.com/api/v3/coins/${selectedItem}/ohlc?vs_currency=eur&days=7`); //try with days=max
     if (result.status === 200) {
       if (!result.data) throw new ErrorEntity(MessageError.CRYPTO_NO_DATA_FOUND);
       const apiData: any[] = result.data;
@@ -159,7 +159,7 @@ export class SqlHelper {
   }
 
   public static async login(username: string, password: string) : Promise<ILoginData> {
-    const result = await axios.post(`http://localhost:3973/account/login`, { username, password });
+    const result = await axios.post(`http://${process.env.REACT_APP_BASEURL}/account/login`, { username, password });
     if (result.status === 200) {
       if (!result.data) throw new ErrorEntity(MessageError.LOGIN_NO_DATA_FOUND);
       const header = result.data.token.split(".")[0];
@@ -180,7 +180,7 @@ export class SqlHelper {
   }
 
   public static async signup(username: string, password: string, email: string) : Promise<ISignUpData> {
-    const result = await axios.post(`http://localhost:3973/account/signup`, { username, password, email });
+    const result = await axios.post(`http://${process.env.REACT_APP_BASEURL}/account/signup`, { username, password, email });
     if (result.status === 201) {
       if (!result.data) throw new ErrorEntity(MessageError.SIGNUP_NO_DATA_FOUND);
       await this.login(username, password);
@@ -203,7 +203,7 @@ export class SqlHelper {
     if (email) bodyParameters.email = email;
     if (activityMessage) bodyParameters.activityMessage = activityMessage;
 
-    const result = await axios.put(`http://localhost:3973/account/me`, bodyParameters, config );
+    const result = await axios.put(`http://${process.env.REACT_APP_BASEURL}/account/me`, bodyParameters, config );
     if (result.status === 200) {
       if (!result.data) throw new ErrorEntity(MessageError.SIGNUP_NO_DATA_FOUND);
       return result.data;
@@ -220,7 +220,7 @@ export class SqlHelper {
         Authorization: 'Bearer ' + localStorage.getItem("token")
      }
     };
-    const result = await axios.get(`http://localhost:3973/crypto/actu-rss`, config );
+    const result = await axios.get(`http://${process.env.REACT_APP_BASEURL}/crypto/actu-rss`, config );
     if (result.status === 200) {
       if (!result.data) throw new ErrorEntity(MessageError.SIGNUP_NO_DATA_FOUND);
       return result.data;
@@ -237,7 +237,7 @@ export class SqlHelper {
         Authorization: 'Bearer ' + localStorage.getItem("token")
      }
     };
-    const result = await axios.get(`http://localhost:3973/crypto/preference`, config );
+    const result = await axios.get(`http://${process.env.REACT_APP_BASEURL}/crypto/preference`, config );
     if (result.status === 200) {
       if (!result.data) throw new ErrorEntity(MessageError.SIGNUP_NO_DATA_FOUND);
       return result.data;
@@ -253,7 +253,7 @@ export class SqlHelper {
         Authorization: 'Bearer ' + localStorage.getItem("token")
      }
     };
-    const result = await axios.get(`http://localhost:3973/crypto/user-preference`, config );
+    const result = await axios.get(`http://${process.env.REACT_APP_BASEURL}/crypto/user-preference`, config );
     if (result.status === 200) {
       if (!result.data) throw new ErrorEntity(MessageError.SIGNUP_NO_DATA_FOUND);
       return result.data;
@@ -273,7 +273,7 @@ export class SqlHelper {
       crypto: JSON.stringify(prefsList)
     };
     console.log(bodyParameters);
-    const result = await axios.post(`http://localhost:3973/crypto/preference`, bodyParameters, config);
+    const result = await axios.post(`http://${process.env.REACT_APP_BASEURL}/crypto/preference`, bodyParameters, config);
     if (result.status === 200) {
       if (!result.data) throw new ErrorEntity(MessageError.SIGNUP_NO_DATA_FOUND);
       return result.data;
@@ -294,7 +294,7 @@ export class SqlHelper {
       crypto: JSON.stringify(prefsList)
     };
     console.log(bodyParameters);
-    const result = await axios.post(`http://localhost:3973/crypto/user-preference`, bodyParameters, config);
+    const result = await axios.post(`http://${process.env.REACT_APP_BASEURL}/crypto/user-preference`, bodyParameters, config);
     if (result.status === 200) {
       if (!result.data) throw new ErrorEntity(MessageError.SIGNUP_NO_DATA_FOUND);
       return result.data;

@@ -5,7 +5,7 @@ import Profile from '@layout/profile/Profile';
 import './styles/preferences.css';
 
 interface IsPreferencesState {
-  isProfile: boolean;
+  isPrefs: boolean;
 }
 
 export default class Login extends React.Component<{}, IsPreferencesState>  {
@@ -15,37 +15,37 @@ export default class Login extends React.Component<{}, IsPreferencesState>  {
     super(props);
     this.isLoading = true;
     this.state = {
-        isProfile: true
+        isPrefs: true
     };
   }
 
   componentDidMount() {
     this.isLoading = true;
-    this.setState({isProfile: true});
+    this.setState({isPrefs: true});
     this.isLoading = false;
   }
 
   private openProfile = () => {
-    this.setState({isProfile: true});
+    this.setState({isPrefs: false});
   }
 
   private openPreferences = () => {
-    this.setState({isProfile: false});
+    this.setState({isPrefs: true});
   }
 
   render() {
     let showForm;
-    if(this.state.isProfile) {
-        showForm = <Profile />
+    if(this.state.isPrefs) {
+      showForm = < Preferences />
     } else {
-        showForm = < Preferences />
+      showForm = <Profile />
     }
 
     return (
         <div className='flex-col'>
           <div className='flex-row'>
-            <button className='pref-button' onClick={this.openProfile}>Profile</button>
             <button className='pref-button' onClick={this.openPreferences}>Preferences</button>
+            <button className='pref-button' onClick={this.openProfile}>Profile</button>
           </div>
           {showForm}
         </div>

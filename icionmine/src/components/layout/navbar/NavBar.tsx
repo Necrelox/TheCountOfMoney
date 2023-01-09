@@ -64,14 +64,6 @@ class NavBar extends React.Component<{}, IState> {
                 {(localStorage.getItem('userRole') == "user" || localStorage.getItem('userRole') == "admin") && !this.state.isExpired
                 ? <Nav.Link href="preferences">Preferences</Nav.Link> : null}
                 </Nav>
-                <Form className="d-flex">
-                <Form.Control
-                    type="search"
-                    placeholder="Search"
-                    className="me-2"
-                    aria-label="Search"
-                />  
-                </Form>
                 {(localStorage.getItem('userRole') == "user" || localStorage.getItem('userRole') == "admin") && !this.state.isExpired 
                 ? (
                     <Nav>
