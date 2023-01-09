@@ -1,7 +1,7 @@
 /**
  * Dependencies
  */
-import cors from 'cors';
+// import cors from 'cors';
 import helmet from 'helmet';
 import express from 'express';
 import { config } from 'dotenv';
