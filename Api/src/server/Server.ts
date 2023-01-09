@@ -64,7 +64,7 @@ export class Server {
      * @return {void}
      */
     private initDefaultMiddleware() {
-        this.initMiddlewareCors();
+        // this.initMiddlewareCors();
         this.initMiddlewareHelmet();
         this.initMiddlewareExpress();
         this.initMiddlewareSwagger();
@@ -77,15 +77,9 @@ export class Server {
      * @memberof Server
      * @return {void}
      */
-    private initMiddlewareCors() {
-        this.app.use(cors({
-            origin: process.env.APP_IP || '*', // Temporary
-            methods: ['GET', 'POST', 'PUT', 'DELETE'],
-            allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-            credentials: true,
-        }
-        ));
-    }
+    // private initMiddlewareCors() {
+    //     this.app.use();
+    // }
 
     /**
      * Initialize the middleware Helmet (helps you secure your Express apps by setting various HTTP headers)
