@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for services/actions/user/Device.ts</title>
+    <title>Code coverage report for services/actions/queries/user/History.ts</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../../../prettify.css" />
-    <link rel="stylesheet" href="../../../base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../../../favicon.png" />
+    <link rel="stylesheet" href="../../../../prettify.css" />
+    <link rel="stylesheet" href="../../../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../../../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../../../sort-arrow-sprite.png);
+            background-image: url(../../../../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,7 +19,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">services/actions/user</a> Device.ts</h1>
+        <h1><a href="../../../../index.html">All files</a> / <a href="index.html">services/actions/queries/user</a> History.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -255,14 +255,11 @@
 <a name='L190'></a><a href='#L190'>190</a>
 <a name='L191'></a><a href='#L191'>191</a>
 <a name='L192'></a><a href='#L192'>192</a>
-<a name='L193'></a><a href='#L193'>193</a>
-<a name='L194'></a><a href='#L194'>194</a>
-<a name='L195'></a><a href='#L195'>195</a>
-<a name='L196'></a><a href='#L196'>196</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L193'></a><a href='#L193'>193</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
@@ -329,7 +326,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -344,13 +340,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -456,62 +450,62 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * Local Modules
  */
-import { IDevice, IDeviceFKUser } from '@/models';
-import { transformColumnsToArray } from '@/services/actions/ColumnSelectorBuilder';
-import { IColumnsUser, tableName as userTable } from './User';
-import { DatabaseKnex, ErrorDatabase, Transaction } from '@/services';
+import { transformColumnsToArray } from '@/services/actions/queries/ColumnSelectorBuilder';
+import { IHistory, IHistoryFKUser } from '@/models';
 import { ErrorEntity, MessageError } from '@/utils';
+import { DatabaseKnex, ErrorDatabase, Transaction } from '@/services';
+import { IColumnsUser, tableName as userTable } from './User';
 &nbsp;
 /**
- * IColumnDevice
+ * IColumnHistory
  */
-export interface IColumnsDevice {
-    device: boolean;
+export interface IColumnsHistory {
+    log: boolean;
     createdAt: boolean | string;
-    active: boolean;
-    userUuid: boolean;
+    userUuid: boolean | string;
     uuid: boolean | string;
 }
 &nbsp;
 /**
- * IColumnDeviceFKUser
+ * IColumnHistoryFKUser
  */
-export interface IColumnsDeviceFKUser extends IColumnsDevice, IColumnsUser {}
+export interface IColumnsHistoryFKUser extends IColumnsHistory, IColumnsUser {}
+&nbsp;
 /**
  * Table Name
  */
-export const tableName = 'USER_DEVICE';
+export const tableName = 'USER_HISTORY';
 &nbsp;
 /**
- * Device class : is the class that contains the queries for the table USER_DEVICE
- * @class Device
+ * History class : is the class that contains the queries for the table USER_HISTORY
+ * @class History
  */
-export class Device {
+export class History {
     /**
-     * Get device
-     * @param deviceReflectToFind
+     * Get history
+     * @param historyReflectToFind
      * @param columns
-     * @return {Promise&lt;IDevice[]&gt;}
+     * @return {Promise&lt;IHistory[]&gt;}
      */
-    public <span class="fstat-no" title="function not covered" >static </span>async get(deviceReflectToFind: Partial&lt;IDevice&gt;, columns: Partial&lt;IColumnsDevice&gt;) : Promise&lt;IDevice[]&gt; {
+    public <span class="fstat-no" title="function not covered" >static </span>async get(historyReflectToFind: Partial&lt;IHistory&gt;, columns: Partial&lt;IColumnsHistory&gt;) : Promise&lt;IHistory[]&gt; {
 <span class="cstat-no" title="statement not covered" >        return DatabaseKnex.getInstance()</span>
             .select(transformColumnsToArray(columns))
-            .where(deviceReflectToFind).from(tableName)
+            .where(historyReflectToFind).from(tableName)
             .catch(<span class="fstat-no" title="function not covered" >(e</span>rr: ErrorDatabase) =&gt; {
 <span class="cstat-no" title="statement not covered" >                throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);</span>
             });
     }
 &nbsp;
     /**
-     * Get device FK user
-     * @param deviceReflectToFind
+     * Get history FK user
+     * @param historyReflectToFind
      * @param columns
-     * @return {Promise&lt;IDeviceFKUser[]&gt;}
+     * @return {Promise&lt;IHistoryFKUser[]&gt;}
      */
-    public <span class="fstat-no" title="function not covered" >static </span>async getFKUser(deviceReflectToFind: Partial&lt;IDevice&gt;, columns: Partial&lt;IColumnsDeviceFKUser&gt;) : Promise&lt;IDeviceFKUser[]&gt; {
+    public <span class="fstat-no" title="function not covered" >static </span>async getFKUser(historyReflectToFind: Partial&lt;IHistory&gt;, columns: Partial&lt;IColumnsHistoryFKUser&gt;) : Promise&lt;IHistoryFKUser[]&gt; {
 <span class="cstat-no" title="statement not covered" >        return DatabaseKnex.getInstance()</span>
             .select(transformColumnsToArray(columns))
-            .where(deviceReflectToFind).from(tableName)
+            .where(historyReflectToFind).from(tableName)
             .join(userTable, `${tableName}.userUuid`, '=', `${userTable}.uuid`)
             .catch(<span class="fstat-no" title="function not covered" >(e</span>rr: ErrorDatabase) =&gt; {
 <span class="cstat-no" title="statement not covered" >                throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);</span>
@@ -519,15 +513,14 @@ export class Device {
     }
 &nbsp;
     /**
-     * Update a device
-     * @param deviceReflectToUpdate
-     * @param deviceReflectToFind
-     * @static
+     * Update a history
+     * @param historyReflectToUpdate
+     * @param historyReflectToFind
      */
-    public <span class="fstat-no" title="function not covered" >static </span>async update(deviceReflectToUpdate: Partial&lt;IDevice&gt;, deviceReflectToFind: Partial&lt;IDevice&gt;) {
-<span class="cstat-no" title="statement not covered" >        DatabaseKnex.getInstance()</span>
-            .update(deviceReflectToUpdate)
-            .where(deviceReflectToFind)
+    public <span class="fstat-no" title="function not covered" >static </span>async update(historyReflectToUpdate: Partial&lt;IHistory&gt;, historyReflectToFind: Partial&lt;IHistory&gt;)  {
+<span class="cstat-no" title="statement not covered" >        return DatabaseKnex.getInstance()</span>
+            .update(historyReflectToUpdate)
+            .where(historyReflectToFind)
             .from(tableName)
             .catch(<span class="fstat-no" title="function not covered" >(e</span>rr: ErrorDatabase) =&gt; {
 <span class="cstat-no" title="statement not covered" >                throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);</span>
@@ -535,13 +528,12 @@ export class Device {
     }
 &nbsp;
     /**
-     * Create a device
-     * @param deviceReflectToCreate
-     * @static
+     * Create a history
+     * @param historyReflectToCreate
      */
-    public <span class="fstat-no" title="function not covered" >static </span>async create(deviceReflectToCreate: Partial&lt;IDevice&gt;) {
+    public <span class="fstat-no" title="function not covered" >static </span>async create(historyReflectToCreate: Partial&lt;IHistory&gt;) {
 <span class="cstat-no" title="statement not covered" >        return DatabaseKnex.getInstance()</span>
-            .insert(deviceReflectToCreate)
+            .insert(historyReflectToCreate)
             .into(tableName)
             .catch(<span class="fstat-no" title="function not covered" >(e</span>rr: ErrorDatabase) =&gt; {
 <span class="cstat-no" title="statement not covered" >                throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);</span>
@@ -549,14 +541,13 @@ export class Device {
     }
 &nbsp;
     /**
-     * Delete a device
-     * @param deviceReflectToFind
-     * @static
+     * Delete a history
+     * @param historyReflectToFind
      */
-    public <span class="fstat-no" title="function not covered" >static </span>async delete(deviceReflectToFind: Partial&lt;IDevice&gt;) {
-<span class="cstat-no" title="statement not covered" >        DatabaseKnex.getInstance()</span>
+    public <span class="fstat-no" title="function not covered" >static </span>async delete(historyReflectToFind: Partial&lt;IHistory&gt;) {
+<span class="cstat-no" title="statement not covered" >        return DatabaseKnex.getInstance()</span>
             .delete()
-            .where(deviceReflectToFind)
+            .where(historyReflectToFind)
             .from(tableName)
             .catch(<span class="fstat-no" title="function not covered" >(e</span>rr: ErrorDatabase) =&gt; {
 <span class="cstat-no" title="statement not covered" >                throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);</span>
@@ -564,16 +555,16 @@ export class Device {
     }
 &nbsp;
     /**
-     * Transaction Get device
-     * @param deviceReflectToFind
+     * Transaction get history
+     * @param historyReflectToFind
      * @param columns
      * @param trx
-     * @return {Promise&lt;IDevice[]&gt;}
+     * @return {Promise&lt;IHistory[]&gt;}
      */
-    public <span class="fstat-no" title="function not covered" >static </span>async transactionGet(deviceReflectToFind: Partial&lt;IDevice&gt;, columns: Partial&lt;IColumnsDevice&gt;, trx: Transaction) : Promise&lt;IDevice[]&gt; {
+    public <span class="fstat-no" title="function not covered" >static </span>async transactionGet(historyReflectToFind: Partial&lt;IHistory&gt;, columns: Partial&lt;IColumnsHistory&gt;, trx: Transaction) : Promise&lt;IHistory[]&gt; {
 <span class="cstat-no" title="statement not covered" >        return DatabaseKnex.getInstance()</span>
             .select(transformColumnsToArray(columns))
-            .where(deviceReflectToFind).from(tableName)
+            .where(historyReflectToFind).from(tableName)
             .transacting(trx)
             .catch(<span class="fstat-no" title="function not covered" >(e</span>rr: ErrorDatabase) =&gt; {
 <span class="cstat-no" title="statement not covered" >                throw new ErrorEntity(MessageError.SERVER_DATABASE_ERROR, err?.sqlMessage as string, err?.code as string);</span>
@@ -581,16 +572,16 @@ export class Device {
     }
 &nbsp;
     /**
-     * Transaction Get device FK user
-     * @param deviceReflectToFind
+     * Transaction get history FK user
+     * @param historyReflectToFind
      * @param columns
      * @param trx
-     * @return {Promise&lt;IDeviceFKUser[]&gt;}
+     * @return {Promise&lt;IHistoryFKUser[]&gt;}
      */
-    public <span class="fstat-no" title="function not covered" >static </span>async transactionGetFKUser(deviceReflectToFind: Partial&lt;IDevice&gt;, columns: Partial&lt;IColumnsDeviceFKUser&gt;, trx: Transaction) : Promise&lt;IDeviceFKUser[]&gt; {
+    public <span class="fstat-no" title="function not covered" >static </span>async transactionGetFKUser(historyReflectToFind: Partial&lt;IHistory&gt;, columns: Partial&lt;IColumnsHistoryFKUser&gt;, trx: Transaction) : Promise&lt;IHistoryFKUser[]&gt; {
 <span class="cstat-no" title="statement not covered" >        return DatabaseKnex.getInstance()</span>
             .select(transformColumnsToArray(columns))
-            .where(deviceReflectToFind).from(tableName)
+            .where(historyReflectToFind).from(tableName)
             .join(userTable, `${tableName}.userUuid`, '=', `${userTable}.uuid`)
             .transacting(trx)
             .catch(<span class="fstat-no" title="function not covered" >(e</span>rr: ErrorDatabase) =&gt; {
@@ -599,15 +590,15 @@ export class Device {
     }
 &nbsp;
     /**
-     * Transaction Update a device
-     * @param deviceReflectToUpdate
-     * @param deviceReflectToFind
+     * Transaction update a history
+     * @param historyReflectToUpdate
+     * @param historyReflectToFind
      * @param trx
      */
-    public <span class="fstat-no" title="function not covered" >static </span>async transactionUpdate(deviceReflectToUpdate: Partial&lt;IDevice&gt;, deviceReflectToFind: Partial&lt;IDevice&gt;, trx: Transaction) {
+    public <span class="fstat-no" title="function not covered" >static </span>async transactionUpdate(historyReflectToUpdate: Partial&lt;IHistory&gt;, historyReflectToFind: Partial&lt;IHistory&gt;, trx: Transaction) {
 <span class="cstat-no" title="statement not covered" >        return DatabaseKnex.getInstance()</span>
-            .update(deviceReflectToUpdate)
-            .where(deviceReflectToFind)
+            .update(historyReflectToUpdate)
+            .where(historyReflectToFind)
             .from(tableName)
             .transacting(trx)
             .catch(<span class="fstat-no" title="function not covered" >(e</span>rr: ErrorDatabase) =&gt; {
@@ -616,13 +607,13 @@ export class Device {
     }
 &nbsp;
     /**
-     * Transaction Create a device
-     * @param deviceReflectToCreate
+     * Transaction create a history
+     * @param historyReflectToCreate
      * @param trx
      */
-    public <span class="fstat-no" title="function not covered" >static </span>async transactionCreate(deviceReflectToCreate: Partial&lt;IDevice&gt;, trx: Transaction) {
+    public <span class="fstat-no" title="function not covered" >static </span>async transactionCreate(historyReflectToCreate: Partial&lt;IHistory&gt;, trx: Transaction) {
 <span class="cstat-no" title="statement not covered" >        return DatabaseKnex.getInstance()</span>
-            .insert(deviceReflectToCreate)
+            .insert(historyReflectToCreate)
             .into(tableName)
             .transacting(trx)
             .catch(<span class="fstat-no" title="function not covered" >(e</span>rr: ErrorDatabase) =&gt; {
@@ -631,14 +622,14 @@ export class Device {
     }
 &nbsp;
     /**
-     * Transaction Delete a device
-     * @param deviceReflectToFind
+     * Transaction delete a history
+     * @param historyReflectToFind
      * @param trx
      */
-    public <span class="fstat-no" title="function not covered" >static </span>async transactionDelete(deviceReflectToFind: Partial&lt;IDevice&gt;, trx: Transaction) {
+    public <span class="fstat-no" title="function not covered" >static </span>async transactionDelete(historyReflectToFind: Partial&lt;IHistory&gt;, trx: Transaction) {
 <span class="cstat-no" title="statement not covered" >        return DatabaseKnex.getInstance()</span>
             .delete()
-            .where(deviceReflectToFind)
+            .where(historyReflectToFind)
             .from(tableName)
             .transacting(trx)
             .catch(<span class="fstat-no" title="function not covered" >(e</span>rr: ErrorDatabase) =&gt; {
@@ -655,16 +646,16 @@ export class Device {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2022-12-20T10:36:49.478Z
+                at 2023-01-09T12:21:00.791Z
             </div>
-        <script src="../../../prettify.js"></script>
+        <script src="../../../../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="../../../sorter.js"></script>
-        <script src="../../../block-navigation.js"></script>
+        <script src="../../../../sorter.js"></script>
+        <script src="../../../../block-navigation.js"></script>
     </body>
 </html>
     
