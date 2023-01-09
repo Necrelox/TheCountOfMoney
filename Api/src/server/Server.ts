@@ -1,7 +1,7 @@
 /**
  * Dependencies
  */
-// import cors from 'cors';
+import cors from 'cors';
 import helmet from 'helmet';
 import express from 'express';
 import { config } from 'dotenv';
@@ -64,7 +64,7 @@ export class Server {
      * @return {void}
      */
     private initDefaultMiddleware() {
-        // this.initMiddlewareCors();
+        this.initMiddlewareCors();
         this.initMiddlewareHelmet();
         this.initMiddlewareExpress();
         this.initMiddlewareSwagger();
@@ -77,9 +77,11 @@ export class Server {
      * @memberof Server
      * @return {void}
      */
-    // private initMiddlewareCors() {
-    //     this.app.use();
-    // }
+    private initMiddlewareCors() {
+        this.app.use(cors({
+            origin: '*',
+        }));
+    }
 
     /**
      * Initialize the middleware Helmet (helps you secure your Express apps by setting various HTTP headers)
