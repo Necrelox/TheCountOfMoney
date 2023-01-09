@@ -37,7 +37,7 @@ services:
   app:
     build: ./icionmine
     environment:
-      - REACT_APP_BASE_URL=localhost
+      - REACT_APP_BASE_URL=51.91.96.23
       - REACT_APP_PORT=3973
     ports:
         - "3000:3000"
