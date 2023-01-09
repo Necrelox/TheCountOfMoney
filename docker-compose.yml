@@ -35,3 +35,12 @@ services:
       - database
   app:
     build: ./icionmine
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_BASE_URL=api
+      - REACT_APP_PORT=3973
+    depends_on:
+      api:
+        condition: service_healthy
+    links:
+      - api
